@@ -1,0 +1,4 @@
+ALTER TABLE jobs DROP CONSTRAINT FK_jobs_job_id
+ALTER TABLE jobs DROP CONSTRAINT FK_jobs_contact_id
+DROP TABLE jobs
+DROP TABLE contacts

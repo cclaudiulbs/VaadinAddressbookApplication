@@ -1,0 +1,8 @@
+CREATE TABLE jobs (job_id  SERIAL NOT NULL, optimistic_lock BIGINT, job_description VARCHAR(255), job_title VARCHAR(255), contact_id BIGINT NOT NULL, PRIMARY KEY (job_id, contact_id))
+CREATE TABLE contacts (contact_id  SERIAL NOT NULL, last_name VARCHAR(255) NOT NULL, email VARCHAR(255) UNIQUE, address VARCHAR(255) UNIQUE, home_phone VARCHAR(255) UNIQUE, AGE VARCHAR(255), mobile_phone VARCHAR(255) NOT NULL UNIQUE, first_name VARCHAR(255) NOT NULL, PRIMARY KEY (contact_id))
+
+
+
+
+ALTER TABLE jobs ADD CONSTRAINT FK_jobs_job_id FOREIGN KEY (job_id) REFERENCES jobs (job_id)
+ALTER TABLE jobs ADD CONSTRAINT FK_jobs_contact_id FOREIGN KEY (contact_id) REFERENCES contacts (contact_id)
