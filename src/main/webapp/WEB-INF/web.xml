@@ -15,7 +15,7 @@
         <init-param>
             <description>My AddressBook Application with JPA</description>
             <param-name>application</param-name>
-            <param-value>com.cc.addressbook.application.AddressBookApplication</param-value>
+            <param-value>com.cc.addressbook.application.AddressbookApplication</param-value>
         </init-param>
     </servlet>
 

@@ -10,11 +10,15 @@ import com.vaadin.ui.Component;
 
 public interface AddressbookMainWindow {
 
+	// ------ Enable Listeners  ------//
     public interface AddressbookMainWindowListener {
         void selectedMenuEvent(MenuBarButtons constants);
     }
 
     void addListener(AddressbookMainWindowListener listener);
-
+    
+	// --------- Enable Views ----------//
     void setMainWindowComponent(Component component);
+    void setMainViewFirstComponent(Component component);
+    void setMainViewSecondComponent(Component component);
 }

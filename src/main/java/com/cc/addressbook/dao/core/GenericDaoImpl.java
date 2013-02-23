@@ -10,8 +10,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import lombok.extern.java.Log;
-
 import com.cc.addressbook.dao.api.GenericDao;
 import com.cc.addressbook.dao.emprovider.EntityManagerProvider;
 import com.cc.addressbook.entities.TableEntity;
@@ -21,7 +19,6 @@ import com.cc.addressbook.entities.TableEntity;
  *
  */
 
-@Log
 public class GenericDaoImpl<T extends TableEntity> implements GenericDao<T> {
 	private static Logger LOG = Logger.getLogger(GenericDao.class.getName());
 	

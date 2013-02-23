@@ -1,10 +1,10 @@
 package com.cc.addressbook.models;
 
+import java.util.List;
+
 import com.cc.addressbook.dao.api.GenericDao;
 import com.cc.addressbook.dao.core.GenericDaoImpl;
 import com.cc.addressbook.entities.PersonEntity;
-
-import java.util.List;
 
 /**
  * @author cclaudiu
