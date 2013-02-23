@@ -13,13 +13,13 @@ import java.util.List;
 
 public class CustomerModel {
 
-    private GenericDao<PersonEntity> customerDao = new GenericDaoImpl<>();
+    private GenericDao<PersonEntity> contactDao = new GenericDaoImpl<>();
 
     public List<PersonEntity> getCustomers() {
-        return customerDao.findAll(PersonEntity.class);
+        return contactDao.findAll(PersonEntity.class);
     }
 
     public PersonEntity saveCustomer(PersonEntity personEntity) {
-        return customerDao.saveEntity(personEntity);
+        return contactDao.saveEntity(personEntity);
     }
 }

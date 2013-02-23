@@ -5,7 +5,7 @@ package com.cc.addressbook.constants;
  *
  */
 
-public enum MenuBarConstants {
+public enum MenuBarButtons {
 
     ADD_CONTACT,
     SEARCH_CONTACT,

@@ -1,29 +1,38 @@
 package com.cc.addressbook.windows;
 
-import com.cc.addressbook.constants.MenuBarConstants;
-import com.vaadin.data.Property;
-import com.vaadin.terminal.Sizeable;
-import com.vaadin.ui.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.cc.addressbook.constants.MenuBarButtons;
+import com.vaadin.data.Property;
+import com.vaadin.terminal.Sizeable;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.Tree;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 /**
  * @author cclaudiu
  *
  */
 
-public class MainApplicationWindowImpl
-        extends Window
-        implements MainApplicationWindow,
-                        TabSheet.SelectedTabChangeListener,
-                                Property.ValueChangeListener {
+public class AddressbookMainWindowImpl extends Window
+        implements AddressbookMainWindow,
+                   TabSheet.SelectedTabChangeListener,
+                   Property.ValueChangeListener {
 
-    private final List<MainApplicationWindowListener> listeners = new ArrayList<>();
+	private static final long serialVersionUID = 1L;
+	
+	private final List<AddressbookMainWindowListener> mainWindowlisteners = new ArrayList<>();
     private final HorizontalSplitPanel mainSplitPanel = new HorizontalSplitPanel();
 
-    public MainApplicationWindowImpl(String caption) {
-        super(caption);
+    public AddressbookMainWindowImpl(String windowName) {
+    	super(windowName);
         buildMainWindowLayout();
     }
 
@@ -31,29 +40,29 @@ public class MainApplicationWindowImpl
      * Presenter register itself to this event
      */
     @Override
-    public void addListener(MainApplicationWindowListener listener) {
-        listeners.add(listener);
+    public void addListener(AddressbookMainWindowListener listener) {
+        mainWindowlisteners.add(listener);
     }
 
     @Override
-    public void setMainComponent(Component component) {
+    public void setMainWindowComponent(Component component) {
         mainSplitPanel.setSecondComponent(component);
     }
 
     @Override
     public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
-        for(MainApplicationWindowListener presenterListener : listeners) {
-            MenuBarConstants menuAction = MenuBarConstants.valueOf(String.valueOf(((Label) event.getTabSheet().getSelectedTab()).getValue()));
-            presenterListener.selectMenuEvent(menuAction);
+        for(AddressbookMainWindowListener presenterListener : mainWindowlisteners) {
+            MenuBarButtons menuAction = MenuBarButtons.valueOf(String.valueOf(((Label) event.getTabSheet().getSelectedTab()).getValue()));
+            presenterListener.selectedMenuEvent(menuAction);
         }
     }
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-        for(MainApplicationWindowListener presenterListener : listeners) {
+        for(AddressbookMainWindowListener presenterListener : mainWindowlisteners) {
             // TODO - Caused by: java.lang.NullPointerException: Name is null
-            MenuBarConstants menuAction = MenuBarConstants.valueOf(String.valueOf(event.getProperty()));
-            presenterListener.selectMenuEvent(menuAction);
+            MenuBarButtons menuAction = MenuBarButtons.valueOf(String.valueOf(event.getProperty()));
+            presenterListener.selectedMenuEvent(menuAction);
         }
     }
 
@@ -69,20 +78,20 @@ public class MainApplicationWindowImpl
 
         TabSheet menuTabSheet = new TabSheet();
 
-        Label addContact = new Label(MenuBarConstants.ADD_CONTACT.name());
-        Label searchContact = new Label(MenuBarConstants.SEARCH_CONTACT.name());
-        Label shareContact = new Label(MenuBarConstants.SHARE_CONTACT.name());
-        Label help = new Label(MenuBarConstants.HELP_BUTTON.name());
+        Label addContact = new Label(MenuBarButtons.ADD_CONTACT.name());
+        Label searchContact = new Label(MenuBarButtons.SEARCH_CONTACT.name());
+        Label shareContact = new Label(MenuBarButtons.SHARE_CONTACT.name());
+        Label help = new Label(MenuBarButtons.HELP_BUTTON.name());
 
         menuTabSheet.addTab(addContact);
         menuTabSheet.addTab(searchContact);
         menuTabSheet.addTab(shareContact);
         menuTabSheet.addTab(help);
 
-        menuTabSheet.getTab(addContact).setCaption(MenuBarConstants.ADD_CONTACT.name());
-        menuTabSheet.getTab(searchContact).setCaption(MenuBarConstants.SEARCH_CONTACT.name());
-        menuTabSheet.getTab(shareContact).setCaption(MenuBarConstants.SHARE_CONTACT.name());
-        menuTabSheet.getTab(help).setCaption(MenuBarConstants.HELP_BUTTON.name());
+        menuTabSheet.getTab(addContact).setCaption(MenuBarButtons.ADD_CONTACT.name());
+        menuTabSheet.getTab(searchContact).setCaption(MenuBarButtons.SEARCH_CONTACT.name());
+        menuTabSheet.getTab(shareContact).setCaption(MenuBarButtons.SHARE_CONTACT.name());
+        menuTabSheet.getTab(help).setCaption(MenuBarButtons.HELP_BUTTON.name());
 
         menuTabSheet.getTab(addContact).setDescription("Add new Contact");
         menuTabSheet.getTab(addContact).setDescription("Search for Contact");
@@ -91,8 +100,8 @@ public class MainApplicationWindowImpl
         menuTabSheet.setImmediate(Boolean.TRUE);
 
         Tree mainTreeOptions = new Tree("Other Options");
-        mainTreeOptions.addItem(MenuBarConstants.SHOW_ALL_TREE.name());
-        mainTreeOptions.addItem(MenuBarConstants.SEARCH_TREE.name());
+        mainTreeOptions.addItem(MenuBarButtons.SHOW_ALL_TREE.name());
+        mainTreeOptions.addItem(MenuBarButtons.SEARCH_TREE.name());
         mainTreeOptions.setImmediate(Boolean.TRUE);
 
         mainSplitPanel.setFirstComponent(mainTreeOptions);
