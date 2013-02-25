@@ -24,14 +24,14 @@ public class GenericDaoImpl<T extends TableEntity> implements GenericDao<T> {
 	
     private EntityManager entityManager = EntityManagerProvider.getInstance();
 
-    @Override public T saveEntity(T entity) {
+    @Override public TableEntity saveEntity(T entity) {
         if(entity.getId() != null) {
             entityManager.getTransaction().begin();
             entityManager.persist(entity);
             entityManager.getTransaction().commit();
         }
         
-        return (T) entityManager.find(entity.getClass(), entity.getId());
+        return entityManager.find(entity.getClass(), entity.getId());
     }
 
 

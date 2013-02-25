@@ -5,6 +5,7 @@ import java.util.List;
 import com.cc.addressbook.dao.api.GenericDao;
 import com.cc.addressbook.dao.core.GenericDaoImpl;
 import com.cc.addressbook.entities.PersonEntity;
+import com.cc.addressbook.entities.TableEntity;
 
 /**
  * @author cclaudiu
@@ -19,7 +20,7 @@ public class CustomerModel {
         return contactDao.findAll(PersonEntity.class);
     }
 
-    public PersonEntity saveCustomer(PersonEntity personEntity) {
+    public TableEntity saveCustomer(PersonEntity personEntity) {
         return contactDao.saveEntity(personEntity);
     }
 }

@@ -3,7 +3,9 @@ package com.cc.addressbook.windows;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cc.addressbook.constants.MenuBarButtons;
+import com.cc.addressbook.constants.HorizontalMenuBarConstants;
+import com.cc.addressbook.constants.VerticalMenuBarConstants;
+import com.cc.addressbook.presenters.AddressbookEventsParser;
 import com.vaadin.data.Property;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.Alignment;
@@ -64,12 +66,15 @@ public class AddressbookMainWindowImpl extends Window
     
     /**
      * TabSheet.SelectedTabChangeListener - For the TabSheet Like Menu
+     * TODO: implement the Runtime Strategy Pattern for the correct instance to be created
+     * which instance will return, after invoking the getView() the correct impl view back;
      */
     @Override
     public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
         for(AddressbookMainWindowListener presenterListener : mainWindowlisteners) {
-            MenuBarButtons menuAction = MenuBarButtons.valueOf(String.valueOf(((Label) event.getTabSheet().getSelectedTab()).getValue()));
-            presenterListener.selectedMenuEvent(menuAction);
+        	HorizontalMenuBarConstants pressedTab = AddressbookEventsParser.getEventBaseClass(event);
+        	
+        	presenterListener.selectedMenuEvent(pressedTab);
         }
     }
 
@@ -79,9 +84,10 @@ public class AddressbookMainWindowImpl extends Window
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
         for(AddressbookMainWindowListener presenterListener : mainWindowlisteners) {
-            // TODO - Caused by: java.lang.NullPointerException: Name is null
-            MenuBarButtons menuAction = MenuBarButtons.valueOf(String.valueOf(event.getProperty()));
-            presenterListener.selectedMenuEvent(menuAction);
+        	VerticalMenuBarConstants pressedTree = AddressbookEventsParser.getEventBaseClass(event);
+        	
+        	// delegate to presenter the UI Binding and Further Logic
+        	presenterListener.selectedMenuEvent(pressedTree);
         }
     }
 
@@ -109,22 +115,26 @@ public class AddressbookMainWindowImpl extends Window
         menuTabSheet.addTab(shareContact);
         menuTabSheet.addTab(help);
 
-        menuTabSheet.getTab(addContact).setCaption(MenuBarButtons.ADD_CONTACT.name());
-        menuTabSheet.getTab(searchContact).setCaption(MenuBarButtons.SEARCH_CONTACT.name());
-        menuTabSheet.getTab(shareContact).setCaption(MenuBarButtons.SHARE_CONTACT.name());
-        menuTabSheet.getTab(help).setCaption(MenuBarButtons.HELP_BUTTON.name());
-
+        menuTabSheet.getTab(addContact).setCaption(HorizontalMenuBarConstants.ADD_CONTACT.getButtonValue());
+        menuTabSheet.getTab(searchContact).setCaption(HorizontalMenuBarConstants.EDIT_CONTACT.getButtonValue());
+        menuTabSheet.getTab(shareContact).setCaption(HorizontalMenuBarConstants.SHARE_CONTACT.getButtonValue());
+        menuTabSheet.getTab(help).setCaption(HorizontalMenuBarConstants.HELP_BUTTON.getButtonValue());
+        
         menuTabSheet.setImmediate(Boolean.TRUE);
 
-        Tree mainTreeOptions = new Tree("Other Options");
-        mainTreeOptions.addItem(MenuBarButtons.SHOW_CONTACTS.getButtonValue());
-        mainTreeOptions.addItem(MenuBarButtons.EDIT_CONTACT.getButtonValue());
+        Tree mainTreeOptions = new Tree();
+        
+        mainTreeOptions.addItem(VerticalMenuBarConstants.SHOW_ALL_PROPERTY.getMenuBarPropertyVal());
+        mainTreeOptions.addItem(VerticalMenuBarConstants.SEARCH_CONTACT_PROPERTY.getMenuBarPropertyVal());
+        
+        mainTreeOptions.setCaption("Other Options");
         mainTreeOptions.setImmediate(Boolean.TRUE);
+        mainTreeOptions.setNullSelectionAllowed(Boolean.FALSE);
 
         mainWindowSplitPanel.setFirstComponent(mainTreeOptions);
         mainWindowSplitPanel.setSecondComponent(mainViewSplitPanel);
         mainWindowSplitPanel.getSecondComponent().setVisible(Boolean.FALSE);
-        mainWindowSplitPanel.setSplitPosition(20.0f, Sizeable.UNITS_PERCENTAGE, Boolean.FALSE);
+        mainWindowSplitPanel.setSplitPosition(17, Sizeable.UNITS_PERCENTAGE, Boolean.FALSE);
         mainWindowSplitPanel.setSizeFull();
         
 

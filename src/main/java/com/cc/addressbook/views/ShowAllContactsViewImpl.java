@@ -6,7 +6,6 @@ import java.util.List;
 import com.cc.addressbook.entities.PersonEntity;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalSplitPanel;
@@ -38,11 +37,6 @@ public class ShowAllContactsViewImpl
     @Override
     public BeanItemContainer<PersonEntity> getPersonContainer() {
         return customerContainer;
-    }
-
-    @Override
-    public void displayEditView(Component component) {
-        mainSplittedLayout.setSecondComponent(component);
     }
 
     @Override

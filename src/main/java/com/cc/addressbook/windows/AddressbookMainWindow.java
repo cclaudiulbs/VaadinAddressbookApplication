@@ -1,6 +1,6 @@
 package com.cc.addressbook.windows;
 
-import com.cc.addressbook.constants.MenuBarButtons;
+import com.cc.addressbook.constants.DefaultMenuBar;
 import com.vaadin.ui.Component;
 
 
@@ -13,7 +13,7 @@ public interface AddressbookMainWindow {
 
 	// ------ Enable Listeners  ------//
     public interface AddressbookMainWindowListener {
-        void selectedMenuEvent(MenuBarButtons constants);
+        void selectedMenuEvent(DefaultMenuBar pressedButton);
     }
 
     void addListener(AddressbookMainWindowListener listener);

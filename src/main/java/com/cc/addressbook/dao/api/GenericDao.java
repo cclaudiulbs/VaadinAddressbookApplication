@@ -11,7 +11,7 @@ import java.util.List;
 public interface GenericDao<T extends TableEntity> {
 
 
-    T saveEntity(T entity);
+    TableEntity saveEntity(T entity);
 
     T updateEntity(T entity);
 
