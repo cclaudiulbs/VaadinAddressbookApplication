@@ -9,11 +9,11 @@ import com.vaadin.ui.Component;
  *
  */
 
-public interface CustomerTableView extends Component {
+public interface ShowAllContactsView {
 
-    void addListener(CustomerTableViewListener listener);
+    void addListener(ShowAllContactsListener listener);
 
-    public interface CustomerTableViewListener {
+    public interface ShowAllContactsListener {
         void populateContainer(BeanItemContainer<PersonEntity> container);
     }
 

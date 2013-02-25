@@ -3,6 +3,7 @@ package com.cc.addressbook.windows;
 import com.cc.addressbook.constants.MenuBarButtons;
 import com.vaadin.ui.Component;
 
+
 /**
  * @author cclaudiu
  *

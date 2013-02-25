@@ -118,11 +118,12 @@ public class AddressbookMainWindowImpl extends Window
 
         Tree mainTreeOptions = new Tree("Other Options");
         mainTreeOptions.addItem(MenuBarButtons.SHOW_CONTACTS.getButtonValue());
-        mainTreeOptions.addItem(MenuBarButtons.SEARCH_CONTACT.getButtonValue());
+        mainTreeOptions.addItem(MenuBarButtons.EDIT_CONTACT.getButtonValue());
         mainTreeOptions.setImmediate(Boolean.TRUE);
 
         mainWindowSplitPanel.setFirstComponent(mainTreeOptions);
-        mainWindowSplitPanel.setSecondComponent(null);
+        mainWindowSplitPanel.setSecondComponent(mainViewSplitPanel);
+        mainWindowSplitPanel.getSecondComponent().setVisible(Boolean.FALSE);
         mainWindowSplitPanel.setSplitPosition(20.0f, Sizeable.UNITS_PERCENTAGE, Boolean.FALSE);
         mainWindowSplitPanel.setSizeFull();
         

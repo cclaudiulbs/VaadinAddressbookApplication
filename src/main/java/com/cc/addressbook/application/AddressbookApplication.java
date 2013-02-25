@@ -11,13 +11,13 @@ import com.vaadin.ui.Window;
 
 public class AddressbookApplication extends Application {
 
-	private static final String REINDEER_THEME = "reindeermods";
+//	private static final String REINDEER_THEME = "reindeermods";
 
 	public static final String ADDRESSBOOK_WINDOW_NAME = "Address-book Application";
 	private static final long serialVersionUID = 1L;
 	
     @Override public void init() {
-    	setTheme(REINDEER_THEME);
+//    	setTheme(REINDEER_THEME);
     	
         final Window mainWindow = new AddressbookMainWindowImpl(ADDRESSBOOK_WINDOW_NAME);
         

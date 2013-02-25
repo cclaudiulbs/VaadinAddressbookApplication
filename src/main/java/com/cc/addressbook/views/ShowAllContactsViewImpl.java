@@ -1,5 +1,8 @@
 package com.cc.addressbook.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.cc.addressbook.entities.PersonEntity;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
@@ -8,28 +11,27 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalSplitPanel;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author cclaudiu
  *
  * Pure Vaadin UI Implementation
  */
 
-public class CustomerTableViewImpl
-        extends CustomComponent implements CustomerTableView, ItemClickEvent.ItemClickListener {
+public class ShowAllContactsViewImpl
+        extends CustomComponent implements ShowAllContactsView, ItemClickEvent.ItemClickListener {
 
-    private final List<CustomerTableViewListener> listeners = new ArrayList<>();
+	private static final long serialVersionUID = 1L;
+	
+	private final List<ShowAllContactsListener> listeners = new ArrayList<>();
     private final BeanItemContainer<PersonEntity> customerContainer = new BeanItemContainer<>(PersonEntity.class);
     private final VerticalSplitPanel mainSplittedLayout = new VerticalSplitPanel();
 
-    public CustomerTableViewImpl() {
+    public ShowAllContactsViewImpl() {
         buildCustomerTableLayout();
     }
 
     @Override
-    public void addListener(CustomerTableViewListener listener) {
+    public void addListener(ShowAllContactsListener listener) {
         listeners.add(listener);
     }
 
@@ -45,7 +47,7 @@ public class CustomerTableViewImpl
 
     @Override
     public void itemClick(ItemClickEvent event) {
-        for(CustomerTableViewListener eachListener : listeners) {
+        for(ShowAllContactsListener eachListener : listeners) {
             eachListener.populateContainer(this.customerContainer);
         }
     }
