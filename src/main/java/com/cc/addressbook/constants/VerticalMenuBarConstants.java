@@ -5,7 +5,7 @@ package com.cc.addressbook.constants;
  *
  */
 
-public enum VerticalMenuBarConstants implements DefaultMenuBar {
+public enum VerticalMenuBarConstants implements DefaultMenuBar, AddressbookVerticalMenu {
 
 	SHOW_ALL_PROPERTY("Show All Contacts"),
 	SEARCH_CONTACT_PROPERTY("Search Contact"),
@@ -21,7 +21,7 @@ public enum VerticalMenuBarConstants implements DefaultMenuBar {
 		return propertyValue;
 	}
 	
-	public VerticalMenuBarConstants getVerticalMenuBarInstance(String uiValue) {
+	public static VerticalMenuBarConstants getVerticalMenuBarInstance(String uiValue) {
 		VerticalMenuBarConstants wantedMenuInstance = DEFAULT;
 		
 		for(VerticalMenuBarConstants eachProperty : values()) {

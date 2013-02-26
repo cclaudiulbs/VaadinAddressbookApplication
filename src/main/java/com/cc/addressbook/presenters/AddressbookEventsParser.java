@@ -16,13 +16,13 @@ public final class AddressbookEventsParser {
 	public static VerticalMenuBarConstants getEventBaseClass(Property.ValueChangeEvent valueChangeEvent) {
 		String selectedItem = String.valueOf(valueChangeEvent.getProperty().getValue());
 		
-		return VerticalMenuBarConstants.DEFAULT.getVerticalMenuBarInstance(selectedItem);
+		return VerticalMenuBarConstants.getVerticalMenuBarInstance(selectedItem);
 	}
 	public static HorizontalMenuBarConstants getEventBaseClass(TabSheet.SelectedTabChangeEvent selectedTab) {
 		
 		int tabIdx = selectedTab.getTabSheet().getTabIndex();
 		
-		return HorizontalMenuBarConstants.DEFAULT.getMenuTabSheetInstance(tabIdx);
+		return HorizontalMenuBarConstants.getMenuTabSheetInstance(tabIdx);
 	}
 	
 }

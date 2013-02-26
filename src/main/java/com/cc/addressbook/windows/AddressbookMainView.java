@@ -2,6 +2,7 @@ package com.cc.addressbook.windows;
 
 import com.cc.addressbook.constants.DefaultMenuBar;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
 
 
 /**
@@ -9,17 +10,19 @@ import com.vaadin.ui.Component;
  *
  */
 
-public interface AddressbookMainWindow {
+public interface AddressbookMainView {
 
 	// ------ Enable Listeners  ------//
-    public interface AddressbookMainWindowListener {
+    public interface AddressbookMainViewListener {
         void selectedMenuEvent(DefaultMenuBar pressedButton);
     }
 
-    void addListener(AddressbookMainWindowListener listener);
+    void addListener(AddressbookMainViewListener listener);
     
 	// --------- Enable Views ----------//
-    void setMainWindowComponent(Component component);
+    void setRootViewMainComponent(Component component);
     void setMainViewFirstComponent(Component component);
     void setMainViewSecondComponent(Component component);
+    CustomComponent getMainView();
+    Component getRootViewMainComponent();
 }

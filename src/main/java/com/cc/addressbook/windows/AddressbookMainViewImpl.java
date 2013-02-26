@@ -10,6 +10,7 @@ import com.vaadin.data.Property;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
@@ -18,62 +19,71 @@ import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
-import com.vaadin.ui.Window;
 
 /**
  * @author cclaudiu
  *
  */
 
-public class AddressbookMainWindowImpl extends Window
-        implements AddressbookMainWindow,
-                   TabSheet.SelectedTabChangeListener,
-                   Property.ValueChangeListener {
+public class AddressbookMainViewImpl extends CustomComponent 
+																		implements AddressbookMainView,
+                   																				TabSheet.SelectedTabChangeListener,
+                   																				Property.ValueChangeListener 
+{
 
 	private static final long serialVersionUID = 1L;
 	
-	private final List<AddressbookMainWindowListener> mainWindowlisteners = new ArrayList<>();
-    private final HorizontalSplitPanel mainWindowSplitPanel = new HorizontalSplitPanel();
-    private final VerticalSplitPanel mainViewSplitPanel = new VerticalSplitPanel();
+	private final VerticalLayout mainLayout = new VerticalLayout();
+	private final List<AddressbookMainViewListener> mainViewlisteners = new ArrayList<>();
+    private final HorizontalSplitPanel mainViewSplitPanel = new HorizontalSplitPanel();
+    private final VerticalSplitPanel insideMainViewSplitPanel = new VerticalSplitPanel();
 
-    public AddressbookMainWindowImpl(String windowName) {
-    	super(windowName);
-        buildMainWindowLayout();
+    public AddressbookMainViewImpl() {
+    	buildMainWindowLayout();
     }
 
     /***
      * Presenter register itself to this event
      */
     @Override
-    public void addListener(AddressbookMainWindowListener listener) {
-        mainWindowlisteners.add(listener);
+    public void addListener(AddressbookMainViewListener listener) {
+        mainViewlisteners.add(listener);
     }
 
     @Override
-    public void setMainWindowComponent(Component component) {
-        mainWindowSplitPanel.setSecondComponent(component);
+    public void setRootViewMainComponent(Component component) {
+        mainViewSplitPanel.setSecondComponent(component);
     }
+    
+	@Override
+	public Component getRootViewMainComponent() {
+			return mainViewSplitPanel.getSecondComponent();
+	}
     
     @Override 
     public void setMainViewFirstComponent(Component component) {
-    	mainViewSplitPanel.setFirstComponent(component);
+    	insideMainViewSplitPanel.setFirstComponent(component);
     }
     
     @Override
     public void setMainViewSecondComponent(Component component) {
-    	mainViewSplitPanel.setSecondComponent(component);
+    	insideMainViewSplitPanel.setSecondComponent(component);
+    }
+    
+    @Override
+    public CustomComponent getMainView() {
+    	return this;
     }
     
     /**
      * TabSheet.SelectedTabChangeListener - For the TabSheet Like Menu
-     * TODO: implement the Runtime Strategy Pattern for the correct instance to be created
-     * which instance will return, after invoking the getView() the correct impl view back;
      */
     @Override
     public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
-        for(AddressbookMainWindowListener presenterListener : mainWindowlisteners) {
+        for(AddressbookMainViewListener presenterListener : mainViewlisteners) {
         	HorizontalMenuBarConstants pressedTab = AddressbookEventsParser.getEventBaseClass(event);
         	
+        	// delegate to presenter to handle UI Binding and further logic
         	presenterListener.selectedMenuEvent(pressedTab);
         }
     }
@@ -83,7 +93,7 @@ public class AddressbookMainWindowImpl extends Window
      */
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-        for(AddressbookMainWindowListener presenterListener : mainWindowlisteners) {
+        for(AddressbookMainViewListener presenterListener : mainViewlisteners) {
         	VerticalMenuBarConstants pressedTree = AddressbookEventsParser.getEventBaseClass(event);
         	
         	// delegate to presenter the UI Binding and Further Logic
@@ -91,8 +101,8 @@ public class AddressbookMainWindowImpl extends Window
         }
     }
 
-    private void buildMainWindowLayout() {
-        VerticalLayout mainLayout = new VerticalLayout();
+    private  void buildMainWindowLayout() {
+    	setSizeFull();
         mainLayout.setSizeFull();
 
         // -------------- Define Header Layout of Main WIndow ---------------//
@@ -131,11 +141,11 @@ public class AddressbookMainWindowImpl extends Window
         mainTreeOptions.setImmediate(Boolean.TRUE);
         mainTreeOptions.setNullSelectionAllowed(Boolean.FALSE);
 
-        mainWindowSplitPanel.setFirstComponent(mainTreeOptions);
-        mainWindowSplitPanel.setSecondComponent(mainViewSplitPanel);
-        mainWindowSplitPanel.getSecondComponent().setVisible(Boolean.FALSE);
-        mainWindowSplitPanel.setSplitPosition(17, Sizeable.UNITS_PERCENTAGE, Boolean.FALSE);
-        mainWindowSplitPanel.setSizeFull();
+        mainViewSplitPanel.setFirstComponent(mainTreeOptions);
+        mainViewSplitPanel.setSecondComponent(insideMainViewSplitPanel);
+        mainViewSplitPanel.getSecondComponent().setVisible(Boolean.FALSE);
+        mainViewSplitPanel.setSplitPosition(17, Sizeable.UNITS_PERCENTAGE, Boolean.FALSE);
+        mainViewSplitPanel.setSizeFull();
         
 
         // -------------- Define Footer of the Main Window --------------//
@@ -160,15 +170,16 @@ public class AddressbookMainWindowImpl extends Window
         // -------------- Adding all Components to Main Layout of the Main Window ---------//
         mainLayout.addComponent(headerLayout);
         mainLayout.addComponent(menuTabSheet);
-        mainLayout.addComponent(mainWindowSplitPanel);
+        mainLayout.addComponent(mainViewSplitPanel);
         mainLayout.addComponent(footerLayout);
-        mainLayout.setExpandRatio(mainWindowSplitPanel, 1.0f);
+        mainLayout.setExpandRatio(mainViewSplitPanel, 1.0f);
 
         // ------- Registering Listeners of the Main Window - Menu Buttons -------//
         menuTabSheet.addListener((TabSheet.SelectedTabChangeListener) this);
         mainTreeOptions.addListener((Property.ValueChangeListener) this);
-
-        // replace the current content of the main Window
-        setContent(mainLayout);
+        
+        setCompositionRoot(mainLayout);
     }
+
+
 }

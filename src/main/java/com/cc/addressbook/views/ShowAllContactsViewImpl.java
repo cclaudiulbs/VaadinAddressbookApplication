@@ -84,6 +84,5 @@ public class ShowAllContactsViewImpl
         mainSplittedLayout.setFirstComponent(customerTable);
 
         setCompositionRoot(mainSplittedLayout);
-
     }
 }

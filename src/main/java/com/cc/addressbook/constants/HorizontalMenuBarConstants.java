@@ -8,7 +8,7 @@ import java.util.List;
  *
  */
 
-public enum HorizontalMenuBarConstants implements DefaultMenuBar {
+public enum HorizontalMenuBarConstants implements AddressboookHorizontalMenu, DefaultMenuBar {
 
     ADD_CONTACT("Add New Contact", 1),
     EDIT_CONTACT("Edit Contact", 2),
@@ -28,12 +28,12 @@ public enum HorizontalMenuBarConstants implements DefaultMenuBar {
     	return tabSheetName;
     }
     
-    public HorizontalMenuBarConstants getMenuTabSheetInstance(Integer idx) {
+    public static HorizontalMenuBarConstants getMenuTabSheetInstance(Integer idx) {
     	List<HorizontalMenuBarConstants> enumInstances = Arrays.asList(values());
     	HorizontalMenuBarConstants wantedInstance = DEFAULT;
     	
     	for(HorizontalMenuBarConstants eachInstance : enumInstances) {
-    		if(idx == eachInstance.tabIdx) {
+    		if(idx.equals(eachInstance.tabIdx)) {
     			wantedInstance = eachInstance;
     		}
     	}

@@ -76,11 +76,13 @@
 			<version>${pagedtable.version}</version>
 		</dependency>
 
+		<!-- 
 		<dependency>
 			<groupId>org.vaadin.addons</groupId>
 			<artifactId>reindeermods</artifactId>
 			<version>${reindeermods.theme.version}</version>
 		</dependency>
+		-->
 
 	</dependencies>
 
