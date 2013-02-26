@@ -1,8 +1,8 @@
-package com.cc.addressbook.windows;
+package com.cc.addressbook.views;
 
 import com.cc.addressbook.constants.DefaultMenuBar;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.ComponentContainer;
 
 
 /**
@@ -10,7 +10,7 @@ import com.vaadin.ui.CustomComponent;
  *
  */
 
-public interface AddressbookMainView {
+public interface AddressbookMainView extends ComponentContainer {
 
 	// ------ Enable Listeners  ------//
     public interface AddressbookMainViewListener {
@@ -20,9 +20,8 @@ public interface AddressbookMainView {
     void addListener(AddressbookMainViewListener listener);
     
 	// --------- Enable Views ----------//
-    void setRootViewMainComponent(Component component);
+    void setMainViewMainComponent(Component component);
     void setMainViewFirstComponent(Component component);
     void setMainViewSecondComponent(Component component);
-    CustomComponent getMainView();
-    Component getRootViewMainComponent();
+    Component getMainViewMainComponent();
 }

@@ -13,12 +13,12 @@ import com.vaadin.ui.TabSheet;
 
 public final class AddressbookEventsParser {
 	
-	public static VerticalMenuBarConstants getEventBaseClass(Property.ValueChangeEvent valueChangeEvent) {
+	public static VerticalMenuBarConstants getEventType(Property.ValueChangeEvent valueChangeEvent) {
 		String selectedItem = String.valueOf(valueChangeEvent.getProperty().getValue());
 		
 		return VerticalMenuBarConstants.getVerticalMenuBarInstance(selectedItem);
 	}
-	public static HorizontalMenuBarConstants getEventBaseClass(TabSheet.SelectedTabChangeEvent selectedTab) {
+	public static HorizontalMenuBarConstants getEventType(TabSheet.SelectedTabChangeEvent selectedTab) {
 		
 		int tabIdx = selectedTab.getTabSheet().getTabIndex();
 		

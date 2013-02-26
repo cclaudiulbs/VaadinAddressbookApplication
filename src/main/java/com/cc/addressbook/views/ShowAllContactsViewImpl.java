@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.cc.addressbook.entities.PersonEntity;
+import com.jensjansson.pagedtable.PagedTable;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.VerticalSplitPanel;
+import com.vaadin.ui.VerticalLayout;
 
 /**
  * @author cclaudiu
@@ -17,16 +17,16 @@ import com.vaadin.ui.VerticalSplitPanel;
  */
 
 public class ShowAllContactsViewImpl
-        extends CustomComponent implements ShowAllContactsView, ItemClickEvent.ItemClickListener {
+        extends CustomComponent 
+        implements ShowAllContactsView, ItemClickEvent.ItemClickListener {
 
 	private static final long serialVersionUID = 1L;
 	
 	private final List<ShowAllContactsListener> listeners = new ArrayList<>();
-    private final BeanItemContainer<PersonEntity> customerContainer = new BeanItemContainer<>(PersonEntity.class);
-    private final VerticalSplitPanel mainSplittedLayout = new VerticalSplitPanel();
+    private final BeanItemContainer<PersonEntity> contactsContainer = new BeanItemContainer<>(PersonEntity.class);
 
     public ShowAllContactsViewImpl() {
-        buildCustomerTableLayout();
+        buildShowContactsLayout();
     }
 
     @Override
@@ -35,27 +35,29 @@ public class ShowAllContactsViewImpl
     }
 
     @Override
-    public BeanItemContainer<PersonEntity> getPersonContainer() {
-        return customerContainer;
+    public BeanItemContainer<PersonEntity> getContactsContainer() {
+        return contactsContainer;
     }
 
     @Override
     public void itemClick(ItemClickEvent event) {
         for(ShowAllContactsListener eachListener : listeners) {
-            eachListener.populateContainer(this.customerContainer);
+            eachListener.populateContainer(contactsContainer);
         }
     }
 
-    private void buildCustomerTableLayout() {
-        setSizeFull();
-        mainSplittedLayout.setSizeFull();
-
-        Table customerTable = new Table();
-        customerTable.setSizeFull();
-        customerTable.setSelectable(Boolean.TRUE);
-        customerTable.setNullSelectionAllowed(Boolean.FALSE);
-        customerTable.setMultiSelect(Boolean.FALSE);
-        customerTable.setImmediate(Boolean.TRUE);
+    private void buildShowContactsLayout() {
+        final VerticalLayout mainLayout = new VerticalLayout();
+        mainLayout.setSizeFull();
+        
+        PagedTable contactsTable = new PagedTable();
+        contactsTable.setSizeFull();
+        contactsTable.setSelectable(Boolean.TRUE);
+        contactsTable.setNullSelectionAllowed(Boolean.FALSE);
+        contactsTable.setMultiSelect(Boolean.FALSE);
+        contactsTable.setImmediate(Boolean.TRUE);
+        contactsTable.setWriteThrough(Boolean.FALSE);
+        contactsTable.setPageLength(30);
 
         List<Object> visibleColumnIds = new ArrayList<>();
         visibleColumnIds.add("firstName");
@@ -75,14 +77,15 @@ public class ShowAllContactsViewImpl
         visibleColumnLables.add("Age");
         visibleColumnLables.add("Address");
 
-        customerTable.setContainerDataSource(customerContainer);
-        customerTable.setVisibleColumns(visibleColumnIds.toArray());
-        customerTable.setColumnHeaders(visibleColumnLables.toArray(new String[]{}));
-        customerTable.setPageLength(10);
-        customerTable.setImmediate(Boolean.TRUE);
+        contactsTable.setContainerDataSource(contactsContainer);
+        contactsTable.setVisibleColumns(visibleColumnIds.toArray());
+        contactsTable.setColumnHeaders(visibleColumnLables.toArray(new String[]{}));
+        contactsTable.setPageLength(10);
+        contactsTable.setImmediate(Boolean.TRUE);
 
-        mainSplittedLayout.setFirstComponent(customerTable);
-
-        setCompositionRoot(mainSplittedLayout);
+        mainLayout.addComponent(contactsTable);
+        mainLayout.addComponent(contactsTable.createControls());
+        
+        setCompositionRoot(mainLayout);
     }
 }

@@ -2,13 +2,14 @@ package com.cc.addressbook.views;
 
 import com.cc.addressbook.entities.PersonEntity;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.ui.ComponentContainer;
 
 /**
  * @author cclaudiu
- *
+ * 
  */
 
-public interface ShowAllContactsView {
+public interface ShowAllContactsView extends ComponentContainer {
 
     void addListener(ShowAllContactsListener listener);
 
@@ -16,5 +17,5 @@ public interface ShowAllContactsView {
         void populateContainer(BeanItemContainer<PersonEntity> container);
     }
 
-    BeanItemContainer<PersonEntity> getPersonContainer();
+    BeanItemContainer<PersonEntity> getContactsContainer();
 }

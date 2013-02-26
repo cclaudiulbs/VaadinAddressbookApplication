@@ -1,4 +1,4 @@
-package com.cc.addressbook.windows;
+package com.cc.addressbook.views;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +25,11 @@ import com.vaadin.ui.VerticalSplitPanel;
  *
  */
 
-public class AddressbookMainViewImpl extends CustomComponent 
-																		implements AddressbookMainView,
-                   																				TabSheet.SelectedTabChangeListener,
-                   																				Property.ValueChangeListener 
+public class AddressbookMainViewImpl 
+					extends CustomComponent 
+					implements AddressbookMainView,
+                   			   TabSheet.SelectedTabChangeListener,
+                   			   Property.ValueChangeListener 
 {
 
 	private static final long serialVersionUID = 1L;
@@ -51,13 +52,13 @@ public class AddressbookMainViewImpl extends CustomComponent
     }
 
     @Override
-    public void setRootViewMainComponent(Component component) {
+    public void setMainViewMainComponent(Component component) {
         mainViewSplitPanel.setSecondComponent(component);
     }
     
 	@Override
-	public Component getRootViewMainComponent() {
-			return mainViewSplitPanel.getSecondComponent();
+	public Component getMainViewMainComponent() {
+		return mainViewSplitPanel.getSecondComponent();
 	}
     
     @Override 
@@ -70,18 +71,13 @@ public class AddressbookMainViewImpl extends CustomComponent
     	insideMainViewSplitPanel.setSecondComponent(component);
     }
     
-    @Override
-    public CustomComponent getMainView() {
-    	return this;
-    }
-    
     /**
      * TabSheet.SelectedTabChangeListener - For the TabSheet Like Menu
      */
     @Override
     public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
         for(AddressbookMainViewListener presenterListener : mainViewlisteners) {
-        	HorizontalMenuBarConstants pressedTab = AddressbookEventsParser.getEventBaseClass(event);
+        	HorizontalMenuBarConstants pressedTab = AddressbookEventsParser.getEventType(event);
         	
         	// delegate to presenter to handle UI Binding and further logic
         	presenterListener.selectedMenuEvent(pressedTab);
@@ -94,10 +90,10 @@ public class AddressbookMainViewImpl extends CustomComponent
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
         for(AddressbookMainViewListener presenterListener : mainViewlisteners) {
-        	VerticalMenuBarConstants pressedTree = AddressbookEventsParser.getEventBaseClass(event);
+        	VerticalMenuBarConstants pressedTreeOperation = AddressbookEventsParser.getEventType(event);
         	
         	// delegate to presenter the UI Binding and Further Logic
-        	presenterListener.selectedMenuEvent(pressedTree);
+        	presenterListener.selectedMenuEvent(pressedTreeOperation);
         }
     }
 
