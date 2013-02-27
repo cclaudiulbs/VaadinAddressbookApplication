@@ -10,31 +10,30 @@ import java.util.List;
 
 public enum HorizontalMenuBarConstants implements AddressboookHorizontalMenu, DefaultMenuBar {
 
-    ADD_CONTACT("Add New Contact", 1),
-    EDIT_CONTACT("Edit Contact", 2),
-    SHARE_CONTACT("Share Contact", 3),
-    HELP_BUTTON("Help Me", 4),
-    DEFAULT("", -1);
+    ADD_CONTACT("Add New Contact"),
+    EDIT_CONTACT("Edit Contact"),
+    SHARE_CONTACT("Share Contact"),
+    HELP_BUTTON("Help Me"),
+    DEFAULT("");
     
     private String tabSheetName;
-    private Integer tabIdx;
     
-    private HorizontalMenuBarConstants(String tabSheetName, Integer idxPosition) {
+    private HorizontalMenuBarConstants(String tabSheetName) {
     	this.tabSheetName = tabSheetName;
-    	this.tabIdx = idxPosition;
     }
     
     public String getButtonValue() {
     	return tabSheetName;
     }
     
-    public static HorizontalMenuBarConstants getMenuTabSheetInstance(Integer idx) {
+    public static HorizontalMenuBarConstants getMenuTabSheetInstance(String tabCaption) {
     	List<HorizontalMenuBarConstants> enumInstances = Arrays.asList(values());
     	HorizontalMenuBarConstants wantedInstance = DEFAULT;
     	
     	for(HorizontalMenuBarConstants eachInstance : enumInstances) {
-    		if(idx.equals(eachInstance.tabIdx)) {
+    		if(tabCaption.equals(eachInstance.tabSheetName)) {
     			wantedInstance = eachInstance;
+    			break;
     		}
     	}
     	return wantedInstance;

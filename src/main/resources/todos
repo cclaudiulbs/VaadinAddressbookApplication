@@ -1,0 +1,29 @@
+for navigating through views, use: NavigationController;
+an instance of this NavigationController should be a member of each ViewImpl; can be a static singleton instance shared across
+multiple viewImpls; passed in as Constructor Argument; when the event declared in View Interface is fired
+the Presenter should "talk" to the "model" get some data, populate the view, and navigation controller should
+dispatch (not the presenter) to the next view;
+
+Example:
+
+
+public class MainViewImpl implements MainView {
+	
+	private VerticalLayout subViewContainer;
+	private OutboxViewImpl outboxView;
+
+	public MainViewImpl(EventBus eventBus, 
+			NavigationController navigationController)
+	{
+		
+	}
+	
+@Event public void someEvent(Event e) {
+	outboxView.getPresenter.refreshList();
+	setSubview(outboxView);
+	navigationController.setCurrentView(outboxView);
+}
+
+ "Next we use the OutboxPresenter ( by calling outboxView.getPresenter() ) to refresh the data (the list of mails) and to refresh the OutboxView"
+ 
+ 

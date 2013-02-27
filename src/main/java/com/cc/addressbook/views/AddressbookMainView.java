@@ -13,11 +13,11 @@ import com.vaadin.ui.ComponentContainer;
 public interface AddressbookMainView extends ComponentContainer {
 
 	// ------ Enable Listeners  ------//
-    public interface AddressbookMainViewListener {
+    public interface NavigationControllerListener {
         void selectedMenuEvent(DefaultMenuBar pressedButton);
     }
 
-    void addListener(AddressbookMainViewListener listener);
+    void addListener(NavigationControllerListener listener);
     
 	// --------- Enable Views ----------//
     void setMainViewMainComponent(Component component);

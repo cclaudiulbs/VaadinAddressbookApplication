@@ -35,7 +35,7 @@ public class AddressbookMainViewImpl
 	private static final long serialVersionUID = 1L;
 	
 	private final VerticalLayout mainLayout = new VerticalLayout();
-	private final List<AddressbookMainViewListener> mainViewlisteners = new ArrayList<>();
+	private final List<NavigationControllerListener> navigationListeners = new ArrayList<>();
     private final HorizontalSplitPanel mainViewSplitPanel = new HorizontalSplitPanel();
     private final VerticalSplitPanel insideMainViewSplitPanel = new VerticalSplitPanel();
 
@@ -47,8 +47,8 @@ public class AddressbookMainViewImpl
      * Presenter register itself to this event
      */
     @Override
-    public void addListener(AddressbookMainViewListener listener) {
-        mainViewlisteners.add(listener);
+    public void addListener(NavigationControllerListener listener) {
+        navigationListeners.add(listener);
     }
 
     @Override
@@ -76,11 +76,11 @@ public class AddressbookMainViewImpl
      */
     @Override
     public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
-        for(AddressbookMainViewListener presenterListener : mainViewlisteners) {
+        for(NavigationControllerListener navigationController : navigationListeners) {
         	HorizontalMenuBarConstants pressedTab = AddressbookEventsParser.getEventType(event);
         	
         	// delegate to presenter to handle UI Binding and further logic
-        	presenterListener.selectedMenuEvent(pressedTab);
+        	navigationController.selectedMenuEvent(pressedTab);
         }
     }
 
@@ -89,11 +89,11 @@ public class AddressbookMainViewImpl
      */
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-        for(AddressbookMainViewListener presenterListener : mainViewlisteners) {
+        for(NavigationControllerListener navigationController : navigationListeners) {
         	VerticalMenuBarConstants pressedTreeOperation = AddressbookEventsParser.getEventType(event);
         	
         	// delegate to presenter the UI Binding and Further Logic
-        	presenterListener.selectedMenuEvent(pressedTreeOperation);
+        	navigationController.selectedMenuEvent(pressedTreeOperation);
         }
     }
 

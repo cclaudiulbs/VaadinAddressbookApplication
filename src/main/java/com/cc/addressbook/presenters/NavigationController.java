@@ -8,23 +8,23 @@ import com.cc.addressbook.constants.VerticalMenuBarConstants;
 import com.cc.addressbook.models.ContactsModel;
 import com.cc.addressbook.views.AddContactViewImpl;
 import com.cc.addressbook.views.AddressbookMainView;
-import com.cc.addressbook.views.AddressbookMainView.AddressbookMainViewListener;
+import com.cc.addressbook.views.AddressbookMainView.NavigationControllerListener;
 import com.cc.addressbook.views.HelpViewImpl;
 import com.cc.addressbook.views.SearchContactViewImpl;
 import com.cc.addressbook.views.ShareContactViewImpl;
 import com.cc.addressbook.views.ShowAllContactsView;
 
-public class AddressbookMainViewPresenter implements AddressbookMainViewListener {
+public class NavigationController implements NavigationControllerListener {
 
 	private AddressbookMainView mainAppView;
 	private ShowAllContactsView showContactsView;
 	private ContactsModel contactsModel;
 
-	public AddressbookMainViewPresenter(AddressbookMainView mainView, ShowAllContactsView showContactsView) {
+	public NavigationController(AddressbookMainView mainView, ShowAllContactsView showContactsView) {
 		this.mainAppView = mainView;
 		this.showContactsView = showContactsView;
 		
-		contactsModel = new ContactsModel();
+//		contactsModel = new ContactsModel();
 		
 		mainView.addListener(this);
 	}
@@ -32,7 +32,6 @@ public class AddressbookMainViewPresenter implements AddressbookMainViewListener
 	// TODO: do refactor this and split into a Strategy; delegate the pressedMenu to a "AddressbookMenuHandler"
 	// inside this Handler, try to drop the if/else logic with replacing it to a Polymorphic way of selecting at
 	// runtime the correct concrete implementer (nice to have, but we have some actions to delegate and views to set based on these UI interactions)
-	// Step 1: SHOW_ALL -> make it work! with PagedTable
 	@Override
 	public void selectedMenuEvent(DefaultMenuBar pressedMenu) {
 		
@@ -62,7 +61,7 @@ public class AddressbookMainViewPresenter implements AddressbookMainViewListener
 						// until the user accessed the application, the mainView is NOT seen as a split part, only when the user clicks SHOW
 						mainAppView.getMainViewMainComponent().setVisible(Boolean.TRUE);
 						
-						showContactsView.getContactsContainer().addAll(contactsModel.getCustomers());
+//						showContactsView.getContactsContainer().addAll(contactsModel.getCustomers());
 						
 				} else if(pressedMenu == VerticalMenuBarConstants.SEARCH_CONTACT_PROPERTY) {
 					mainAppView.setMainViewSecondComponent(new SearchContactViewImpl());
