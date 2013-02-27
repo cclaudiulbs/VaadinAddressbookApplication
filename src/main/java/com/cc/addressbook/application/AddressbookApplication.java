@@ -1,10 +1,7 @@
 package com.cc.addressbook.application;
 
-import com.cc.addressbook.presenters.NavigationController;
 import com.cc.addressbook.views.AddressbookMainView;
 import com.cc.addressbook.views.AddressbookMainViewImpl;
-import com.cc.addressbook.views.ShowAllContactsView;
-import com.cc.addressbook.views.ShowAllContactsViewImpl;
 import com.vaadin.Application;
 import com.vaadin.ui.Window;
 
@@ -22,12 +19,7 @@ public class AddressbookApplication extends Application {
 	public void init() {
 		
 		final Window mainWindow = new Window(ADDRESSBOOK_WINDOW_NAME);
-
 		final AddressbookMainView mainView = new AddressbookMainViewImpl();
-		final ShowAllContactsView showAllContactsView = new ShowAllContactsViewImpl();
-
-		// Tie together the Main Window - with the Customer Table View, and Customer Model
-		final NavigationController presenter = new NavigationController(mainView, showAllContactsView);
 
 		setMainWindow(mainWindow);
 		mainWindow.setContent(mainView);

@@ -44,3 +44,6 @@ public class MainViewImpl implements MainView {
  
  For some events, we can do register the views through a Map<> as in the ThreadLocal Pattern use-case; when something is fired, the
  map is checked, and for all the registered listeners the event is handled;
+ 
+ LEFT: showAllContacts() is a read-only view, which does NOT need a self-listener since its only displaying
+ data coming from the model;

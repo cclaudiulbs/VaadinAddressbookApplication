@@ -1,7 +1,8 @@
 package com.cc.addressbook.presenters;
 
-import com.cc.addressbook.constants.HorizontalMenuBarConstants;
-import com.cc.addressbook.constants.VerticalMenuBarConstants;
+import com.cc.addressbook.menu.actions.HorizontalMenuBarActions;
+import com.cc.addressbook.menu.actions.VerticalMenuBarActions;
+import com.cc.addressbook.menu.types.MenuActionType;
 import com.vaadin.data.Property;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.Tab;
@@ -9,23 +10,23 @@ import com.vaadin.ui.TabSheet.Tab;
 /**
  * @author cclaudiu
  * 
- * Based on Overloading the correct method is called, which returns an instance of the pressed UI Component
+ * Based on Overloading each method is called, which returns an instance of the pressed UI Component {@link MenuActionType}
  */
 
 public final class AddressbookEventsParser {
 	private AddressbookEventsParser() { }
 	
-	public static VerticalMenuBarConstants getEventType(Property.ValueChangeEvent valueChangeEvent) {
+	public static VerticalMenuBarActions getEventType(Property.ValueChangeEvent valueChangeEvent) {
 		String selectedItem = String.valueOf(valueChangeEvent.getProperty().getValue());
 		
-		return VerticalMenuBarConstants.getVerticalMenuBarInstance(selectedItem);
+		return VerticalMenuBarActions.getVerticalMenuBarInstance(selectedItem);
 	}
 	
-	public static HorizontalMenuBarConstants getEventType(TabSheet.SelectedTabChangeEvent selectedTabEvent) {
+	public static HorizontalMenuBarActions getEventType(TabSheet.SelectedTabChangeEvent selectedTabEvent) {
 		TabSheet selectedTabSheet = selectedTabEvent.getTabSheet();
 		Tab selectedTab = selectedTabSheet.getTab(selectedTabSheet.getSelectedTab());
 		String tabCaption = selectedTab.getCaption();
 		
-		return HorizontalMenuBarConstants.getMenuTabSheetInstance(tabCaption);
+		return HorizontalMenuBarActions.getMenuTabSheetInstance(tabCaption);
 	}
 }

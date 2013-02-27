@@ -1,10 +1,8 @@
 package com.cc.addressbook.views;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.cc.addressbook.constants.HorizontalMenuBarConstants;
-import com.cc.addressbook.constants.VerticalMenuBarConstants;
+import com.cc.addressbook.appcontroller.NavigationControllerImpl;
+import com.cc.addressbook.menu.actions.HorizontalMenuBarActions;
+import com.cc.addressbook.menu.actions.VerticalMenuBarActions;
 import com.cc.addressbook.presenters.AddressbookEventsParser;
 import com.vaadin.data.Property;
 import com.vaadin.terminal.Sizeable;
@@ -23,32 +21,27 @@ import com.vaadin.ui.VerticalSplitPanel;
 /**
  * @author cclaudiu
  *
+ * IMPORTANT:
+ * Events are per view; if the view is read-only there's NO View Presenter to Impl
+ * If the View is dispatched, and the View Consists of a Logic, each click within the View
+ * will BE handled by a Presenter!!!
  */
 
 public class AddressbookMainViewImpl 
 					extends CustomComponent 
 					implements AddressbookMainView,
                    			   TabSheet.SelectedTabChangeListener,
-                   			   Property.ValueChangeListener 
-{
+                   			   Property.ValueChangeListener {
 
 	private static final long serialVersionUID = 1L;
 	
 	private final VerticalLayout mainLayout = new VerticalLayout();
-	private final List<NavigationControllerListener> navigationListeners = new ArrayList<>();
     private final HorizontalSplitPanel mainViewSplitPanel = new HorizontalSplitPanel();
     private final VerticalSplitPanel insideMainViewSplitPanel = new VerticalSplitPanel();
+    private final NavigationController mainAppController = NavigationControllerImpl.getInstance();
 
     public AddressbookMainViewImpl() {
     	buildMainWindowLayout();
-    }
-
-    /***
-     * Presenter register itself to this event
-     */
-    @Override
-    public void addListener(NavigationControllerListener listener) {
-        navigationListeners.add(listener);
     }
 
     @Override
@@ -76,12 +69,7 @@ public class AddressbookMainViewImpl
      */
     @Override
     public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
-        for(NavigationControllerListener navigationController : navigationListeners) {
-        	HorizontalMenuBarConstants pressedTab = AddressbookEventsParser.getEventType(event);
-        	
-        	// delegate to presenter to handle UI Binding and further logic
-        	navigationController.selectedMenuEvent(pressedTab);
-        }
+    	mainAppController.dispatch(AddressbookEventsParser.getEventType(event));
     }
 
     /**
@@ -89,14 +77,11 @@ public class AddressbookMainViewImpl
      */
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-        for(NavigationControllerListener navigationController : navigationListeners) {
-        	VerticalMenuBarConstants pressedTreeOperation = AddressbookEventsParser.getEventType(event);
-        	
-        	// delegate to presenter the UI Binding and Further Logic
-        	navigationController.selectedMenuEvent(pressedTreeOperation);
-        }
+    	mainAppController.dispatch(AddressbookEventsParser.getEventType(event), someObjectToPersistState);
     }
+    
 
+    // ----------------- Build the Main Layout of Main App View ---------------------//
     private  void buildMainWindowLayout() {
     	setSizeFull();
         mainLayout.setSizeFull();
@@ -121,17 +106,17 @@ public class AddressbookMainViewImpl
         menuTabSheet.addTab(shareContact);
         menuTabSheet.addTab(help);
 
-        menuTabSheet.getTab(addContact).setCaption(HorizontalMenuBarConstants.ADD_CONTACT.getButtonValue());
-        menuTabSheet.getTab(searchContact).setCaption(HorizontalMenuBarConstants.EDIT_CONTACT.getButtonValue());
-        menuTabSheet.getTab(shareContact).setCaption(HorizontalMenuBarConstants.SHARE_CONTACT.getButtonValue());
-        menuTabSheet.getTab(help).setCaption(HorizontalMenuBarConstants.HELP_BUTTON.getButtonValue());
+        menuTabSheet.getTab(addContact).setCaption(HorizontalMenuBarActions.ADD_CONTACT.getButtonValue());
+        menuTabSheet.getTab(searchContact).setCaption(HorizontalMenuBarActions.EDIT_CONTACT.getButtonValue());
+        menuTabSheet.getTab(shareContact).setCaption(HorizontalMenuBarActions.SHARE_CONTACT.getButtonValue());
+        menuTabSheet.getTab(help).setCaption(HorizontalMenuBarActions.HELP_BUTTON.getButtonValue());
         
         menuTabSheet.setImmediate(Boolean.TRUE);
 
         Tree mainTreeOptions = new Tree();
         
-        mainTreeOptions.addItem(VerticalMenuBarConstants.SHOW_ALL_PROPERTY.getMenuBarPropertyVal());
-        mainTreeOptions.addItem(VerticalMenuBarConstants.SEARCH_CONTACT_PROPERTY.getMenuBarPropertyVal());
+        mainTreeOptions.addItem(VerticalMenuBarActions.SHOW_ALL_PROPERTY.getMenuBarPropertyVal());
+        mainTreeOptions.addItem(VerticalMenuBarActions.SEARCH_CONTACT_PROPERTY.getMenuBarPropertyVal());
         
         mainTreeOptions.setCaption("Other Options");
         mainTreeOptions.setImmediate(Boolean.TRUE);

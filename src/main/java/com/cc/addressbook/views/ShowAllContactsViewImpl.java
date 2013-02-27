@@ -34,16 +34,13 @@ public class ShowAllContactsViewImpl
         listeners.add(listener);
     }
 
-    @Override
-    public BeanItemContainer<PersonEntity> getContactsContainer() {
-        return contactsContainer;
-    }
-
+    /**
+     * Each ItemClickEvent corresponding to Tree UI Component, delegate it to the ShowContactsPresenter
+     * which will populate the List with Contacts from Model, and add all to the container
+     */
     @Override
     public void itemClick(ItemClickEvent event) {
-        for(ShowAllContactsListener eachListener : listeners) {
-            eachListener.populateContainer(contactsContainer);
-        }
+    	
     }
 
     private void buildShowContactsLayout() {
@@ -77,6 +74,7 @@ public class ShowAllContactsViewImpl
         visibleColumnLables.add("Age");
         visibleColumnLables.add("Address");
 
+        
         contactsTable.setContainerDataSource(contactsContainer);
         contactsTable.setVisibleColumns(visibleColumnIds.toArray());
         contactsTable.setColumnHeaders(visibleColumnLables.toArray(new String[]{}));
