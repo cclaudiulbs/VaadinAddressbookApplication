@@ -26,4 +26,21 @@ public class MainViewImpl implements MainView {
 
  "Next we use the OutboxPresenter ( by calling outboxView.getPresenter() ) to refresh the data (the list of mails) and to refresh the OutboxView"
  
+ Other article from GWT MVP says:
+ http://www.slideshare.net/martyhall/gwt-tutorial-introduction-to-the-modelviewpresenter-mvp-architecture
  
+ In the ApplicationController or the NavigationController:
+ public void onValueChange(SomeChangeEvent event) {
+ 		if(token.equals("list")) {
+ 			presenter = new ContactsListPresenter(new ContactsView());
+ 		} else if( token.equals("add") ) {
+ 			presenter = new EdicContactPresenter(new EditContactsView());
+ 		}
+ }
+ 
+ We need the AppController(aka NavigationController) which is a Super-Presenter; Handles Logic not specific to any presenter;
+ handles Views Transitions/Navigation;
+ Most oftenly attaches itself from the Main View Layout;
+ 
+ For some events, we can do register the views through a Map<> as in the ThreadLocal Pattern use-case; when something is fired, the
+ map is checked, and for all the registered listeners the event is handled;
