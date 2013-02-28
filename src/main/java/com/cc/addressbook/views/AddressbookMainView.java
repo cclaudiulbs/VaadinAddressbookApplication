@@ -3,6 +3,7 @@ package com.cc.addressbook.views;
 import com.cc.addressbook.menu.types.MenuActionType;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.CustomComponent;
 
 
 /**
@@ -18,6 +19,7 @@ public interface AddressbookMainView extends ComponentContainer {
 	 */
     public interface NavigationController {
         void dispatch(MenuActionType pressedAction);
+		void registerView(CustomComponent view);
     }
 
 	// ------------------------- Enable Views -------------------------//

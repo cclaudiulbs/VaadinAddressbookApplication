@@ -1,6 +1,10 @@
 package com.cc.addressbook.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.cc.addressbook.appcontroller.NavigationControllerImpl;
+import com.cc.addressbook.entities.PersonEntity;
 import com.cc.addressbook.menu.actions.HorizontalMenuBarActions;
 import com.cc.addressbook.menu.actions.VerticalMenuBarActions;
 import com.cc.addressbook.presenters.AddressbookEventsParser;
@@ -38,7 +42,8 @@ public class AddressbookMainViewImpl
 	private final VerticalLayout mainLayout = new VerticalLayout();
     private final HorizontalSplitPanel mainViewSplitPanel = new HorizontalSplitPanel();
     private final VerticalSplitPanel insideMainViewSplitPanel = new VerticalSplitPanel();
-    private final NavigationController mainAppController = NavigationControllerImpl.getInstance();
+    private final NavigationController mainAppController = NavigationControllerImpl.createInstance();
+    private final List<PersonEntity> contacts = new ArrayList<>();
 
     public AddressbookMainViewImpl() {
     	buildMainWindowLayout();
@@ -77,7 +82,8 @@ public class AddressbookMainViewImpl
      */
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-    	mainAppController.dispatch(AddressbookEventsParser.getEventType(event), someObjectToPersistState);
+    	mainAppController.registerView(this);
+    	mainAppController.dispatch(AddressbookEventsParser.getEventType(event));
     }
     
 

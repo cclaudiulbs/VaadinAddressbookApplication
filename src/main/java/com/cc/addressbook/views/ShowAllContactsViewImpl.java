@@ -33,6 +33,11 @@ public class ShowAllContactsViewImpl
     public void addListener(ShowAllContactsListener listener) {
         listeners.add(listener);
     }
+    
+	@Override
+	public void addContacts(List<PersonEntity> customers) {
+		
+	}
 
     /**
      * Each ItemClickEvent corresponding to Tree UI Component, delegate it to the ShowContactsPresenter

@@ -1,5 +1,8 @@
 package com.cc.addressbook.appcontroller;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.cc.addressbook.menu.actions.HorizontalMenuBarActions;
 import com.cc.addressbook.menu.actions.VerticalMenuBarActions;
 import com.cc.addressbook.menu.types.AddressbookVerticalMenu;
@@ -11,7 +14,9 @@ import com.cc.addressbook.presenters.HelpPresenter;
 import com.cc.addressbook.presenters.SearchContactPresenter;
 import com.cc.addressbook.presenters.ShareContactPresenter;
 import com.cc.addressbook.presenters.ShowAllContactsPresenter;
+import com.cc.addressbook.views.AddressbookMainView;
 import com.cc.addressbook.views.AddressbookMainView.NavigationController;
+import com.vaadin.ui.CustomComponent;
 
 /**
  * @author cclaudiu
@@ -27,56 +32,56 @@ import com.cc.addressbook.views.AddressbookMainView.NavigationController;
  */
 
 public final class NavigationControllerImpl implements NavigationController {
-	
 	private static NavigationController INSTANCE;
+	private CustomComponent registeredViewReference;
 	
 	private NavigationControllerImpl() { }
 	
-	public static NavigationController getInstance() {
+	public static NavigationController createInstance() {
 		synchronized(NavigationControllerImpl.class) {
 			if(INSTANCE == null) {
 				INSTANCE = new NavigationControllerImpl();
 			}
-			return INSTANCE;
 		}
+		return INSTANCE;
 	}
 	
-	@Override public void dispatch(MenuActionType pressedMenu) {
+	private final Map<String, CustomComponent> registeredViews = new ConcurrentHashMap<>();
+	@Override public void registerView(CustomComponent view) {
+		registeredViewReference = view;
+		registeredViews.put(view.getCaption(), view);
+	}
+	
+	@Override public void dispatch(MenuActionType pressedMenuAction) {
 		
 		// the HorizontalMenu was pressed
-		if(pressedMenu instanceof AddressboookHorizontalMenu) {
+		if(pressedMenuAction instanceof AddressboookHorizontalMenu) {
 			
-				if(pressedMenu == HorizontalMenuBarActions.ADD_CONTACT) {
+				if(pressedMenuAction == HorizontalMenuBarActions.ADD_CONTACT) {
 					final AddContactPresenter presenter = new AddContactPresenter();
 					 presenter.addContactEvent();
 					
-				} else if(pressedMenu == HorizontalMenuBarActions.EDIT_CONTACT) {
+				} else if(pressedMenuAction == HorizontalMenuBarActions.EDIT_CONTACT) {
 					final EditContactPresenter presenter = new EditContactPresenter();
 					 presenter.editContactEvent();
 					
-				} else if(pressedMenu == HorizontalMenuBarActions.SHARE_CONTACT) {
+				} else if(pressedMenuAction == HorizontalMenuBarActions.SHARE_CONTACT) {
 					final ShareContactPresenter presenter = new ShareContactPresenter();
 					 presenter.shareContactEvent();
 					
-				} else if(pressedMenu == HorizontalMenuBarActions.HELP_BUTTON) {
+				} else if(pressedMenuAction == HorizontalMenuBarActions.HELP_BUTTON) {
 					 final HelpPresenter presenter = new HelpPresenter();
 					 presenter.helpPresenter();
 					
 				}
 				
 		// the Left Vertical Menu was pressed
-	    } else if(pressedMenu instanceof AddressbookVerticalMenu) {
-				if(pressedMenu == VerticalMenuBarActions.SHOW_ALL_PROPERTY) {
-					final ShowAllContactsPresenter presenter = new ShowAllContactsPresenter();
+	    } else if(pressedMenuAction instanceof AddressbookVerticalMenu) {
+				if(pressedMenuAction == VerticalMenuBarActions.SHOW_ALL_PROPERTY) {
+					final ShowAllContactsPresenter presenter = new ShowAllContactsPresenter( registeredViews.get(registeredViewReference.toString()) );
 					presenter.showContacts();
-//						mainAppView.setMainViewFirstComponent(showContactsView);
 						
-						// until the user accessed the application, the mainView is NOT seen as a split part, only when the user clicks SHOW
-//						mainAppView.getMainViewMainComponent().setVisible(Boolean.TRUE);
-						
-//						showContactsView.getContactsContainer().addAll(contactsModel.getCustomers());
-						
-				} else if(pressedMenu == VerticalMenuBarActions.SEARCH_CONTACT_PROPERTY) {
+				} else if(pressedMenuAction == VerticalMenuBarActions.SEARCH_CONTACT_PROPERTY) {
 					final SearchContactPresenter presenter = new SearchContactPresenter();
 					presenter.searchContact();
 				}
