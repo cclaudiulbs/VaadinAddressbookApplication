@@ -1,5 +1,6 @@
 package com.cc.addressbook.views;
 
-public interface AddContactView {
+
+public interface AddContactView extends DefaultView {
 
 }

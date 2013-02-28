@@ -1,6 +1,10 @@
 package com.cc.addressbook.views;
 
-public class EditContactsViewImpl implements EditContactsView {
+import com.vaadin.ui.CustomComponent;
+
+public class EditContactsViewImpl extends CustomComponent implements EditContactsView {
+
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void addListener() {

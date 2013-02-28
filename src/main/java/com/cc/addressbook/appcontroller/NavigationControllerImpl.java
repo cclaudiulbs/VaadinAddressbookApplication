@@ -3,6 +3,7 @@ package com.cc.addressbook.appcontroller;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.cc.addressbook.entities.PersonEntity;
 import com.cc.addressbook.menu.actions.HorizontalMenuBarActions;
 import com.cc.addressbook.menu.actions.VerticalMenuBarActions;
 import com.cc.addressbook.menu.types.AddressbookVerticalMenu;
@@ -15,8 +16,11 @@ import com.cc.addressbook.presenters.SearchContactPresenter;
 import com.cc.addressbook.presenters.ShareContactPresenter;
 import com.cc.addressbook.presenters.ShowAllContactsPresenter;
 import com.cc.addressbook.views.AddressbookMainView;
+import com.cc.addressbook.views.DefaultView;
 import com.cc.addressbook.views.AddressbookMainView.NavigationController;
-import com.vaadin.ui.CustomComponent;
+import com.cc.addressbook.views.SearchContactView;
+import com.cc.addressbook.views.ShowAllContactsView;
+import com.cc.addressbook.views.types.ViewType;
 
 /**
  * @author cclaudiu
@@ -32,8 +36,8 @@ import com.vaadin.ui.CustomComponent;
  */
 
 public final class NavigationControllerImpl implements NavigationController {
+	
 	private static NavigationController INSTANCE;
-	private CustomComponent registeredViewReference;
 	
 	private NavigationControllerImpl() { }
 	
@@ -46,13 +50,15 @@ public final class NavigationControllerImpl implements NavigationController {
 		return INSTANCE;
 	}
 	
-	private final Map<String, CustomComponent> registeredViews = new ConcurrentHashMap<>();
-	@Override public void registerView(CustomComponent view) {
-		registeredViewReference = view;
-		registeredViews.put(view.getCaption(), view);
+	private final Map<ViewType, DefaultView> registeredViews = new ConcurrentHashMap<>();
+	
+	@Override public void registerView(ViewType viewType, DefaultView view) {
+		registeredViews.put(viewType, view);
 	}
 	
 	@Override public void dispatch(MenuActionType pressedMenuAction) {
+		
+		/* For performance reasons we don't parse every single possible View but rather split the logic for menu Types */
 		
 		// the HorizontalMenu was pressed
 		if(pressedMenuAction instanceof AddressboookHorizontalMenu) {
@@ -77,14 +83,24 @@ public final class NavigationControllerImpl implements NavigationController {
 				
 		// the Left Vertical Menu was pressed
 	    } else if(pressedMenuAction instanceof AddressbookVerticalMenu) {
+	    	
 				if(pressedMenuAction == VerticalMenuBarActions.SHOW_ALL_PROPERTY) {
-					final ShowAllContactsPresenter presenter = new ShowAllContactsPresenter( registeredViews.get(registeredViewReference.toString()) );
+					
+					final ShowAllContactsView<PersonEntity> showAllContactsView = (ShowAllContactsView) registeredViews
+																											.get(ViewType.SHOW_CONTACT_VIEW);
+					
+					final AddressbookMainView mainAppView = (AddressbookMainView) registeredViews.get(ViewType.MAIN_VIEW);
+					
+					final ShowAllContactsPresenter presenter = new ShowAllContactsPresenter(mainAppView, showAllContactsView);
 					presenter.showContacts();
 						
 				} else if(pressedMenuAction == VerticalMenuBarActions.SEARCH_CONTACT_PROPERTY) {
-					final SearchContactPresenter presenter = new SearchContactPresenter();
+					final SearchContactPresenter presenter = new SearchContactPresenter((AddressbookMainView)registeredViews.get(ViewType.MAIN_VIEW),
+																						(SearchContactView)registeredViews.get(ViewType.SEARCH_CONTACT_VIEW),
+																						(ShowAllContactsView<PersonEntity>)registeredViews.get(ViewType.SHOW_CONTACT_VIEW));
 					presenter.searchContact();
 				}
-		}
-	}
+				
+		} // end of Menu Parse
+	} // end of dispatch()
 }

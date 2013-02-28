@@ -6,7 +6,7 @@ import com.vaadin.ui.Component;
  * @author cclaudiu
  *
  */
-public interface EditContactsView {
+public interface EditContactsView extends DefaultView {
 
 	void addListener();
 	

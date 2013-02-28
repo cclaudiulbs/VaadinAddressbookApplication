@@ -1,21 +1,15 @@
 package com.cc.addressbook.application;
 
 import com.cc.addressbook.appcontroller.NavigationControllerImpl;
-import com.cc.addressbook.views.AddContactView;
 import com.cc.addressbook.views.AddContactViewImpl;
 import com.cc.addressbook.views.AddressbookMainView;
 import com.cc.addressbook.views.AddressbookMainView.NavigationController;
 import com.cc.addressbook.views.AddressbookMainViewImpl;
-import com.cc.addressbook.views.EditContactsView;
 import com.cc.addressbook.views.EditContactsViewImpl;
-import com.cc.addressbook.views.HelpView;
-import com.cc.addressbook.views.HelpViewImpl;
-import com.cc.addressbook.views.SearchContactView;
 import com.cc.addressbook.views.SearchContactViewImpl;
-import com.cc.addressbook.views.ShareContactView;
 import com.cc.addressbook.views.ShareContactViewImpl;
-import com.cc.addressbook.views.ShowAllContactsView;
 import com.cc.addressbook.views.ShowAllContactsViewImpl;
+import com.cc.addressbook.views.types.ViewType;
 import com.vaadin.Application;
 import com.vaadin.ui.Window;
 
@@ -36,18 +30,19 @@ public class AddressbookApplication extends Application {
 		
 		final Window mainWindow = new Window(ADDRESSBOOK_WINDOW_NAME);
 		final AddressbookMainView mainView = new AddressbookMainViewImpl();
-		final ShowAllContactsView showContactsView = new ShowAllContactsViewImpl();
-		final AddContactView addContactView = new AddContactViewImpl();
-		final EditContactsView editContactView = new EditContactsViewImpl();
-		final SearchContactView searchContactView = new SearchContactViewImpl();
-		final ShareContactView shareContactView = new ShareContactViewImpl();
-		final HelpView helpView = new HelpViewImpl();
+		
+		registerAllViewsIntoApplication(mainView);
 		
 		setMainWindow(mainWindow);
 		mainWindow.setContent(mainView);
 	}
 	
-	private void registerAllViewsIntoApplication() {
-		navigationController.registerView(new ShowAllContactsViewImpl());
+	private void registerAllViewsIntoApplication(AddressbookMainView mainView) {
+		navigationController.registerView(ViewType.MAIN_VIEW, mainView);
+		navigationController.registerView(ViewType.SHOW_CONTACT_VIEW, new ShowAllContactsViewImpl<>());
+		navigationController.registerView(ViewType.ADD_CONTACT_VIEW, new AddContactViewImpl());
+		navigationController.registerView(ViewType.EDIT_CONTACT_VIEW, new EditContactsViewImpl());
+		navigationController.registerView(ViewType.SEARCH_CONTACT_VIEW, new SearchContactViewImpl());
+		navigationController.registerView(ViewType.SHARE_CONTACT_VIEW, new ShareContactViewImpl());
 	}
 }

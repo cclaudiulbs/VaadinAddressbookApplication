@@ -2,20 +2,21 @@ package com.cc.addressbook.views;
 
 import java.util.List;
 
-import com.cc.addressbook.entities.PersonEntity;
-import com.vaadin.ui.ComponentContainer;
+import com.cc.addressbook.entities.TableEntity;
 
 /**
  * @author cclaudiu
  * 
  */
 
-public interface ShowAllContactsView extends ComponentContainer {
+public interface ShowAllContactsView <T extends TableEntity> extends DefaultView {
 
     void addListener(ShowAllContactsListener listener);
-	void addContacts(List<PersonEntity> customers);
+	void addContacts(List<T> customers);
 
     public interface ShowAllContactsListener {
         void showContacts();
     }
+
+	List<T> getContactsList();
 }

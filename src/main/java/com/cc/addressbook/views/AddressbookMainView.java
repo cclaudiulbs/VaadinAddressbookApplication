@@ -1,9 +1,9 @@
 package com.cc.addressbook.views;
 
 import com.cc.addressbook.menu.types.MenuActionType;
+import com.cc.addressbook.views.types.ViewType;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
-import com.vaadin.ui.CustomComponent;
 
 
 /**
@@ -11,7 +11,7 @@ import com.vaadin.ui.CustomComponent;
  *
  */
 
-public interface AddressbookMainView extends ComponentContainer {
+public interface AddressbookMainView extends DefaultView, ComponentContainer {
 
 	/**
 	 * Main Application Controller can easily be interchanged with another Implementation
@@ -19,12 +19,13 @@ public interface AddressbookMainView extends ComponentContainer {
 	 */
     public interface NavigationController {
         void dispatch(MenuActionType pressedAction);
-		void registerView(CustomComponent view);
+        
+		void registerView(ViewType viewType, DefaultView view);
     }
 
 	// ------------------------- Enable Views -------------------------//
-    void setMainViewMainComponent(Component component);
-    void setMainViewFirstComponent(Component component);
-    void setMainViewSecondComponent(Component component);
+    void setMainViewMainComponent(DefaultView component);
+    void setMainViewFirstComponent(DefaultView component);
+    void setMainViewSecondComponent(DefaultView component);
     Component getMainViewMainComponent();
 }

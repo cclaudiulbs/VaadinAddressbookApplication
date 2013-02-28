@@ -3,7 +3,7 @@ package com.cc.addressbook.views;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cc.addressbook.entities.PersonEntity;
+import com.cc.addressbook.entities.TableEntity;
 import com.jensjansson.pagedtable.PagedTable;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
@@ -16,14 +16,15 @@ import com.vaadin.ui.VerticalLayout;
  * Pure Vaadin UI Implementation
  */
 
-public class ShowAllContactsViewImpl
+public class ShowAllContactsViewImpl<T extends TableEntity>
         extends CustomComponent 
-        implements ShowAllContactsView, ItemClickEvent.ItemClickListener {
+        implements ShowAllContactsView<T>, ItemClickEvent.ItemClickListener {
 
 	private static final long serialVersionUID = 1L;
 	
 	private final List<ShowAllContactsListener> listeners = new ArrayList<>();
-    private final BeanItemContainer<PersonEntity> contactsContainer = new BeanItemContainer<>(PersonEntity.class);
+    private final BeanItemContainer<T> contactsContainer = new BeanItemContainer<>(TableEntity.class);
+	private List<T> contacts = new ArrayList<>();
 
     public ShowAllContactsViewImpl() {
         buildShowContactsLayout();
@@ -35,8 +36,13 @@ public class ShowAllContactsViewImpl
     }
     
 	@Override
-	public void addContacts(List<PersonEntity> customers) {
-		
+	public void addContacts(List<T> contacts) {
+		this.contacts.addAll(contacts);
+		contactsContainer.addAll(contacts);
+	}
+	
+	@Override public List<T> getContactsList() {
+		return contacts;
 	}
 
     /**
@@ -53,33 +59,18 @@ public class ShowAllContactsViewImpl
         mainLayout.setSizeFull();
         
         PagedTable contactsTable = new PagedTable();
-        contactsTable.setSizeFull();
         contactsTable.setSelectable(Boolean.TRUE);
         contactsTable.setNullSelectionAllowed(Boolean.FALSE);
         contactsTable.setMultiSelect(Boolean.FALSE);
         contactsTable.setImmediate(Boolean.TRUE);
         contactsTable.setWriteThrough(Boolean.FALSE);
-        contactsTable.setPageLength(30);
+        contactsTable.setPageLength(10);
+        contactsTable.setSizeFull();
 
         List<Object> visibleColumnIds = new ArrayList<>();
-        visibleColumnIds.add("firstName");
-        visibleColumnIds.add("lastName");
-        visibleColumnIds.add("phoneMobileNumber");
-        visibleColumnIds.add("phoneHomeNumber");
-        visibleColumnIds.add("email");
-        visibleColumnIds.add("age");
-        visibleColumnIds.add("address");
-
         List<String> visibleColumnLables = new ArrayList<>();
-        visibleColumnLables.add("First Name");
-        visibleColumnLables.add("Last Name");
-        visibleColumnLables.add("Mobile Phone NO");
-        visibleColumnLables.add("Home Phone NO");
-        visibleColumnLables.add("Email");
-        visibleColumnLables.add("Age");
-        visibleColumnLables.add("Address");
+        formatTableHeader(visibleColumnIds, visibleColumnLables);
 
-        
         contactsTable.setContainerDataSource(contactsContainer);
         contactsTable.setVisibleColumns(visibleColumnIds.toArray());
         contactsTable.setColumnHeaders(visibleColumnLables.toArray(new String[]{}));
@@ -91,4 +82,22 @@ public class ShowAllContactsViewImpl
         
         setCompositionRoot(mainLayout);
     }
+
+	private void formatTableHeader(List<Object> visibleColumnIds, List<String> visibleColumnLables) {
+		visibleColumnIds.add("firstName");
+        visibleColumnIds.add("lastName");
+        visibleColumnIds.add("phoneMobileNumber");
+        visibleColumnIds.add("phoneHomeNumber");
+        visibleColumnIds.add("email");
+        visibleColumnIds.add("age");
+        visibleColumnIds.add("address");
+
+        visibleColumnLables.add("First Name");
+        visibleColumnLables.add("Last Name");
+        visibleColumnLables.add("Mobile Phone NO");
+        visibleColumnLables.add("Home Phone NO");
+        visibleColumnLables.add("Email");
+        visibleColumnLables.add("Age");
+        visibleColumnLables.add("Address");
+	}
 }

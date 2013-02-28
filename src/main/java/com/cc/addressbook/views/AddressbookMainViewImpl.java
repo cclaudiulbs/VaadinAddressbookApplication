@@ -1,10 +1,6 @@
 package com.cc.addressbook.views;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.cc.addressbook.appcontroller.NavigationControllerImpl;
-import com.cc.addressbook.entities.PersonEntity;
 import com.cc.addressbook.menu.actions.HorizontalMenuBarActions;
 import com.cc.addressbook.menu.actions.VerticalMenuBarActions;
 import com.cc.addressbook.presenters.AddressbookEventsParser;
@@ -43,14 +39,13 @@ public class AddressbookMainViewImpl
     private final HorizontalSplitPanel mainViewSplitPanel = new HorizontalSplitPanel();
     private final VerticalSplitPanel insideMainViewSplitPanel = new VerticalSplitPanel();
     private final NavigationController mainAppController = NavigationControllerImpl.createInstance();
-    private final List<PersonEntity> contacts = new ArrayList<>();
 
     public AddressbookMainViewImpl() {
     	buildMainWindowLayout();
     }
 
     @Override
-    public void setMainViewMainComponent(Component component) {
+    public void setMainViewMainComponent(DefaultView component) {
         mainViewSplitPanel.setSecondComponent(component);
     }
     
@@ -60,12 +55,12 @@ public class AddressbookMainViewImpl
 	}
     
     @Override 
-    public void setMainViewFirstComponent(Component component) {
+    public void setMainViewFirstComponent(DefaultView component) {
     	insideMainViewSplitPanel.setFirstComponent(component);
     }
     
     @Override
-    public void setMainViewSecondComponent(Component component) {
+    public void setMainViewSecondComponent(DefaultView component) {
     	insideMainViewSplitPanel.setSecondComponent(component);
     }
     
@@ -82,7 +77,6 @@ public class AddressbookMainViewImpl
      */
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-    	mainAppController.registerView(this);
     	mainAppController.dispatch(AddressbookEventsParser.getEventType(event));
     }
     
@@ -118,6 +112,7 @@ public class AddressbookMainViewImpl
         menuTabSheet.getTab(help).setCaption(HorizontalMenuBarActions.HELP_BUTTON.getButtonValue());
         
         menuTabSheet.setImmediate(Boolean.TRUE);
+        menuTabSheet.setSelectedTab(-1);
 
         Tree mainTreeOptions = new Tree();
         
@@ -131,7 +126,7 @@ public class AddressbookMainViewImpl
         mainViewSplitPanel.setFirstComponent(mainTreeOptions);
         mainViewSplitPanel.setSecondComponent(insideMainViewSplitPanel);
         mainViewSplitPanel.getSecondComponent().setVisible(Boolean.FALSE);
-        mainViewSplitPanel.setSplitPosition(17, Sizeable.UNITS_PERCENTAGE, Boolean.FALSE);
+        mainViewSplitPanel.setSplitPosition(240, Sizeable.UNITS_PIXELS, Boolean.FALSE);
         mainViewSplitPanel.setSizeFull();
         
 

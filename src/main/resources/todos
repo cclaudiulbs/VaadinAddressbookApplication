@@ -47,3 +47,17 @@ public class MainViewImpl implements MainView {
  
  LEFT: showAllContacts() is a read-only view, which does NOT need a self-listener since its only displaying
  data coming from the model;
+ 
+ Notes of implementation:
+ The application is using a new design: MVPC, that is model view presenter Controller;
+ The controller in this case, is a supervisor Presenter, which responsibility is to dispatch to the 
+ corresponding pressed menu button; 
+ The Logic is passed further to each Presenter declared foreach View;
+ Each View is declared and registered with a Signature in the main app init() method, for the NavigationController
+ which is the Super-Presenter(or the C - Controller) of the Addressbook Application;
+ When a new View is implemented, the view needs to be registered firstly, and then its logic appended in the
+ Navigation Flow of the Super-Presenter;
+ Using Vaadin, rather than controlling the flow through page-urls, we control the Navigation FLow through pressed
+ Buttons, retrieved via particular Events;
+ 
+ 
