@@ -12,7 +12,7 @@ import com.cc.addressbook.entities.TableEntity;
  *
  */
 
-public class ContactsModel {
+public class ContactsCrudServiceModel {
 
     private GenericDao<PersonEntity> contactDao = new GenericDaoImpl<>();
 

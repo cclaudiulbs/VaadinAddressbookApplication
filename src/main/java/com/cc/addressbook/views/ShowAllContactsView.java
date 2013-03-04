@@ -1,22 +1,22 @@
 package com.cc.addressbook.views;
 
-import java.util.List;
+import com.cc.addressbook.entities.PersonEntity;
 
-import com.cc.addressbook.entities.TableEntity;
+import java.util.List;
 
 /**
  * @author cclaudiu
  * 
  */
 
-public interface ShowAllContactsView <T extends TableEntity> extends DefaultView {
+public interface ShowAllContactsView extends DefaultView {
 
-    void addListener(ShowAllContactsListener listener);
-	void addContacts(List<T> customers);
+    void addPresenter(ShowAllContactsListener listener);
+	void addContacts(List<PersonEntity> customers);
 
     public interface ShowAllContactsListener {
         void showContacts();
     }
 
-	List<T> getContactsList();
+	List<PersonEntity> getContactsList();
 }

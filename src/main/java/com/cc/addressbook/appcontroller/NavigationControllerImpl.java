@@ -38,8 +38,8 @@ import com.cc.addressbook.views.types.ViewType;
 public final class NavigationControllerImpl implements NavigationController {
 	
 	private static NavigationController INSTANCE;
-	
-	private NavigationControllerImpl() { }
+
+    private NavigationControllerImpl() { }
 	
 	public static NavigationController createInstance() {
 		synchronized(NavigationControllerImpl.class) {
@@ -85,22 +85,20 @@ public final class NavigationControllerImpl implements NavigationController {
 	    } else if(pressedMenuAction instanceof AddressbookVerticalMenu) {
 	    	
 				if(pressedMenuAction == VerticalMenuBarActions.SHOW_ALL_PROPERTY) {
-					
-					final ShowAllContactsView<PersonEntity> showAllContactsView = (ShowAllContactsView) registeredViews
-																											.get(ViewType.SHOW_CONTACT_VIEW);
-					
+					final ShowAllContactsView showAllContactsView = (ShowAllContactsView) registeredViews.get(ViewType.SHOW_CONTACT_VIEW);
 					final AddressbookMainView mainAppView = (AddressbookMainView) registeredViews.get(ViewType.MAIN_VIEW);
 					
 					final ShowAllContactsPresenter presenter = new ShowAllContactsPresenter(mainAppView, showAllContactsView);
 					presenter.showContacts();
 						
 				} else if(pressedMenuAction == VerticalMenuBarActions.SEARCH_CONTACT_PROPERTY) {
-					final SearchContactPresenter presenter = new SearchContactPresenter((AddressbookMainView)registeredViews.get(ViewType.MAIN_VIEW),
-																						(SearchContactView)registeredViews.get(ViewType.SEARCH_CONTACT_VIEW),
-																						(ShowAllContactsView<PersonEntity>)registeredViews.get(ViewType.SHOW_CONTACT_VIEW));
+                    final AddressbookMainView mainView = (AddressbookMainView) registeredViews.get(ViewType.MAIN_VIEW);
+                    final SearchContactView searchView = (SearchContactView)registeredViews.get(ViewType.SEARCH_CONTACT_VIEW);
+                    final ShowAllContactsView showAllView = (ShowAllContactsView)registeredViews.get(ViewType.SHOW_CONTACT_VIEW);
+
+					final SearchContactPresenter presenter = new SearchContactPresenter(mainView, searchView, showAllView);
 					presenter.searchContact();
 				}
-				
 		} // end of Menu Parse
 	} // end of dispatch()
 }
