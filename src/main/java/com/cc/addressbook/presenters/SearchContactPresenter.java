@@ -39,6 +39,8 @@ public class SearchContactPresenter implements SearchContactListener {
 
 		List<PersonEntity> filteredContacts = service.filter(showAllContactsView.getContactsList(), getSearchCriteria());
 
+        // TODO: when the "searchButton" is clicked the SearchCOntactView should be displayed and when the searchButton is clicked
+        // this View should be updated with the seach and filtered results
         showAllContactsView.addContacts(filteredContacts);
 	}
 
