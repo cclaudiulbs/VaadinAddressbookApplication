@@ -5,7 +5,7 @@ import com.vaadin.ui.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchContactViewImpl extends CustomComponent implements SearchContactView {
+public class SearchContactViewImpl extends CustomComponent implements SearchContactView, Button.ClickListener {
 
 	private static final long serialVersionUID = 1L;
 	private List<SearchContactListener> presenters = new ArrayList<>();
@@ -53,5 +53,17 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
         mainLayout.addComponent(searchForm);
 
         return mainLayout;
+    }
+
+    /*
+     * TODO when the user clicks this SearchButton, the presenter listening to this event is notified from within View
+     * and the Logic: of "addContacts(filtered contacts, SearchCriteria is called)"
+     * The normal Application Controller only dispatches to the SearchContactView
+     * It is the SearchContactView, which is a plain Vaadin implementation to delegate to another Presenter for Search && Filter Contacts
+     */
+
+    @Override
+    public void buttonClick(Button.ClickEvent clickEvent) {
+
     }
 }

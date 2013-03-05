@@ -1,5 +1,6 @@
 package com.cc.addressbook.views;
 
+import com.cc.addressbook.appcontroller.NavigationController;
 import com.cc.addressbook.appcontroller.NavigationControllerImpl;
 import com.cc.addressbook.menu.actions.HorizontalMenuBarActions;
 import com.cc.addressbook.menu.actions.VerticalMenuBarActions;

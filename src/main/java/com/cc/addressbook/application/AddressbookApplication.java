@@ -1,15 +1,17 @@
 package com.cc.addressbook.application;
 
+import com.cc.addressbook.appcontroller.NavigationController;
 import com.cc.addressbook.appcontroller.NavigationControllerImpl;
 import com.cc.addressbook.views.*;
-import com.cc.addressbook.views.AddressbookMainView.NavigationController;
 import com.cc.addressbook.views.types.ViewType;
 import com.vaadin.Application;
 import com.vaadin.ui.Window;
 
 /**
  * @author cclaudiu
- * 
+ *
+ * Represents the Entry Point of a UserSession, the init() method is called once the user
+ * access first-time the application
  */
 
 public class AddressbookApplication extends Application {
