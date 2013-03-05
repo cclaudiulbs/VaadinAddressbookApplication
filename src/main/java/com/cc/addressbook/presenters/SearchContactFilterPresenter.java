@@ -2,12 +2,9 @@ package com.cc.addressbook.presenters;
 
 import com.cc.addressbook.entities.PersonEntity;
 import com.cc.addressbook.models.FilterContactsServiceModel;
-import com.cc.addressbook.util.SearchCriteria;
 import com.cc.addressbook.views.AddressbookMainView;
 import com.cc.addressbook.views.SearchContactView;
 import com.cc.addressbook.views.ShowAllContactsView;
-import com.vaadin.ui.AbstractOrderedLayout;
-import com.vaadin.ui.TextField;
 
 import java.util.List;
 
@@ -33,29 +30,10 @@ public class SearchContactFilterPresenter implements SearchContactView.SearchCon
     public void searchContact() {
         final FilterContactsServiceModel<PersonEntity> service = new FilterContactsServiceModel<>();
 
-        List<PersonEntity> filteredContacts = service.filter(showAllContactsView.getContactsList(), getSearchCriteria());
+        List<PersonEntity> filteredContacts = service.filter(showAllContactsView.getContactsList(), searchContactView.getSearchCriteria());
 
         // TODO: when the "searchButton" is clicked the SearchCOntactView should be displayed and when the searchButton is clicked
-        // this View should be updated with the seach and filtered results
+        // this View should be updated with the search and filtered results
         showAllContactsView.addContacts(filteredContacts);
-    }
-
-    // TODO: Presenter should NOT know what type of components the view has!
-    private SearchCriteria getSearchCriteria() {
-        AbstractOrderedLayout searchForm = searchContactView.getSearchForm();
-        String searchFirstName = getSearchedField(searchForm, 0);
-        String lastNameSearch = getSearchedField(searchForm, 1);
-        String phoneNumSearch = getSearchedField(searchForm, 2);
-
-        SearchCriteria criteria = new SearchCriteria.Builder()
-                .firstName(searchFirstName)
-                .lastName(lastNameSearch)
-                .phoneNumber(phoneNumSearch)
-                .build();
-        return criteria;
-    }
-
-    private String getSearchedField(AbstractOrderedLayout searchForm, int idx) {
-        return ((TextField) searchForm.getComponent(idx)).getValue().toString();
     }
 }
