@@ -60,4 +60,19 @@ public class MainViewImpl implements MainView {
  Using Vaadin, rather than controlling the flow through page-urls, we control the Navigation FLow through pressed
  Buttons, retrieved via particular Events;
  
+ TODO: 
+ 1. add-contact
+ 2. update-contact
+ 3. delete-contact
  
+ 4. share-contact(pop-up for sharing options)
+ 5. help(pop-up for help view)
+ 
+ 6. shiro-related:
+ login -> and display the user while surfing the application
+ while the user is logged, offer some functionalities over the logged-out users(such as when the user is logged out
+ he can only click on: find-all, or search - that is readonly mode)
+ when the user is logged to application, the menu for CRUD is activated, hence the user can do some basic crud ops;
+ if the user is not admin, it cannot DROP-ALL users;
+ 
+ 7. switch for pagedTable || filteringTable

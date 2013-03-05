@@ -1,12 +1,12 @@
 package com.cc.addressbook.presenters;
 
+import java.util.List;
+
 import com.cc.addressbook.entities.PersonEntity;
 import com.cc.addressbook.models.FilterContactsServiceModel;
 import com.cc.addressbook.views.AddressbookMainView;
 import com.cc.addressbook.views.SearchContactView;
 import com.cc.addressbook.views.ShowAllContactsView;
-
-import java.util.List;
 
 /**
  * @author cclaudiu
@@ -32,8 +32,6 @@ public class SearchContactFilterPresenter implements SearchContactView.SearchCon
 
         List<PersonEntity> filteredContacts = service.filter(showAllContactsView.getContactsList(), searchContactView.getSearchCriteria());
 
-        // TODO: when the "searchButton" is clicked the SearchCOntactView should be displayed and when the searchButton is clicked
-        // this View should be updated with the search and filtered results
         showAllContactsView.addContacts(filteredContacts);
     }
 }
