@@ -9,6 +9,7 @@ import com.vaadin.data.Property;
 import com.vaadin.terminal.ExternalResource;
 import com.vaadin.terminal.Resource;
 import com.vaadin.terminal.Sizeable;
+import com.vaadin.terminal.UserError;
 import com.vaadin.ui.*;
 
 import java.net.MalformedURLException;
@@ -124,17 +125,19 @@ public class AddressbookMainViewImpl
         mainTreeOptions.setCaption("Other Options");
         mainTreeOptions.setImmediate(Boolean.TRUE);
         mainTreeOptions.setNullSelectionAllowed(Boolean.FALSE);
+        mainTreeOptions.setComponentError(new UserError("Unable to access external Platform for querying the DB"));
 
         leftSideMainViewSplit.addComponent(mainTreeOptions);
         leftSideMainViewSplit.addComponent(addressbookLogo);
-        leftSideMainViewSplit.setComponentAlignment(addressbookLogo, Alignment.MIDDLE_CENTER);
+        leftSideMainViewSplit.setComponentAlignment(addressbookLogo, Alignment.TOP_CENTER);
 
         // ----------------- AddAll Main View Components to the MainViewSplitPanel ----------------//
         mainViewSplitPanel.setFirstComponent(leftSideMainViewSplit);
         mainViewSplitPanel.setSecondComponent(insideMainViewSplitPanel);
-        mainViewSplitPanel.getSecondComponent().setVisible(Boolean.FALSE);
-        mainViewSplitPanel.setSplitPosition(240, Sizeable.UNITS_PIXELS, Boolean.FALSE);
+        mainViewSplitPanel.getSecondComponent().setVisible(Boolean.TRUE);
+        mainViewSplitPanel.setSplitPosition(addressbookLogo.getWidth(), Sizeable.UNITS_PIXELS, Boolean.FALSE);
         mainViewSplitPanel.setSizeFull();
+        mainViewSplitPanel.setLocked(Boolean.TRUE);
 
 
         // -------------- Define Footer of the Main Window --------------//

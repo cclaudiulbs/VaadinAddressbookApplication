@@ -40,6 +40,7 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
     private ComponentContainer buildSearchContactLayout() {
         VerticalLayout mainLayout = new VerticalLayout();
         mainLayout.setSizeFull();
+        mainLayout.setSpacing(Boolean.TRUE);
 
         TextField firstNameSearch = new TextField("First Name");
         TextField lastNameSearch = new TextField("Last Name");
@@ -56,13 +57,18 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
         searchForm.setComponentAlignment(lastNameSearch, Alignment.MIDDLE_LEFT);
         searchForm.setComponentAlignment(phoneNumberSearch, Alignment.BOTTOM_LEFT);
 
-        searchButton.addListener(this);
-        cancelButton.addListener(this);
+        HorizontalLayout buttonsLayout = new HorizontalLayout();
+        buttonsLayout.setSpacing(Boolean.TRUE);
 
-        searchForm.addComponent(searchButton);
-        searchForm.addComponent(cancelButton);
+        buttonsLayout.addComponent(searchButton);
+        buttonsLayout.addComponent(cancelButton);
 
         mainLayout.addComponent(searchForm);
+        mainLayout.addComponent(buttonsLayout);
+        mainLayout.setComponentAlignment(buttonsLayout, Alignment.TOP_LEFT);
+
+        searchButton.addListener(this);
+        cancelButton.addListener(this);
 
         return mainLayout;
     }
