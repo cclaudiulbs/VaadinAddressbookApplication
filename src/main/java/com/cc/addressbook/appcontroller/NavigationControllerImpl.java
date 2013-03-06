@@ -98,7 +98,7 @@ public final class NavigationControllerImpl implements NavigationController {
                 // tie together the SearchContactFilterPresenter to the SearchContactView
                 SearchContactView.SearchContactListener searchPresenter = new SearchContactFilterPresenter(mainView, searchContactView, showAllContactsView);
 
-                searchPresenter.searchContact();
+                searchPresenter.displaySearchContactView();
             }
 
         } // end of Menu Parse

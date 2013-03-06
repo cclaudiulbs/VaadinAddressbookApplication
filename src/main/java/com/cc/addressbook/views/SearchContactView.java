@@ -17,5 +17,6 @@ public interface SearchContactView extends DefaultView {
     public interface SearchContactListener {
         void searchContact();
         void clearSearchForm();
+        void displaySearchContactView();
     }
 }

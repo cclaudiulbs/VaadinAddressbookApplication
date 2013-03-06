@@ -46,9 +46,9 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
 
     @Override
     public void clearSearchFormEvent() {
-        ((TextField) searchForm.getComponent(0)).setValue("");
-        ((TextField) searchForm.getComponent(1)).setValue("");
-        ((TextField) searchForm.getComponent(2)).setValue("");
+        ((TextField) searchForm.getComponent(0)).setValue(" ");
+        ((TextField) searchForm.getComponent(1)).setValue(" ");
+        ((TextField) searchForm.getComponent(2)).setValue(" ");
     }
 
     private ComponentContainer buildSearchContactLayout() {

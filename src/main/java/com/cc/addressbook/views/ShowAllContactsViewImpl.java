@@ -50,12 +50,12 @@ public class ShowAllContactsViewImpl
         if (contactsContainer.removeAllItems()) {
             contactsContainer.addAll(contacts);
         }
-        ContactNotificationUtil.prompt(contacts.size() + " have been found in database!", mainAppInstance);
+        ContactNotificationUtil.prompt(contacts.size() + " contacts have been found in database!", mainAppInstance);
     }
 
     @Override
     public List<PersonEntity> getContactsList() {
-        ContactNotificationUtil.prompt(contacts.size() + " have been retrieved from database!", mainAppInstance);
+        ContactNotificationUtil.prompt(contacts.size() + " contacts have been retrieved from database!", mainAppInstance);
         return contacts;
     }
 

@@ -10,15 +10,19 @@ import java.util.List;
 
 /**
  * @author cclaudiu
+ *
  */
 public class SearchContactFilterPresenter implements SearchContactView.SearchContactListener {
 
+    private AddressbookMainView mainAppView;
     private SearchContactView searchContactView;
     private final ShowAllContactsView showAllContactsView;
 
     public SearchContactFilterPresenter(AddressbookMainView mainAppView,
                                         SearchContactView searchContactView,
-                                        ShowAllContactsView showAllContactsView) {
+                                        ShowAllContactsView showAllContactsView)
+    {
+        this.mainAppView = mainAppView;
         this.searchContactView = searchContactView;
         this.showAllContactsView = showAllContactsView;
 
@@ -40,4 +44,10 @@ public class SearchContactFilterPresenter implements SearchContactView.SearchCon
     public void clearSearchForm() {
         searchContactView.clearSearchFormEvent();
     }
+
+    @Override
+    public void displaySearchContactView() {
+        mainAppView.setMainViewSecondComponent(searchContactView);
+    }
+
 }
