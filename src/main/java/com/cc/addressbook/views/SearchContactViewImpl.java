@@ -22,7 +22,6 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
     private Application mainAppInstance;
 
     private List<SearchContactListener> searchPresenters = new ArrayList<>();
-    private List<ClearContactSearchListener> clearPresenters = new ArrayList<>();
 
     private FormLayout searchForm = new FormLayout();
     private Button searchButton = new Button("Search Contact");
@@ -42,15 +41,7 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
 
     @Override
     public SearchCriteria getSearchCriteria() {
-        SearchCriteria searchCriteria = parseSearchForm();
-        final String searchCriteriaMessage = "Searching based on [" +
-                    searchCriteria.getFirstName() != null ? " firstName=" + searchCriteria.getFirstName() + "]"
-                 :  searchCriteria.getLastName() != null ? " lastName=" + searchCriteria.getLastName() + "]"
-                 :  searchCriteria.getPhoneNumber() != null ? " phoneNumber=" + searchCriteria.getPhoneNumber() + "]" : "empty String";
-
-        ContactNotificationUtil.prompt(searchCriteriaMessage, mainAppInstance);
-
-        return searchCriteria;
+        return parseSearchForm();
     }
 
     @Override
@@ -110,19 +101,18 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
      */
     @Override
     public void buttonClick(Button.ClickEvent clickEvent) {
-        if (clickEvent.getButton() == searchButton) {
-            for (SearchContactListener searchPresenter : searchPresenters) {
+
+        for (SearchContactListener searchPresenter : searchPresenters) {
+            if (clickEvent.getButton() == searchButton) {
                 searchPresenter.searchContact();
-                // TODO: prompt a notification of the searched used in the traybar -- need the NavigationController to pass over an instance of the Application
-            }
+                ContactNotificationUtil.prompt("Searching contact", mainAppInstance);
 
-        } else if (clickEvent.getButton() == cancelButton) {
-            // TODO: implement the Logic for cancel the operation --> first
-            // design the UX Interaction(what the user wants to see)
+            } else if (clickEvent.getButton() == cancelButton) {
+                //TODO: design the UX Interaction(what the user wants to see)
 
-        } else if (clickEvent.getButton() == clearButton) {
-            for (ClearContactSearchListener eachPresenter : clearPresenters) {
-                eachPresenter.clearSearchFormListener();
+            } else if (clickEvent.getButton() == clearButton) {
+                searchPresenter.clearSearchForm();
+                ContactNotificationUtil.prompt("Cleared Searched Form", mainAppInstance);
             }
         }
     }

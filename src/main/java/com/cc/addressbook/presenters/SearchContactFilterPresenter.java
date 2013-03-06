@@ -1,17 +1,15 @@
 package com.cc.addressbook.presenters;
 
-import java.util.List;
-
 import com.cc.addressbook.entities.PersonEntity;
 import com.cc.addressbook.models.FilterContactsServiceModel;
 import com.cc.addressbook.views.AddressbookMainView;
 import com.cc.addressbook.views.SearchContactView;
 import com.cc.addressbook.views.ShowAllContactsView;
-import com.vaadin.Application;
+
+import java.util.List;
 
 /**
  * @author cclaudiu
- *
  */
 public class SearchContactFilterPresenter implements SearchContactView.SearchContactListener {
 
@@ -20,14 +18,14 @@ public class SearchContactFilterPresenter implements SearchContactView.SearchCon
 
     public SearchContactFilterPresenter(AddressbookMainView mainAppView,
                                         SearchContactView searchContactView,
-                                        ShowAllContactsView showAllContactsView)
-    {
+                                        ShowAllContactsView showAllContactsView) {
         this.searchContactView = searchContactView;
         this.showAllContactsView = showAllContactsView;
 
         searchContactView.addPresenter(this);
     }
 
+    // ------------ Handle searchContact Event --------------//
     @Override
     public void searchContact() {
         final FilterContactsServiceModel<PersonEntity> service = new FilterContactsServiceModel<>();
@@ -35,5 +33,11 @@ public class SearchContactFilterPresenter implements SearchContactView.SearchCon
         List<PersonEntity> filteredContacts = service.filter(showAllContactsView.getContactsList(), searchContactView.getSearchCriteria());
 
         showAllContactsView.addContacts(filteredContacts);
+    }
+
+    // ----------- Handle clear Search Form Event ------------//
+    @Override
+    public void clearSearchForm() {
+        searchContactView.clearSearchFormEvent();
     }
 }

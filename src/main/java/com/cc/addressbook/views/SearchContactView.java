@@ -10,15 +10,12 @@ public interface SearchContactView extends DefaultView {
 
     void addPresenter(SearchContactListener presenter);
 
-    SearchCriteria getSearchCriteria();
-
     void clearSearchFormEvent();
+
+    SearchCriteria getSearchCriteria();
 
     public interface SearchContactListener {
         void searchContact();
-    }
-
-    public interface ClearContactSearchListener {
-        void clearSearchFormListener();
+        void clearSearchForm();
     }
 }

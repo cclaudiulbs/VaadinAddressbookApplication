@@ -11,7 +11,6 @@ import com.cc.addressbook.views.DefaultView;
 import com.cc.addressbook.views.SearchContactView;
 import com.cc.addressbook.views.ShowAllContactsView;
 import com.cc.addressbook.views.types.ViewType;
-import com.vaadin.Application;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -96,12 +95,10 @@ public final class NavigationControllerImpl implements NavigationController {
                 final SearchContactView searchContactView = (SearchContactView) registeredViews.get(ViewType.SEARCH_CONTACT_VIEW);
                 final ShowAllContactsView showAllContactsView = (ShowAllContactsView) registeredViews.get(ViewType.SHOW_CONTACT_VIEW);
 
-                final SearchContactViewPresenter searchContactViewPresenter = new SearchContactViewPresenter(mainView, searchContactView);
-
                 // tie together the SearchContactFilterPresenter to the SearchContactView
-                new SearchContactFilterPresenter(mainView, searchContactView, showAllContactsView);
+                SearchContactView.SearchContactListener searchPresenter = new SearchContactFilterPresenter(mainView, searchContactView, showAllContactsView);
 
-                searchContactViewPresenter.displaySearchContactView();
+                searchPresenter.searchContact();
             }
 
         } // end of Menu Parse
