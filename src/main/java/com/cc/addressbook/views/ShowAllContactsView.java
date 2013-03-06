@@ -6,17 +6,17 @@ import java.util.List;
 
 /**
  * @author cclaudiu
- * 
  */
 
 public interface ShowAllContactsView extends DefaultView {
 
     void addPresenter(ShowAllContactsListener listener);
-	void addContacts(List<PersonEntity> customers);
+
+    void addContacts(List<PersonEntity> customers);
 
     public interface ShowAllContactsListener {
         void showContacts();
     }
 
-	List<PersonEntity> getContactsList();
+    List<PersonEntity> getContactsList();
 }

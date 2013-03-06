@@ -4,16 +4,21 @@ import com.cc.addressbook.util.SearchCriteria;
 
 /**
  * @author cclaudiu
- * 
  */
 
 public interface SearchContactView extends DefaultView {
 
-	void addPresenter(SearchContactListener presenter);
+    void addPresenter(SearchContactListener presenter);
 
-	SearchCriteria getSearchCriteria();
+    SearchCriteria getSearchCriteria();
 
-	public interface SearchContactListener {
-		void searchContact();
-	}
+    void clearSearchFormEvent();
+
+    public interface SearchContactListener {
+        void searchContact();
+    }
+
+    public interface ClearContactSearchListener {
+        void clearSearchFormListener();
+    }
 }

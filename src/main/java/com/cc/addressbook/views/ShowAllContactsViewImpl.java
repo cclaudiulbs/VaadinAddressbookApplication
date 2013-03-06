@@ -1,6 +1,8 @@
 package com.cc.addressbook.views;
 
 import com.cc.addressbook.entities.PersonEntity;
+import com.cc.addressbook.util.ContactNotificationUtil;
+import com.vaadin.Application;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.CustomComponent;
@@ -12,21 +14,23 @@ import java.util.List;
 
 /**
  * @author cclaudiu
- *
- * Pure Vaadin UI Implementation
+ *         <p/>
+ *         Pure Vaadin UI Implementation
  */
 
 public class ShowAllContactsViewImpl
-        extends CustomComponent 
+        extends CustomComponent
         implements ShowAllContactsView, ItemClickEvent.ItemClickListener {
 
-	private static final long serialVersionUID = 1L;
-	
-	private final List<ShowAllContactsListener> listeners;
-    private final BeanItemContainer<PersonEntity> contactsContainer;
-	private List<PersonEntity> contacts;
+    private static final long serialVersionUID = 1L;
 
-    public ShowAllContactsViewImpl() {
+    private final List<ShowAllContactsListener> listeners;
+    private final BeanItemContainer<PersonEntity> contactsContainer;
+    private final Application mainAppInstance;
+    private List<PersonEntity> contacts;
+
+    public ShowAllContactsViewImpl(Application mainAppInstance) {
+        this.mainAppInstance = mainAppInstance;
         this.listeners = new ArrayList<>();
         this.contacts = new ArrayList<>();
         this.contactsContainer = new BeanItemContainer<PersonEntity>(PersonEntity.class);
@@ -38,19 +42,22 @@ public class ShowAllContactsViewImpl
     public void addPresenter(ShowAllContactsListener listener) {
         listeners.add(listener);
     }
-    
-	@Override
-	public void addContacts(List<PersonEntity> contacts) {
-		this.contacts.addAll(contacts);
 
-        if(contactsContainer.removeAllItems()) {
-		    contactsContainer.addAll(contacts);
+    @Override
+    public void addContacts(List<PersonEntity> contacts) {
+        this.contacts.addAll(contacts);
+
+        if (contactsContainer.removeAllItems()) {
+            contactsContainer.addAll(contacts);
         }
-	}
-	
-	@Override public List<PersonEntity> getContactsList() {
-		return contacts;
-	}
+        ContactNotificationUtil.prompt(contacts.size() + " have been found in database!", mainAppInstance);
+    }
+
+    @Override
+    public List<PersonEntity> getContactsList() {
+        ContactNotificationUtil.prompt(contacts.size() + " have been retrieved from database!", mainAppInstance);
+        return contacts;
+    }
 
     /**
      * Each ItemClickEvent corresponding to Tree UI Component, delegate it to the ShowContactsPresenter
@@ -58,13 +65,13 @@ public class ShowAllContactsViewImpl
      */
     @Override
     public void itemClick(ItemClickEvent event) {
-    	
+
     }
 
     private void buildShowContactsLayout() {
         final VerticalLayout mainLayout = new VerticalLayout();
         mainLayout.setSizeFull();
-        
+
 //        PagedTable contactsTable = new PagedTable();
         Table contactsTable = new Table();
         contactsTable.setSelectable(Boolean.TRUE);
@@ -85,12 +92,12 @@ public class ShowAllContactsViewImpl
 
         mainLayout.addComponent(contactsTable);
 //        mainLayout.addComponent(contactsTable.createControls());
-        
+
         setCompositionRoot(mainLayout);
     }
 
-	private void setContactTableHeader(List<Object> visibleColumnIds, List<String> visibleColumnLabels) {
-		visibleColumnIds.add("firstName");
+    private void setContactTableHeader(List<Object> visibleColumnIds, List<String> visibleColumnLabels) {
+        visibleColumnIds.add("firstName");
         visibleColumnIds.add("lastName");
         visibleColumnIds.add("phoneMobileNumber");
         visibleColumnIds.add("phoneHomeNumber");
@@ -105,5 +112,5 @@ public class ShowAllContactsViewImpl
         visibleColumnLabels.add("Email");
         visibleColumnLabels.add("Age");
         visibleColumnLabels.add("Address");
-	}
+    }
 }

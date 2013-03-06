@@ -1,6 +1,8 @@
 package com.cc.addressbook.views;
 
+import com.cc.addressbook.util.ContactNotificationUtil;
 import com.cc.addressbook.util.SearchCriteria;
+import com.vaadin.Application;
 import com.vaadin.ui.*;
 
 import java.util.ArrayList;
@@ -8,107 +10,134 @@ import java.util.List;
 
 /**
  * @author cclaudiu
- * 
+ *         <p/>
  *         After displaying this Search View, the Filter Presenter'
  *         responsability is triggered
  */
 
 public class SearchContactViewImpl extends CustomComponent implements SearchContactView, Button.ClickListener {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private List<SearchContactListener> presenters = new ArrayList<>();
+    private Application mainAppInstance;
 
-	private FormLayout searchForm = new FormLayout();
-	private Button searchButton = new Button("Search Contact");
-	private Button cancelButton = new Button("Cancel Operation");
+    private List<SearchContactListener> searchPresenters = new ArrayList<>();
+    private List<ClearContactSearchListener> clearPresenters = new ArrayList<>();
 
-	public SearchContactViewImpl() {
-		setCompositionRoot(buildSearchContactLayout());
-	}
+    private FormLayout searchForm = new FormLayout();
+    private Button searchButton = new Button("Search Contact");
+    private Button clearButton = new Button("Clear Search");
+    private Button cancelButton = new Button("Cancel Operation");
 
-	// ------------- Application Logic Event/Presenter Model ----------------//
-	@Override
-	public void addPresenter(SearchContactListener presenter) {
-		presenters.add(presenter);
-	}
+    public SearchContactViewImpl(Application mainAppInstance) {
+        this.mainAppInstance = mainAppInstance;
+        setCompositionRoot(buildSearchContactLayout());
+    }
 
-	@Override
-	public SearchCriteria getSearchCriteria() {
-		return parseSearchForm();
-	}
+    // ------------- Application Logic Event/Presenter Model ----------------//
+    @Override
+    public void addPresenter(SearchContactListener presenter) {
+        searchPresenters.add(presenter);
+    }
 
-	private ComponentContainer buildSearchContactLayout() {
-		VerticalLayout mainLayout = new VerticalLayout();
-		mainLayout.setSizeFull();
-		mainLayout.setSpacing(Boolean.TRUE);
+    @Override
+    public SearchCriteria getSearchCriteria() {
+        SearchCriteria searchCriteria = parseSearchForm();
+        final String searchCriteriaMessage = "Searching based on [" +
+                    searchCriteria.getFirstName() != null ? " firstName=" + searchCriteria.getFirstName() + "]"
+                 :  searchCriteria.getLastName() != null ? " lastName=" + searchCriteria.getLastName() + "]"
+                 :  searchCriteria.getPhoneNumber() != null ? " phoneNumber=" + searchCriteria.getPhoneNumber() + "]" : "empty String";
 
-		TextField firstNameSearch = new TextField("First Name");
-		TextField lastNameSearch = new TextField("Last Name");
-		TextField phoneNumberSearch = new TextField("Mobile Phone Number");
+        ContactNotificationUtil.prompt(searchCriteriaMessage, mainAppInstance);
 
-		searchForm.setSpacing(Boolean.TRUE);
-		searchForm.setSizeFull();
+        return searchCriteria;
+    }
 
-		searchForm.addComponent(firstNameSearch, 0);
-		searchForm.addComponent(lastNameSearch, 1);
-		searchForm.addComponent(phoneNumberSearch, 2);
+    @Override
+    public void clearSearchFormEvent() {
+        ((TextField) searchForm.getComponent(0)).setValue("");
+        ((TextField) searchForm.getComponent(1)).setValue("");
+        ((TextField) searchForm.getComponent(2)).setValue("");
+    }
 
-		searchForm.setComponentAlignment(firstNameSearch, Alignment.TOP_LEFT);
-		searchForm.setComponentAlignment(lastNameSearch, Alignment.MIDDLE_LEFT);
-		searchForm.setComponentAlignment(phoneNumberSearch, Alignment.BOTTOM_LEFT);
+    private ComponentContainer buildSearchContactLayout() {
+        VerticalLayout mainLayout = new VerticalLayout();
+        mainLayout.setSizeFull();
+        mainLayout.setSpacing(Boolean.TRUE);
 
-		HorizontalLayout buttonsLayout = new HorizontalLayout();
-		buttonsLayout.setSpacing(Boolean.TRUE);
+        TextField firstNameSearch = new TextField("First Name");
+        TextField lastNameSearch = new TextField("Last Name");
+        TextField phoneNumberSearch = new TextField("Mobile Phone Number");
 
-		buttonsLayout.addComponent(searchButton);
-		buttonsLayout.addComponent(cancelButton);
+        HorizontalLayout buttonsLayout = new HorizontalLayout();
+        buttonsLayout.addComponent(searchButton);
+        buttonsLayout.addComponent(clearButton);
+        buttonsLayout.addComponent(cancelButton);
+        buttonsLayout.setSpacing(Boolean.TRUE);
 
-		mainLayout.addComponent(searchForm);
-		mainLayout.addComponent(buttonsLayout);
-		mainLayout.setComponentAlignment(buttonsLayout, Alignment.TOP_LEFT);
+        searchForm.setSpacing(Boolean.TRUE);
+        searchForm.setSizeFull();
 
-		searchButton.addListener(this);
-		cancelButton.addListener(this);
+        searchForm.addComponent(firstNameSearch, 0);
+        searchForm.addComponent(lastNameSearch, 1);
+        searchForm.addComponent(phoneNumberSearch, 2);
+        searchForm.addComponent(buttonsLayout);
 
-		return mainLayout;
-	}
+        searchForm.setComponentAlignment(firstNameSearch, Alignment.TOP_CENTER);
+        searchForm.setComponentAlignment(lastNameSearch, Alignment.MIDDLE_CENTER);
+        searchForm.setComponentAlignment(phoneNumberSearch, Alignment.BOTTOM_CENTER);
+        searchForm.setComponentAlignment(buttonsLayout, Alignment.TOP_LEFT);
 
-	/*
-	 * When the user clicks the Search Button, the presenter listening to this
-	 * event is notified from within this View and the Logic: of
-	 * "addContacts(filtered contacts, SearchCriteria is called)" from the
-	 * SearchContactFilterPresenter
-	 * 
-	 * The Navigation-Application Controller dispatches only to the
-	 * SearchContactView It is the SearchContactView, which is a plain Vaadin
-	 * implementation to delegate to another particular Presenter for Search &&
-	 * Filter Contacts && display the results via the "addContact()" method
-	 */
-	@Override
-	public void buttonClick(Button.ClickEvent clickEvent) {
-		if (clickEvent.getButton() == searchButton) {
-			for (SearchContactListener searchPresenter : presenters) {
-				searchPresenter.searchContact();
-				// TODO: show a notification of the searched used in the traybar
-			}
-		} else if (clickEvent.getButton() == cancelButton) {
-			// TODO: implement the Logic for cancel the operation --> first
-			// design the UX Interaction(what the user wants to see)
-		}
-	}
+        mainLayout.addComponent(searchForm);
+        mainLayout.setComponentAlignment(searchForm, Alignment.TOP_LEFT);
 
-	// ---------- Presenter should NOT know what type of components the view has!-------------//
-	private SearchCriteria parseSearchForm() {
-		String searchFirstName = getSearchedField(searchForm, 0);
-		String lastNameSearch = getSearchedField(searchForm, 1);
-		String phoneNumSearch = getSearchedField(searchForm, 2);
+        searchButton.addListener(this);
+        cancelButton.addListener(this);
 
-		SearchCriteria criteria = new SearchCriteria.Builder().firstName(searchFirstName).lastName(lastNameSearch).phoneNumber(phoneNumSearch).build();
-		return criteria;
-	}
+        return mainLayout;
+    }
 
-	private String getSearchedField(AbstractOrderedLayout searchForm, int idx) {
-		return ((TextField) searchForm.getComponent(idx)).getValue().toString();
-	}
+    /*
+     * When the user clicks the Search Button, the presenter listening to this
+     * event is notified from within this View and the Logic: of
+     * "addContacts(filtered contacts, SearchCriteria is called)" from the
+     * SearchContactFilterPresenter
+     *
+     * The Navigation-Application Controller dispatches only to the
+     * SearchContactView It is the SearchContactView, which is a plain Vaadin
+     * implementation to delegate to another particular Presenter for Search &&
+     * Filter Contacts && display the results via the "addContact()" method
+     */
+    @Override
+    public void buttonClick(Button.ClickEvent clickEvent) {
+        if (clickEvent.getButton() == searchButton) {
+            for (SearchContactListener searchPresenter : searchPresenters) {
+                searchPresenter.searchContact();
+                // TODO: prompt a notification of the searched used in the traybar -- need the NavigationController to pass over an instance of the Application
+            }
+
+        } else if (clickEvent.getButton() == cancelButton) {
+            // TODO: implement the Logic for cancel the operation --> first
+            // design the UX Interaction(what the user wants to see)
+
+        } else if (clickEvent.getButton() == clearButton) {
+            for (ClearContactSearchListener eachPresenter : clearPresenters) {
+                eachPresenter.clearSearchFormListener();
+            }
+        }
+    }
+
+    // ---------- Presenter should NOT know what type of components the view has!-------------//
+    private SearchCriteria parseSearchForm() {
+        String searchFirstName = getSearchedField(searchForm, 0);
+        String lastNameSearch = getSearchedField(searchForm, 1);
+        String phoneNumSearch = getSearchedField(searchForm, 2);
+
+        SearchCriteria criteria = new SearchCriteria.Builder().firstName(searchFirstName).lastName(lastNameSearch).phoneNumber(phoneNumSearch).build();
+        return criteria;
+    }
+
+    private String getSearchedField(AbstractOrderedLayout searchForm, int idx) {
+        return ((TextField) searchForm.getComponent(idx)).getValue().toString();
+    }
 }

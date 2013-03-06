@@ -43,6 +43,7 @@ public class AddressbookMainViewImpl
         buildMainWindowLayout();
     }
 
+    /** Application Logic Related */
     @Override
     public void setMainViewMainComponent(DefaultView component) {
         mainViewSplitPanel.setSecondComponent(component);
@@ -167,8 +168,8 @@ public class AddressbookMainViewImpl
         mainLayout.setExpandRatio(mainViewSplitPanel, 1.0f);
 
         // ------- Registering Listeners of the Main Window - Menu Buttons -------//
-        menuTabSheet.addListener((TabSheet.SelectedTabChangeListener) this);
-        mainTreeOptions.addListener((Property.ValueChangeListener) this);
+        menuTabSheet.addListener(this);
+        mainTreeOptions.addListener(this);
 
         setCompositionRoot(mainLayout);
     }

@@ -4,6 +4,7 @@ import com.cc.addressbook.models.ContactsCrudServiceModel;
 import com.cc.addressbook.views.AddressbookMainView;
 import com.cc.addressbook.views.ShowAllContactsView;
 import com.cc.addressbook.views.ShowAllContactsView.ShowAllContactsListener;
+import com.vaadin.Application;
 
 public class ShowAllContactsPresenter implements ShowAllContactsListener {
 

@@ -7,6 +7,7 @@ import com.cc.addressbook.models.FilterContactsServiceModel;
 import com.cc.addressbook.views.AddressbookMainView;
 import com.cc.addressbook.views.SearchContactView;
 import com.cc.addressbook.views.ShowAllContactsView;
+import com.vaadin.Application;
 
 /**
  * @author cclaudiu
@@ -19,7 +20,8 @@ public class SearchContactFilterPresenter implements SearchContactView.SearchCon
 
     public SearchContactFilterPresenter(AddressbookMainView mainAppView,
                                         SearchContactView searchContactView,
-                                        ShowAllContactsView showAllContactsView) {
+                                        ShowAllContactsView showAllContactsView)
+    {
         this.searchContactView = searchContactView;
         this.showAllContactsView = showAllContactsView;
 
