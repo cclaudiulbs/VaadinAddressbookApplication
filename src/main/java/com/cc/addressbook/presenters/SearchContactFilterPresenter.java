@@ -1,6 +1,7 @@
 package com.cc.addressbook.presenters;
 
 import com.cc.addressbook.entities.PersonEntity;
+import com.cc.addressbook.models.ContactsCrudServiceModel;
 import com.cc.addressbook.models.FilterContactsServiceModel;
 import com.cc.addressbook.views.AddressbookMainView;
 import com.cc.addressbook.views.SearchContactView;
@@ -33,8 +34,15 @@ public class SearchContactFilterPresenter implements SearchContactView.SearchCon
     @Override
     public void searchContact() {
         final FilterContactsServiceModel<PersonEntity> service = new FilterContactsServiceModel<>();
+        List<PersonEntity> contacts = showAllContactsView.getContactsList();
 
-        List<PersonEntity> filteredContacts = service.filter(showAllContactsView.getContactsList(), searchContactView.getSearchCriteria());
+        if(contacts.isEmpty()) {
+            final ContactsCrudServiceModel showContactService = new ContactsCrudServiceModel();
+            contacts.clear();
+            contacts.addAll(showContactService.getCustomers());
+        }
+
+        List<PersonEntity> filteredContacts = service.filter(contacts, searchContactView.getSearchCriteria());
 
         showAllContactsView.addContacts(filteredContacts);
     }

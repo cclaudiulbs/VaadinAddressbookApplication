@@ -45,12 +45,11 @@ public class ShowAllContactsViewImpl
 
     @Override
     public void addContacts(List<PersonEntity> contacts) {
-        this.contacts.addAll(contacts);
+        contacts.addAll(contacts);
 
         if (contactsContainer.removeAllItems()) {
             contactsContainer.addAll(contacts);
         }
-        ContactNotificationUtil.prompt(contacts.size() + " contacts have been found in database!", mainAppInstance);
     }
 
     @Override
@@ -79,7 +78,7 @@ public class ShowAllContactsViewImpl
         contactsTable.setMultiSelect(Boolean.FALSE);
         contactsTable.setImmediate(Boolean.TRUE);
         contactsTable.setWriteThrough(Boolean.FALSE);
-        contactsTable.setPageLength(10);
+//        contactsTable.setPageLength(10);
         contactsTable.setSizeFull();
 
         List<Object> visibleColumnIds = new ArrayList<>();
@@ -93,6 +92,8 @@ public class ShowAllContactsViewImpl
         mainLayout.addComponent(contactsTable);
 //        mainLayout.addComponent(contactsTable.createControls());
 
+        // let the Table take as much space as it needs and shrink the parent-layout according to
+        mainLayout.setExpandRatio(contactsTable, 1);
         setCompositionRoot(mainLayout);
     }
 
