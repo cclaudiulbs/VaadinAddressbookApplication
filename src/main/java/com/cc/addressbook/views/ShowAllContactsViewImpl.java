@@ -50,7 +50,6 @@ public class ShowAllContactsViewImpl
         if (contactsContainer.removeAllItems()) {
             contactsContainer.addAll(contacts);
         }
-        ContactNotificationUtil.prompt(contacts.size() + " contacts have been found in database!", mainAppInstance);
     }
 
     @Override
@@ -90,6 +89,8 @@ public class ShowAllContactsViewImpl
         contactsTable.setVisibleColumns(visibleColumnIds.toArray());
         contactsTable.setColumnHeaders(visibleColumnLabels.toArray(new String[]{}));
 
+        // let the Table take as much space as it needs and shrink the parent-layout according to
+        mainLayout.setExpandRatio(contactsTable, 1);
         mainLayout.addComponent(contactsTable);
 //        mainLayout.addComponent(contactsTable.createControls());
 
