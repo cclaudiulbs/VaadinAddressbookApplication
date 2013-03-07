@@ -1,17 +1,15 @@
-package com.cc.addressbook.util;
-
-import com.cc.addressbook.views.SearchContactView;
+package com.cc.addressbook.others;
 
 /**
  * @author cclaudiu
+ *
  * <br/><br/>
  * Use the BuilderPattern to help build the BuilderPatternDemo CLass
  * A Convenient Thread-Safe way to build partial or all the properties of the class
  * <br/>
- * Used in the {@link SearchContactView}
  */
 
-public class SearchCriteria {
+public class BuilderPatternDemo {
 	private final String firstName;
 	private final String lastName;
 	private final String phoneNumber;
@@ -48,12 +46,12 @@ public class SearchCriteria {
 			return this;
 		}
 		
-		public SearchCriteria build() {
-			return new SearchCriteria(firstName, lastName, phoneNumber);
+		public BuilderPatternDemo build() {
+			return new BuilderPatternDemo(firstName, lastName, phoneNumber);
 		}
 	}
 	
-	private SearchCriteria(String firstName, String lastName, String phoneNumber) {
+	private BuilderPatternDemo(String firstName, String lastName, String phoneNumber) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phoneNumber = phoneNumber;

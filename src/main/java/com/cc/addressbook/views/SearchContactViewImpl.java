@@ -91,7 +91,7 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
     /*
      * When the user clicks the Search Button, the presenter listening to this
      * event is notified from within this View and the Logic: of
-     * "addContacts(filtered contacts, SearchCriteria is called)" from the
+     * "addContacts(filtered contacts, BuilderPatternDemo is called)" from the
      * SearchContactFilterPresenter
      *
      * The Navigation-Application Controller dispatches only to the
