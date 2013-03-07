@@ -105,14 +105,14 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
         for (SearchContactListener searchPresenter : searchPresenters) {
             if (clickEvent.getButton() == searchButton) {
                 searchPresenter.searchContact();
-                ContactNotificationUtil.prompt("Searching contact", mainAppInstance);
+                ContactNotificationUtil.showStandardNotification("Searching contact", mainAppInstance);
 
             } else if (clickEvent.getButton() == cancelButton) {
                 //TODO: design the UX Interaction(what the user wants to see)
 
             } else if (clickEvent.getButton() == clearButton) {
                 searchPresenter.clearSearchForm();
-                ContactNotificationUtil.prompt("Cleared Searched Form", mainAppInstance);
+                ContactNotificationUtil.showStandardNotification("Cleared Searched Form", mainAppInstance);
             }
         }
     }

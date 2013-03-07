@@ -45,16 +45,18 @@ public class ShowAllContactsViewImpl
 
     @Override
     public void addContacts(List<PersonEntity> contacts) {
-        contacts.addAll(contacts);
+        this.contacts.clear();
+        this.contacts.addAll(contacts);
 
         if (contactsContainer.removeAllItems()) {
             contactsContainer.addAll(contacts);
         }
+
+        ContactNotificationUtil.showTrayNotification(this.contacts.size() + " contacts have been retrieved from database!", mainAppInstance);
     }
 
     @Override
     public List<PersonEntity> getContactsList() {
-        ContactNotificationUtil.prompt(contacts.size() + " contacts have been retrieved from database!", mainAppInstance);
         return contacts;
     }
 
