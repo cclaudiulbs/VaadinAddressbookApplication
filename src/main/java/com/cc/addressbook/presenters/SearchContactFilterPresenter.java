@@ -38,6 +38,7 @@ public class SearchContactFilterPresenter implements SearchContactView.SearchCon
 
         if(contacts.isEmpty()) {
             final ContactsCrudServiceModel showContactService = new ContactsCrudServiceModel();
+            contacts.clear();
             contacts.addAll(showContactService.getCustomers());
         }
 
