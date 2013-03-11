@@ -95,8 +95,8 @@ public final class NavigationControllerImpl implements NavigationController {
                 final SearchContactView searchContactView = (SearchContactView) registeredViews.get(ViewType.SEARCH_CONTACT_VIEW);
                 final ShowAllContactsView showAllContactsView = (ShowAllContactsView) registeredViews.get(ViewType.SHOW_CONTACT_VIEW);
 
-                // tie together the SearchContactFilterPresenter to the SearchContactView
-                SearchContactView.SearchContactListener searchPresenter = new SearchContactFilterPresenter(mainView, searchContactView, showAllContactsView);
+                // tie together the SearchContactPresenter to the SearchContactView
+                SearchContactView.SearchContactListener searchPresenter = new SearchContactPresenter(mainView, searchContactView, showAllContactsView);
 
                 searchPresenter.displaySearchContactView();
             }

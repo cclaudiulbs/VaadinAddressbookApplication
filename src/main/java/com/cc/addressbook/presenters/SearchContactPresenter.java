@@ -13,21 +13,21 @@ import java.util.List;
  * @author cclaudiu
  *
  */
-public class SearchContactFilterPresenter implements SearchContactView.SearchContactListener {
+public class SearchContactPresenter implements SearchContactView.SearchContactListener {
 
     private AddressbookMainView mainAppView;
     private SearchContactView searchContactView;
     private final ShowAllContactsView showAllContactsView;
 
-    public SearchContactFilterPresenter(AddressbookMainView mainAppView,
-                                        SearchContactView searchContactView,
-                                        ShowAllContactsView showAllContactsView)
+    public SearchContactPresenter(AddressbookMainView mainAppView,
+                                  SearchContactView searchContactView,
+                                  ShowAllContactsView showAllContactsView)
     {
         this.mainAppView = mainAppView;
         this.searchContactView = searchContactView;
         this.showAllContactsView = showAllContactsView;
 
-        searchContactView.addPresenter(this);
+        this.searchContactView.addPresenter(this);
     }
 
     // ------------ Handle searchContact Event --------------//
@@ -39,12 +39,13 @@ public class SearchContactFilterPresenter implements SearchContactView.SearchCon
         if(contacts.isEmpty()) {
             final ContactsCrudServiceModel showContactService = new ContactsCrudServiceModel();
             contacts.clear();
-            contacts.addAll(showContactService.getCustomers());
+            contacts.addAll(showContactService.getCustomers());             // TODO: refactor this service to use the Custom Query and NOT fetching all results from DB
         }
 
         List<PersonEntity> filteredContacts = service.filter(contacts, searchContactView.getSearchCriteria());
 
         showAllContactsView.addContacts(filteredContacts);
+        mainAppView.setMainViewFirstComponent(showAllContactsView);
     }
 
     // ----------- Handle clear Search Form Event ------------//

@@ -52,7 +52,7 @@ public class ShowAllContactsViewImpl
             contactsContainer.addAll(contacts);
         }
 
-        ContactNotificationUtil.showTrayNotification(this.contacts.size() + " contacts have been retrieved from database!", mainAppInstance);
+        ContactNotificationUtil.showTrayNotification((this.contacts.isEmpty() ? "No" : this.contacts.size()) + " contacts have been retrieved from database!", mainAppInstance);
     }
 
     @Override
