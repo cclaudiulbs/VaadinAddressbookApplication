@@ -43,7 +43,9 @@ public class AddressbookMainViewImpl
         buildMainWindowLayout();
     }
 
-    /** Application Logic Related */
+    /**
+     * Application Logic Related
+     */
     @Override
     public void setMainViewMainComponent(DefaultView component) {
         mainViewSplitPanel.setSecondComponent(component);
@@ -100,24 +102,28 @@ public class AddressbookMainViewImpl
         Label searchContact = new Label();
         Label shareContact = new Label();
         Label help = new Label();
+        Label unknownSelection = new Label();
 
         menuTabSheet.addTab(addContact);
         menuTabSheet.addTab(searchContact);
         menuTabSheet.addTab(shareContact);
         menuTabSheet.addTab(help);
+        menuTabSheet.addTab(unknownSelection);
 
         menuTabSheet.getTab(addContact).setCaption(HorizontalMenuBarActions.ADD_CONTACT.getButtonValue());
         menuTabSheet.getTab(searchContact).setCaption(HorizontalMenuBarActions.EDIT_CONTACT.getButtonValue());
         menuTabSheet.getTab(shareContact).setCaption(HorizontalMenuBarActions.SHARE_CONTACT.getButtonValue());
         menuTabSheet.getTab(help).setCaption(HorizontalMenuBarActions.HELP_BUTTON.getButtonValue());
 
+        // Set the default selectedTab to an unknown position, so that a menu button can fire an event when clicked
+        menuTabSheet.setSelectedTab(unknownSelection);
+
         menuTabSheet.setImmediate(Boolean.TRUE);
-        menuTabSheet.setSelectedTab(-1);
 
         // ----------------- Format the LeftHand Menu with Logo ----------------------------//
         VerticalLayout leftSideMainViewSplit = new VerticalLayout();
         leftSideMainViewSplit.setSizeFull();
-        Tree mainTreeOptions = new Tree();
+        final Tree mainTreeOptions = new Tree();
         Embedded addressbookLogo = getAddressbookLogo();
 
         mainTreeOptions.addItem(VerticalMenuBarActions.SHOW_ALL_PROPERTY.getMenuBarPropertyVal());
@@ -126,11 +132,22 @@ public class AddressbookMainViewImpl
         mainTreeOptions.setCaption("Other Options");
         mainTreeOptions.setImmediate(Boolean.TRUE);
         mainTreeOptions.setNullSelectionAllowed(Boolean.FALSE);
-        mainTreeOptions.setComponentError(new UserError("Unable to access external Platform for querying the DB"));
+
+        // In case there's an error in the system, this message is nicely displayed on the Menu Icon
+        mainTreeOptions.setErrorHandler(new ComponentErrorHandler() {
+            @Override
+            public boolean handleComponentError(ComponentErrorEvent event) {
+                mainTreeOptions.setComponentError(new UserError(event.getThrowable().getLocalizedMessage()));
+                return Boolean.TRUE;
+            }
+        });
 
         leftSideMainViewSplit.addComponent(mainTreeOptions);
         leftSideMainViewSplit.addComponent(addressbookLogo);
         leftSideMainViewSplit.setComponentAlignment(addressbookLogo, Alignment.TOP_CENTER);
+
+        // Fix the split position of the insideMainView Component
+        insideMainViewSplitPanel.setSplitPosition(25, Sizeable.UNITS_PERCENTAGE, Boolean.TRUE);
 
         // ----------------- AddAll Main View Components to the MainViewSplitPanel ----------------//
         mainViewSplitPanel.setFirstComponent(leftSideMainViewSplit);

@@ -6,6 +6,7 @@ import com.cc.addressbook.menu.types.AddressbookVerticalMenu;
 import com.cc.addressbook.menu.types.AddressboookHorizontalMenu;
 import com.cc.addressbook.menu.types.MenuActionType;
 import com.cc.addressbook.presenters.*;
+import com.cc.addressbook.views.AddContactView;
 import com.cc.addressbook.views.AddressbookMainView;
 import com.cc.addressbook.views.DefaultView;
 import com.cc.addressbook.views.SearchContactView;
@@ -27,6 +28,8 @@ import java.util.concurrent.ConcurrentHashMap;
  *         nothing more; it is NOT aware of the Model, of each presenter;
  *         <p/>
  *         Each ViewImpl has a reference to this singleton NavigationController
+ *
+ *         TODO: refactor this, to retrieve, and initialize all the registered Views in ONLY one place
  */
 
 public final class NavigationControllerImpl implements NavigationController {
@@ -63,8 +66,13 @@ public final class NavigationControllerImpl implements NavigationController {
         if (pressedMenuAction instanceof AddressboookHorizontalMenu) {
 
             if (pressedMenuAction == HorizontalMenuBarActions.ADD_CONTACT) {
-                final AddContactPresenter presenter = new AddContactPresenter();
-                presenter.addContactEvent();
+                final AddressbookMainView mainView = (AddressbookMainView) registeredViews.get(ViewType.MAIN_VIEW);
+                final AddContactView addView = (AddContactView) registeredViews.get(ViewType.ADD_CONTACT_VIEW);
+                final ShowAllContactsView showView = (ShowAllContactsView) registeredViews.get(ViewType.SHOW_CONTACT_VIEW);
+
+                final AddContactPresenter presenter = new AddContactPresenter(mainView, addView, showView);
+
+                presenter.dispatchToAddContactView();
 
             } else if (pressedMenuAction == HorizontalMenuBarActions.EDIT_CONTACT) {
                 final EditContactPresenter presenter = new EditContactPresenter();
