@@ -76,3 +76,6 @@ public class MainViewImpl implements MainView {
  if the user is not admin, it cannot DROP-ALL users;
  
  7. switch for pagedTable || filteringTable
+
+ TODO: NEXT IMPLs:
+--> make default login into application: the Help View and its corresponding menu the default focusable, and NOT the add-Contact
