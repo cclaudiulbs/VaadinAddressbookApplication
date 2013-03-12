@@ -11,8 +11,8 @@ import java.util.Arrays;
  *
  */
 
-public final class Convertor {
-    private Convertor() { }
+public final class AddressbookConvertor {
+    private AddressbookConvertor() { }
 
     public static final PersonEntity fromAddContactFormToPerson(TextField firstName, TextField lastName, TextField address, TextField email,
                                                    TextField jobTitle, TextField jobDescription, TextField phoneNumber,

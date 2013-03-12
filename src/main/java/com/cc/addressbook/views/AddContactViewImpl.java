@@ -1,7 +1,7 @@
 package com.cc.addressbook.views;
 
+import com.cc.addressbook.util.AddressbookConvertor;
 import com.cc.addressbook.util.ContactNotificationUtil;
-import com.cc.addressbook.util.Convertor;
 import com.vaadin.Application;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
@@ -59,10 +59,10 @@ public class AddContactViewImpl extends CustomComponent
 
         for (AddContactListener eachPresenter : addContactListeners) {
             if (clickEvent.getButton() == addButton) {
-                eachPresenter.addContact(Convertor.fromAddContactFormToPerson(firstNameField, lastNameField,
-                                                                              addressField, emailField,
-                                                                              jobTitleField, jobDescField,
-                                                                              mobilePhoneField, homePhoneField));
+                eachPresenter.addContact(AddressbookConvertor.fromAddContactFormToPerson(firstNameField, lastNameField,
+                        addressField, emailField,
+                        jobTitleField, jobDescField,
+                        mobilePhoneField, homePhoneField));
 
                 ContactNotificationUtil.showStandardNotification("Adding contact", mainAppInstance);
 

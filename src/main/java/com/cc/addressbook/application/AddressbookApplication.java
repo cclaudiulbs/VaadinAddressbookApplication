@@ -45,5 +45,6 @@ public class AddressbookApplication extends Application {
         navigationController.registerView(ViewType.EDIT_CONTACT_VIEW, new EditContactsViewImpl(this));
         navigationController.registerView(ViewType.SEARCH_CONTACT_VIEW, new SearchContactViewImpl(this));
         navigationController.registerView(ViewType.SHARE_CONTACT_VIEW, new ShareContactViewImpl(this));
+        navigationController.registerView(ViewType.HELP_VIEW, new HelpViewImpl(this));
     }
 }

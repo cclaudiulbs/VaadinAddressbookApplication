@@ -6,11 +6,7 @@ import com.cc.addressbook.menu.types.AddressbookVerticalMenu;
 import com.cc.addressbook.menu.types.AddressboookHorizontalMenu;
 import com.cc.addressbook.menu.types.MenuActionType;
 import com.cc.addressbook.presenters.*;
-import com.cc.addressbook.views.AddContactView;
-import com.cc.addressbook.views.AddressbookMainView;
-import com.cc.addressbook.views.DefaultView;
-import com.cc.addressbook.views.SearchContactView;
-import com.cc.addressbook.views.ShowAllContactsView;
+import com.cc.addressbook.views.*;
 import com.cc.addressbook.views.types.ViewType;
 
 import java.util.Map;
@@ -83,8 +79,11 @@ public final class NavigationControllerImpl implements NavigationController {
                 presenter.shareContactEvent();
 
             } else if (pressedMenuAction == HorizontalMenuBarActions.HELP_BUTTON) {
-                final HelpPresenter presenter = new HelpPresenter();
-                presenter.helpPresenter();
+                final HelpView helpView = (HelpView) registeredViews.get(ViewType.HELP_VIEW);
+                final AddressbookMainView mainView = (AddressbookMainView) registeredViews.get(ViewType.MAIN_VIEW);
+
+                final HelpPresenter presenter = new HelpPresenter(mainView, helpView);
+                presenter.showHelpView();
 
             }
 
