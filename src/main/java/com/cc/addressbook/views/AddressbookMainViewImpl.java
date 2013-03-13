@@ -101,6 +101,7 @@ public class AddressbookMainViewImpl
 
         // -------------- Define Menu Buttons ----------------//
         Label addContact = new Label();
+        Label deleteContact = new Label();
         Label searchContact = new Label();
         Label shareContact = new Label();
         Label help = new Label();
@@ -108,11 +109,13 @@ public class AddressbookMainViewImpl
 
         menuTabSheet.addTab(leftHandDesignPurposeLabel);
         menuTabSheet.addTab(addContact);
+        menuTabSheet.addTab(deleteContact);
         menuTabSheet.addTab(searchContact);
         menuTabSheet.addTab(shareContact);
         menuTabSheet.addTab(help);
 
         menuTabSheet.getTab(addContact).setCaption(HorizontalMenuBarActions.ADD_CONTACT.getButtonValue());
+        menuTabSheet.getTab(deleteContact).setCaption(HorizontalMenuBarActions.DELETE_CONTACT.getButtonValue());
         menuTabSheet.getTab(searchContact).setCaption(HorizontalMenuBarActions.EDIT_CONTACT.getButtonValue());
         menuTabSheet.getTab(shareContact).setCaption(HorizontalMenuBarActions.SHARE_CONTACT.getButtonValue());
         menuTabSheet.getTab(help).setCaption(HorizontalMenuBarActions.HELP_BUTTON.getButtonValue());
@@ -211,8 +214,8 @@ public class AddressbookMainViewImpl
     public void clearSelectedComponents() {
         menuTabSheet.setSelectedTab(menuTabSheet.getTab(0));
 
-        for(Object eachVisibleTree: mainTreeOptions.getVisibleItemIds()) {
-            mainTreeOptions.unselect(eachVisibleTree);
+        for(Object eachVisibleMenuTree: mainTreeOptions.getVisibleItemIds()) {
+            mainTreeOptions.unselect(eachVisibleMenuTree);
         }
     }
 }

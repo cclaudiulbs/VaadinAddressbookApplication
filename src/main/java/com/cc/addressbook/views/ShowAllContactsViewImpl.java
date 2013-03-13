@@ -5,6 +5,7 @@ import com.cc.addressbook.util.ContactNotificationUtil;
 import com.vaadin.Application;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
@@ -24,23 +25,38 @@ public class ShowAllContactsViewImpl
 
     private static final long serialVersionUID = 1L;
 
-    private final List<ShowAllContactsListener> listeners;
+    private final List<ShowContactsListener> showAllContactListeners;
+    private final List<DeleteContactOneByOneListener> deleteContactListeners;
     private final BeanItemContainer<PersonEntity> contactsContainer;
     private final Application mainAppInstance;
     private List<PersonEntity> contacts;
+    private final Table contactsTable;
+
 
     public ShowAllContactsViewImpl(Application mainAppInstance) {
         this.mainAppInstance = mainAppInstance;
-        this.listeners = new ArrayList<>();
+        this.showAllContactListeners = new ArrayList<>();
+        this.deleteContactListeners = new ArrayList<>();
         this.contacts = new ArrayList<>();
         this.contactsContainer = new BeanItemContainer<PersonEntity>(PersonEntity.class);
+        this.contactsTable = new Table();
 
         buildShowContactsLayout();
     }
 
+    /**
+     * Register both Type of Listeners to the this View -- has 2 TYpe of Listeners: Show && Delete
+     *
+     * @param showContactslistener
+     */
     @Override
-    public void addPresenter(ShowAllContactsListener listener) {
-        listeners.add(listener);
+    public void addPresenter(ShowContactsListener showContactslistener) {
+        showAllContactListeners.add(showContactslistener);
+    }
+
+    @Override
+    public void addPresenter(DeleteContactOneByOneListener deleteContactsListener) {
+        deleteContactListeners.add(deleteContactsListener);
     }
 
     @Override
@@ -74,7 +90,6 @@ public class ShowAllContactsViewImpl
         mainLayout.setSizeFull();
 
 //        PagedTable contactsTable = new PagedTable();
-        Table contactsTable = new Table();
         contactsTable.setSelectable(Boolean.TRUE);
         contactsTable.setNullSelectionAllowed(Boolean.FALSE);
         contactsTable.setMultiSelect(Boolean.FALSE);
@@ -83,8 +98,8 @@ public class ShowAllContactsViewImpl
 //        contactsTable.setPageLength(10);
         contactsTable.setSizeFull();
 
-        List<Object> visibleColumnIds = new ArrayList<>();
-        List<String> visibleColumnLabels = new ArrayList<>();
+        final List<Object> visibleColumnIds = new ArrayList<>();
+        final List<String> visibleColumnLabels = new ArrayList<>();
         setContactTableHeader(visibleColumnIds, visibleColumnLabels);
 
         contactsTable.setContainerDataSource(contactsContainer);
@@ -97,6 +112,27 @@ public class ShowAllContactsViewImpl
         // let the Table take as much space as it needs and shrink the parent-layout according to
         mainLayout.setExpandRatio(contactsTable, 1);
         setCompositionRoot(mainLayout);
+    }
+
+    // TODO: extract this method into a Class, and based on this "generated" Button, when clicked the Delete Presenter is called to do the action
+    @Override
+    public void deleteContactOneByOne() {
+        contactsTable.addGeneratedColumn("Delete Contact", new Table.ColumnGenerator() {
+
+            @Override
+            public Object generateCell(final Table source, final Object itemId, Object columnId) {
+                final Button deleteContact = new Button("Delete");
+                deleteContact.addListener(new Button.ClickListener() {
+
+                    @Override
+                    public void buttonClick(Button.ClickEvent clickEvent) {
+                        source.getContainerDataSource().removeItem(itemId);
+                    }
+                });
+
+                return deleteContact;
+            }
+        });
     }
 
     private void setContactTableHeader(List<Object> visibleColumnIds, List<String> visibleColumnLabels) {

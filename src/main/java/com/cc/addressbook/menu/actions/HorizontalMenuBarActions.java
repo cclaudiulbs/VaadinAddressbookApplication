@@ -14,6 +14,7 @@ import com.cc.addressbook.menu.types.MenuActionType;
 public enum HorizontalMenuBarActions implements AddressboookHorizontalMenu, MenuActionType {
 
     ADD_CONTACT("Add New Contact"),
+    DELETE_CONTACT("Delete Contact"),
     EDIT_CONTACT("Edit Contact"),
     SHARE_CONTACT("Share Contact"),
     HELP_BUTTON("Help Me"),

@@ -33,6 +33,7 @@
 		<reindeermods.theme.version>0.2</reindeermods.theme.version>
         <shiro.version>1.1.0</shiro.version>
         <logger.slf4j.version>1.6.1</logger.slf4j.version>
+        <apache.commons.version>2.5</apache.commons.version>
 	</properties>
 
 	<dependencies>
@@ -92,6 +93,13 @@
             <artifactId>slf4j-simple</artifactId>
             <version>${logger.slf4j.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <!--Enable Apache Commons for Getter, Setters, and toString()-->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${apache.commons.version}</version>
         </dependency>
 
         <!--
