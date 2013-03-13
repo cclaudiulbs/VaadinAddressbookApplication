@@ -29,6 +29,7 @@ public class AddContactPresenter implements AddContactView.AddContactListener {
 
     @Override
     public void dispatchToAddContactView() {
+        mainAppView.clearSelectedComponents();
         mainAppView.setMainViewSecondComponent(addContactView);
     }
 

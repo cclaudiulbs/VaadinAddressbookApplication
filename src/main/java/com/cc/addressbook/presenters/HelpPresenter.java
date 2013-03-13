@@ -9,12 +9,12 @@ import com.cc.addressbook.views.HelpView;
  */
 public class HelpPresenter implements HelpView.HelpViewListener {
 
-	private final AddressbookMainView mainView;
+	private final AddressbookMainView mainAppView;
 	private final HelpView helpView;
 
-	public HelpPresenter(AddressbookMainView mainView, HelpView helpView) {
+	public HelpPresenter(AddressbookMainView mainAppView, HelpView helpView) {
 
-		this.mainView = mainView;
+		this.mainAppView = mainAppView;
 		this.helpView = helpView;
 
         helpView.addListener(this);
@@ -23,11 +23,11 @@ public class HelpPresenter implements HelpView.HelpViewListener {
 	@Override
 	public void submitComplain(HelpView.ComplainEvent complainEvent) {
 
-
 	}
 
     @Override
     public void showHelpView() {
-        mainView.setMainViewMainComponent(helpView);
+        mainAppView.clearSelectedComponents();
+        mainAppView.setMainViewFirstComponent(helpView);
     }
 }

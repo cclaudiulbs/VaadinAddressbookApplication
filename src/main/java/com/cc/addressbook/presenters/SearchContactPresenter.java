@@ -56,6 +56,7 @@ public class SearchContactPresenter implements SearchContactView.SearchContactLi
 
     @Override
     public void displaySearchContactView() {
+        mainAppView.clearSelectedComponents();
         mainAppView.setMainViewSecondComponent(searchContactView);
     }
 

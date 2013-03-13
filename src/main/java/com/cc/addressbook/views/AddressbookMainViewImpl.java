@@ -4,7 +4,7 @@ import com.cc.addressbook.appcontroller.NavigationController;
 import com.cc.addressbook.appcontroller.NavigationControllerImpl;
 import com.cc.addressbook.menu.actions.HorizontalMenuBarActions;
 import com.cc.addressbook.menu.actions.VerticalMenuBarActions;
-import com.cc.addressbook.presenters.AddressbookEventsParser;
+import com.cc.addressbook.parser.AddressbookEventsParser;
 import com.vaadin.data.Property;
 import com.vaadin.terminal.ExternalResource;
 import com.vaadin.terminal.Resource;
@@ -38,6 +38,10 @@ public class AddressbookMainViewImpl
     private final HorizontalSplitPanel mainViewSplitPanel = new HorizontalSplitPanel();
     private final VerticalSplitPanel insideMainViewSplitPanel = new VerticalSplitPanel();
     private final NavigationController mainAppController = NavigationControllerImpl.createInstance();
+
+    private final Tree mainTreeOptions = new Tree();
+    private final TabSheet menuTabSheet = new TabSheet();
+
 
     public AddressbookMainViewImpl() {
         buildMainWindowLayout();
@@ -96,34 +100,29 @@ public class AddressbookMainViewImpl
         headerLayout.setComponentAlignment(welcomeHeader, Alignment.BOTTOM_CENTER);
 
         // -------------- Define Menu Buttons ----------------//
-        TabSheet menuTabSheet = new TabSheet();
-
         Label addContact = new Label();
         Label searchContact = new Label();
         Label shareContact = new Label();
         Label help = new Label();
-        Label unknownSelection = new Label();
+        Label leftHandDesignPurposeLabel = new Label();
 
+        menuTabSheet.addTab(leftHandDesignPurposeLabel);
         menuTabSheet.addTab(addContact);
         menuTabSheet.addTab(searchContact);
         menuTabSheet.addTab(shareContact);
         menuTabSheet.addTab(help);
-        menuTabSheet.addTab(unknownSelection);
 
         menuTabSheet.getTab(addContact).setCaption(HorizontalMenuBarActions.ADD_CONTACT.getButtonValue());
         menuTabSheet.getTab(searchContact).setCaption(HorizontalMenuBarActions.EDIT_CONTACT.getButtonValue());
         menuTabSheet.getTab(shareContact).setCaption(HorizontalMenuBarActions.SHARE_CONTACT.getButtonValue());
         menuTabSheet.getTab(help).setCaption(HorizontalMenuBarActions.HELP_BUTTON.getButtonValue());
 
-        // Set the default selectedTab to an unknown position, so that a menu button can fire an event when clicked
-        menuTabSheet.setSelectedTab(unknownSelection);
-
         menuTabSheet.setImmediate(Boolean.TRUE);
 
         // ----------------- Format the LeftHand Menu with Logo ----------------------------//
         VerticalLayout leftSideMainViewSplit = new VerticalLayout();
         leftSideMainViewSplit.setSizeFull();
-        final Tree mainTreeOptions = new Tree();
+
         Embedded addressbookLogo = getAddressbookLogo();
 
         mainTreeOptions.addItem(VerticalMenuBarActions.SHOW_ALL_PROPERTY.getMenuBarPropertyVal());
@@ -206,5 +205,14 @@ public class AddressbookMainViewImpl
         image.setHeight(300, UNITS_PIXELS);
 
         return image;
+    }
+
+    @Override
+    public void clearSelectedComponents() {
+        menuTabSheet.setSelectedTab(menuTabSheet.getTab(0));
+
+        for(Object eachVisibleTree: mainTreeOptions.getVisibleItemIds()) {
+            mainTreeOptions.unselect(eachVisibleTree);
+        }
     }
 }

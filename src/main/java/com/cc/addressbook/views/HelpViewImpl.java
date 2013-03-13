@@ -34,20 +34,27 @@ public class HelpViewImpl extends CustomComponent implements HelpView, Button.Cl
         mainLayout.setSpacing(Boolean.TRUE);
 
         AbstractField complainComponent = new RichTextArea("Complain Board");
-        complainComponent.setWidth(400, UNITS_PIXELS);
+        complainComponent.setWidth(700, UNITS_PIXELS);
         complainComponent.setHeight(400, UNITS_PIXELS);
 
         HorizontalLayout buttonsLayout = new HorizontalLayout();
+        buttonsLayout.setSpacing(Boolean.TRUE);
+
         buttonsLayout.addComponent(addComplainButton);
         buttonsLayout.addComponent(cancelComplainButton);
 
         addComplainButton.addListener(this);
         cancelComplainButton.addListener(this);
 
+        Label helpContentText = new Label(populateHelpContentText(), Label.CONTENT_XHTML);
+
+        mainLayout.addComponent(helpContentText);
         mainLayout.addComponent(complainComponent);
         mainLayout.addComponent(buttonsLayout);
-        mainLayout.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_LEFT);
+
+        mainLayout.setComponentAlignment(helpContentText, Alignment.TOP_LEFT);
         mainLayout.setComponentAlignment(complainComponent, Alignment.MIDDLE_CENTER);
+        mainLayout.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_LEFT);
 
         return mainLayout;
     }
@@ -74,7 +81,7 @@ public class HelpViewImpl extends CustomComponent implements HelpView, Button.Cl
             if(event.getButton() == addComplainButton) {
                 ContactNotificationUtil.showStandardNotification("Submitting Contact Complain", mainAppInstance);
             } else if(event.getButton() == cancelComplainButton) {
-
+                ContactNotificationUtil.showStandardNotification("Canceling Contact Complain", mainAppInstance);
             }
         }
     }

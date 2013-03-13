@@ -1,4 +1,4 @@
-package com.cc.addressbook.presenters;
+package com.cc.addressbook.parser;
 
 import com.cc.addressbook.menu.actions.HorizontalMenuBarActions;
 import com.cc.addressbook.menu.actions.VerticalMenuBarActions;

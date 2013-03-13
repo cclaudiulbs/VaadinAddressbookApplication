@@ -1,5 +1,8 @@
 package com.cc.addressbook.appcontroller;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.cc.addressbook.menu.actions.HorizontalMenuBarActions;
 import com.cc.addressbook.menu.actions.VerticalMenuBarActions;
 import com.cc.addressbook.menu.types.AddressbookVerticalMenu;
@@ -9,105 +12,105 @@ import com.cc.addressbook.presenters.*;
 import com.cc.addressbook.views.*;
 import com.cc.addressbook.views.types.ViewType;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
- * @author cclaudiu
- *         <br><br>
- *         NavigationController is the First Entry Point into the Addressbook
- *         application It controls the UI View Flow/Navigation by delegating to
- *         the corresponding View Presenter This being said, is aware, has
- *         compositions of every View Presenters
+ * @author cclaudiu <br>
+ * <br>
+ *         NavigationController is the First Entry Point into the Addressbook application It controls the UI View
+ *         Flow/Navigation by delegating to the corresponding View Presenter This being said, is aware, has compositions
+ *         of every View Presenters
  *         <p/>
- *         This is the main responsibility of NavigationController Class,
- *         nothing more; it is NOT aware of the Model, of each presenter;
+ *         This is the main responsibility of NavigationController Class, nothing more; it is NOT aware of the Model, of
+ *         each presenter;
  *         <p/>
  *         Each ViewImpl has a reference to this singleton NavigationController
- *
+ * 
  *         TODO: refactor this, to retrieve, and initialize all the registered Views in ONLY one place
  */
 
 public final class NavigationControllerImpl implements NavigationController {
 
-    private static NavigationController INSTANCE;
+	// ------------ Singleton ---------------//
+	private static NavigationController INSTANCE;
 
-    private NavigationControllerImpl() {
-    }
+	// ----------- Declare and instantiate all registered Views -----------------//
+	private AddressbookMainView mainView;
+	private AddContactView addView;
+	private HelpView helpView;
+	private SearchContactView searchContactView;
+	private ShowAllContactsView showAllContactsView;
+	private final Map<ViewType, DefaultView> registeredViews;
 
-    public static NavigationController createInstance() {
-        synchronized (NavigationControllerImpl.class) {
-            if (INSTANCE == null) {
-                INSTANCE = new NavigationControllerImpl();
-            }
-        }
-        return INSTANCE;
-    }
+	private NavigationControllerImpl() {
+		registeredViews = new ConcurrentHashMap<>();
+	}
 
-    private final Map<ViewType, DefaultView> registeredViews = new ConcurrentHashMap<>();
+	public static NavigationController createInstance() {
+		synchronized(NavigationControllerImpl.class) {
+			if(INSTANCE == null) {
+				INSTANCE = new NavigationControllerImpl();
+			}
+		}
+		return INSTANCE;
+	}
 
-    @Override
-    public void registerView(ViewType viewType, DefaultView view) {
-        registeredViews.put(viewType, view);
-    }
+	@Override
+	public void registerView(ViewType viewType, DefaultView view) {
+		registeredViews.put(viewType, view);
+	}
 
-    @Override
-    public void dispatch(MenuActionType pressedMenuAction) {
+	@Override
+	public void dispatch(MenuActionType pressedMenuAction) {
+		initializeRegisteredViews();
 
-        /*
-         * For performance reasons we don't parse every single possible View but
-         * rather split the logic for menu Types
-         */
-        // ---------------------- the HorizontalMenu was pressed --------------------------//
-        if (pressedMenuAction instanceof AddressboookHorizontalMenu) {
+		/*
+		 * For performance reasons we don't parse every single possible View but rather split the logic for menu Types
+		 */
+		// ---------------------- the HorizontalMenu was pressed --------------------------//
+		if(pressedMenuAction instanceof AddressboookHorizontalMenu) {
 
-            if (pressedMenuAction == HorizontalMenuBarActions.ADD_CONTACT) {
-                final AddressbookMainView mainView = (AddressbookMainView) registeredViews.get(ViewType.MAIN_VIEW);
-                final AddContactView addView = (AddContactView) registeredViews.get(ViewType.ADD_CONTACT_VIEW);
-                final ShowAllContactsView showView = (ShowAllContactsView) registeredViews.get(ViewType.SHOW_CONTACT_VIEW);
+			if(pressedMenuAction == HorizontalMenuBarActions.ADD_CONTACT) {
+				final AddContactPresenter presenter = new AddContactPresenter(mainView, addView, showAllContactsView);
 
-                final AddContactPresenter presenter = new AddContactPresenter(mainView, addView, showView);
+				presenter.dispatchToAddContactView();
 
-                presenter.dispatchToAddContactView();
+			} else if(pressedMenuAction == HorizontalMenuBarActions.EDIT_CONTACT) {
+				final EditContactPresenter presenter = new EditContactPresenter();
+				presenter.editContactEvent();
 
-            } else if (pressedMenuAction == HorizontalMenuBarActions.EDIT_CONTACT) {
-                final EditContactPresenter presenter = new EditContactPresenter();
-                presenter.editContactEvent();
+			} else if(pressedMenuAction == HorizontalMenuBarActions.SHARE_CONTACT) {
+				final ShareContactPresenter presenter = new ShareContactPresenter();
+				presenter.shareContactEvent();
 
-            } else if (pressedMenuAction == HorizontalMenuBarActions.SHARE_CONTACT) {
-                final ShareContactPresenter presenter = new ShareContactPresenter();
-                presenter.shareContactEvent();
+			} else if(pressedMenuAction == HorizontalMenuBarActions.HELP_BUTTON) {
+				final HelpPresenter presenter = new HelpPresenter(mainView, helpView);
+				presenter.showHelpView();
 
-            } else if (pressedMenuAction == HorizontalMenuBarActions.HELP_BUTTON) {
-                final HelpView helpView = (HelpView) registeredViews.get(ViewType.HELP_VIEW);
-                final AddressbookMainView mainView = (AddressbookMainView) registeredViews.get(ViewType.MAIN_VIEW);
+			}
 
-                final HelpPresenter presenter = new HelpPresenter(mainView, helpView);
-                presenter.showHelpView();
+			// ------------------- the Left Vertical Menu was pressed ------------------------ //
+		} else if(pressedMenuAction instanceof AddressbookVerticalMenu) {
 
-            }
+			if(pressedMenuAction == VerticalMenuBarActions.SHOW_ALL_PROPERTY) {
+				final ShowAllContactsPresenter presenter = new ShowAllContactsPresenter(mainView, showAllContactsView);
+				presenter.showContacts();
 
-            // ------------------- the Left Vertical Menu was pressed ------------------------ //
-        } else if (pressedMenuAction instanceof AddressbookVerticalMenu) {
+			} else if(pressedMenuAction == VerticalMenuBarActions.SEARCH_CONTACT_PROPERTY) {
+				// tie together the SearchContactPresenter to the SearchContactView
+				SearchContactView.SearchContactListener searchPresenter = new SearchContactPresenter(mainView,
+						searchContactView, showAllContactsView);
 
-            if (pressedMenuAction == VerticalMenuBarActions.SHOW_ALL_PROPERTY) {
-                final ShowAllContactsView showAllContactsView = (ShowAllContactsView) registeredViews.get(ViewType.SHOW_CONTACT_VIEW);
-                final AddressbookMainView mainAppView = (AddressbookMainView) registeredViews.get(ViewType.MAIN_VIEW);
+				searchPresenter.displaySearchContactView();
+			}
 
-                final ShowAllContactsPresenter presenter = new ShowAllContactsPresenter(mainAppView, showAllContactsView);
-                presenter.showContacts();
+		} // end of Menu Parse
+	} // end of dispatch()
 
-            } else if (pressedMenuAction == VerticalMenuBarActions.SEARCH_CONTACT_PROPERTY) {
-                final AddressbookMainView mainView = (AddressbookMainView) registeredViews.get(ViewType.MAIN_VIEW);
-                final SearchContactView searchContactView = (SearchContactView) registeredViews.get(ViewType.SEARCH_CONTACT_VIEW);
-                final ShowAllContactsView showAllContactsView = (ShowAllContactsView) registeredViews.get(ViewType.SHOW_CONTACT_VIEW);
-
-                // tie together the SearchContactPresenter to the SearchContactView
-                SearchContactView.SearchContactListener searchPresenter = new SearchContactPresenter(mainView, searchContactView, showAllContactsView);
-
-                searchPresenter.displaySearchContactView();
-            }
-
-        } // end of Menu Parse
-    } // end of dispatch()
+	private void initializeRegisteredViews() {
+		// ----------- Retrieve the Registered Views of the Application -------------//
+		mainView = (AddressbookMainView) registeredViews.get(ViewType.MAIN_VIEW);
+		addView = (AddContactView) registeredViews.get(ViewType.ADD_CONTACT_VIEW);
+		helpView = (HelpView) registeredViews.get(ViewType.HELP_VIEW);
+		searchContactView = (SearchContactView) registeredViews.get(ViewType.SEARCH_CONTACT_VIEW);
+		showAllContactsView = (ShowAllContactsView) registeredViews.get(ViewType.SHOW_CONTACT_VIEW);
+	}
 }

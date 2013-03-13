@@ -22,6 +22,8 @@ public class ShowAllContactsPresenter implements ShowAllContactsListener {
 
 	@Override
 	public void showContacts() {
+        mainView.clearSelectedComponents();
+
 		mainView.setMainViewFirstComponent(showContactsView);
 		
 		// until the user accessed the application, the mainView is NOT seen as a split part, only when the user clicks SHOW
