@@ -135,6 +135,32 @@ public class ShowAllContactsViewImpl
         });
     }
 
+    // TO be called by presenter
+//    @Override
+    public void deleteContactOneByOneClaudiu() {
+        contactsTable.addGeneratedColumn("Delete Contact", new Table.ColumnGenerator() {
+
+            @Override
+            public Object generateCell(final Table source, final Object itemId, Object columnId) {
+                final Button deleteContact = new Button("Delete");
+                deleteContact.addListener(new Button.ClickListener() {
+
+                    @Override
+                    public void buttonClick(Button.ClickEvent clickEvent) {
+                        source.getContainerDataSource().removeItem(itemId);
+                    }
+                });
+
+                return deleteContact;
+            }
+        });
+    }
+
+
+    private void deleteContactToBeIncludedInView(Object itemId) {
+        contactsTable.getContainerDataSource().removeItem(itemId);
+    }
+
     private void setContactTableHeader(List<Object> visibleColumnIds, List<String> visibleColumnLabels) {
         visibleColumnIds.add("firstName");
         visibleColumnIds.add("lastName");
