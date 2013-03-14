@@ -23,7 +23,7 @@ public class ShowAllContactsPresenter implements ShowAllContactsView.ShowContact
 
     @Override
     public void showContacts() {
-        // -------- First Clear all Selected Components so that the same Menu Action can be Clickable ---------//
+        // -------- Clear all Selected Components so that the same Menu Action can be Click-able ---------//
         mainView.clearSelectedComponents();
 
         mainView.setMainViewFirstComponent(showContactsView);
@@ -31,9 +31,12 @@ public class ShowAllContactsPresenter implements ShowAllContactsView.ShowContact
         // until the user accessed the application, the mainView is NOT seen as a split part, only when the user clicks SHOW
         mainView.getMainViewMainComponent().setVisible(Boolean.TRUE);
 
+        // --------- when the ShowAllContactsView is displayed it is like in READ-ONLY Mode ----------//
         showContactsView.removeDeleteOptions();
 
+        // --------- get the contacts from the Memory -----------//
         showContactsView.addContacts(model.getCustomers());
+        // TODO: if the size of contacts is NOT the same as the getCUstomers() then, contacts were deleted, hence fetch them from DB again
     }
 
     @Override

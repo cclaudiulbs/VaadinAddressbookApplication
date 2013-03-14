@@ -11,6 +11,7 @@ import java.util.List;
 public interface ShowAllContactsView extends DefaultView {
 
     void addPresenter(ShowContactsListener showContactslistener);
+
     void addPresenter(DeleteContactOneByOneListener deleteContactsListener);
 
     void addContacts(List<PersonEntity> customers);

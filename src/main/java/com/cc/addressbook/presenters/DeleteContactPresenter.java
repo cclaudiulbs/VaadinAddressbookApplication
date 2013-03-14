@@ -4,6 +4,9 @@ import com.cc.addressbook.views.ShowAllContactsView;
 
 /**
  * @author cclaudiu
+ *         <br/>
+ *         <p/>
+ *         Listen to Delete Contact Events generated from the ShowAllContactsView view
  */
 
 public class DeleteContactPresenter implements ShowAllContactsView.DeleteContactOneByOneListener {
@@ -13,6 +16,7 @@ public class DeleteContactPresenter implements ShowAllContactsView.DeleteContact
     public DeleteContactPresenter(ShowAllContactsView showAllContactsView) {
         this.showAllContactsView = showAllContactsView;
 
+        // ------- register itself to delete-events ---------//
         showAllContactsView.addPresenter(this);
     }
 
