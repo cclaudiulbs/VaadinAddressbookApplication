@@ -24,7 +24,6 @@ import com.cc.addressbook.views.types.ViewType;
  *         <p/>
  *         Each ViewImpl has a reference to this singleton NavigationController
  * 
- *         TODO: refactor this, to retrieve, and initialize all the registered Views in ONLY one place
  */
 
 public final class NavigationControllerImpl implements NavigationController {
@@ -60,6 +59,7 @@ public final class NavigationControllerImpl implements NavigationController {
 
 	@Override
 	public void dispatch(MenuActionType pressedMenuAction) {
+
 		initializeRegisteredViews();
 
 		/*
@@ -72,6 +72,12 @@ public final class NavigationControllerImpl implements NavigationController {
 				final AddContactPresenter presenter = new AddContactPresenter(mainView, addView, showAllContactsView);
 
 				presenter.dispatchToAddContactView();
+            } else if(pressedMenuAction == HorizontalMenuBarActions.DELETE_CONTACT) {
+                final ShowAllContactsPresenter showContactPresenter = new ShowAllContactsPresenter(mainView, showAllContactsView);
+                new DeleteContactPresenter(showAllContactsView);
+
+                showContactPresenter.showContacts();
+                showContactPresenter.displayDeleteOption();
 
 			} else if(pressedMenuAction == HorizontalMenuBarActions.EDIT_CONTACT) {
 				final EditContactPresenter presenter = new EditContactPresenter();

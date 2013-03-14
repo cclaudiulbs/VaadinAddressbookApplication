@@ -17,8 +17,14 @@ public interface ShowAllContactsView extends DefaultView {
 
     void deleteContactOneByOne();
 
+    void displayDeleteOptions();
+
+    void removeDeleteOptions();
+
     interface ShowContactsListener {
         void showContacts();
+
+        void displayDeleteOption();
     }
 
     interface DeleteContactOneByOneListener {
