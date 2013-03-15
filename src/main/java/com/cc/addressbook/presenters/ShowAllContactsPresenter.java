@@ -6,6 +6,7 @@ import com.cc.addressbook.views.ShowAllContactsView;
 
 /**
  * @author cclaudiu
+ *
  */
 public class ShowAllContactsPresenter implements ShowAllContactsView.ShowContactsListener {
 
@@ -22,7 +23,7 @@ public class ShowAllContactsPresenter implements ShowAllContactsView.ShowContact
     }
 
     @Override
-    public void showContacts() {
+    public void showReadOnlyContacts() {
         // -------- Clear all Selected Components so that the same Menu Action can be Click-able ---------//
         mainView.clearSelectedComponents();
 
@@ -34,9 +35,14 @@ public class ShowAllContactsPresenter implements ShowAllContactsView.ShowContact
         // --------- when the ShowAllContactsView is displayed it is like in READ-ONLY Mode ----------//
         showContactsView.removeDeleteOptions();
 
-        // --------- get the contacts from the Memory -----------//
+        // --------- get the contacts from the Memory or database -----------//
         showContactsView.addContacts(model.getCustomers());
-        // TODO: if the size of contacts is NOT the same as the getCUstomers() then, contacts were deleted, hence fetch them from DB again
+    }
+
+    @Override
+    public void showForDeletionContacts() {
+        mainView.clearSelectedComponents();
+        mainView.setMainViewFirstComponent(showContactsView);
     }
 
     @Override

@@ -23,7 +23,6 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
 
     private List<SearchContactListener> searchPresenters = new ArrayList<>();
 
-    private FormLayout searchForm = new FormLayout();
     private TextField firstNameSearchField = new TextField("First Name");
     private TextField lastNameSearchField = new TextField("Last Name");
     private TextField phoneNumberSearchField = new TextField("Mobile Phone Number");
@@ -32,6 +31,7 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
 
     public SearchContactViewImpl(Application mainAppInstance) {
         this.mainAppInstance = mainAppInstance;
+
         setCompositionRoot(buildSearchContactLayout());
     }
 
@@ -48,36 +48,34 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
 
     @Override
     public void clearSearchFormEvent() {
-        firstNameSearchField.setValue(" -- ");
-        lastNameSearchField.setValue(" -- ");
-        phoneNumberSearchField.setValue(" -- ");
+        firstNameSearchField.setValue("");
+        lastNameSearchField.setValue("");
+        phoneNumberSearchField.setValue("");
     }
 
     private ComponentContainer buildSearchContactLayout() {
         VerticalLayout mainLayout = new VerticalLayout();
         mainLayout.setSizeFull();
         mainLayout.setSpacing(Boolean.TRUE);
+        mainLayout.setMargin(Boolean.TRUE);
 
         HorizontalLayout buttonsLayout = new HorizontalLayout();
         buttonsLayout.addComponent(searchButton);
         buttonsLayout.addComponent(clearButton);
         buttonsLayout.setSpacing(Boolean.TRUE);
 
-        searchForm.setSpacing(Boolean.TRUE);
-        searchForm.setSizeFull();
+        HorizontalLayout searchLayout = new HorizontalLayout();
+        searchLayout.setSpacing(Boolean.TRUE);
+        searchLayout.setSizeUndefined();
 
-        searchForm.addComponent(firstNameSearchField, 0);
-        searchForm.addComponent(lastNameSearchField, 1);
-        searchForm.addComponent(phoneNumberSearchField, 2);
-        searchForm.addComponent(buttonsLayout);
+        searchLayout.addComponent(firstNameSearchField);
+        searchLayout.addComponent(lastNameSearchField);
+        searchLayout.addComponent(phoneNumberSearchField);
 
-        searchForm.setComponentAlignment(firstNameSearchField, Alignment.TOP_CENTER);
-        searchForm.setComponentAlignment(lastNameSearchField, Alignment.MIDDLE_CENTER);
-        searchForm.setComponentAlignment(phoneNumberSearchField, Alignment.BOTTOM_CENTER);
-        searchForm.setComponentAlignment(buttonsLayout, Alignment.TOP_LEFT);
-
-        mainLayout.addComponent(searchForm);
-        mainLayout.setComponentAlignment(searchForm, Alignment.TOP_LEFT);
+        mainLayout.addComponent(searchLayout);
+        mainLayout.addComponent(buttonsLayout);
+        mainLayout.setComponentAlignment(searchLayout, Alignment.TOP_LEFT);
+        mainLayout.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_LEFT);
 
         searchButton.addListener(this);
         clearButton.addListener(this);
@@ -85,7 +83,7 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
         return mainLayout;
     }
 
-    /*
+    /**
      * When the user clicks the Search Button, the presenter listening to this
      * event is notified from within this View and the Logic: of
      * "addContacts(filtered contacts, BuilderPatternDemo is called)" from the
@@ -102,10 +100,12 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
         for (SearchContactListener searchPresenter : searchPresenters) {
             if (clickEvent.getButton() == searchButton) {
                 searchPresenter.searchContact();
+
                 ContactNotificationUtil.showStandardNotification("Searching contact", mainAppInstance);
 
             } else if (clickEvent.getButton() == clearButton) {
                 searchPresenter.clearSearchForm();
+
                 ContactNotificationUtil.showStandardNotification("Cleared Searched Form", mainAppInstance);
             }
         }
@@ -118,6 +118,7 @@ public class SearchContactViewImpl extends CustomComponent implements SearchCont
         String phoneNumSearch = phoneNumberSearchField.getValue().toString();
 
         SearchCriteria criteria = new SearchCriteria.Builder().firstName(searchFirstName).lastName(lastNameSearch).phoneNumber(phoneNumSearch).build();
+
         return criteria;
     }
 }

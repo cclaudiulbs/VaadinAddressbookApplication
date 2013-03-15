@@ -18,6 +18,7 @@ public enum HorizontalMenuBarActions implements AddressboookHorizontalMenu, Menu
     EDIT_CONTACT("Edit Contact"),
     SHARE_CONTACT("Share Contact"),
     HELP_BUTTON("Help Me"),
+    LOGIN_USER("Login"),
     DEFAULT("");
     
     private String tabSheetName;

@@ -2,6 +2,7 @@ package com.cc.addressbook.application;
 
 import com.cc.addressbook.appcontroller.NavigationController;
 import com.cc.addressbook.appcontroller.NavigationControllerImpl;
+import com.cc.addressbook.presenters.UserLoggingViewPresenterImpl;
 import com.cc.addressbook.views.*;
 import com.cc.addressbook.views.types.ViewType;
 import com.vaadin.Application;
@@ -24,18 +25,20 @@ public class AddressbookApplication extends Application {
     public static final String ADDRESSBOOK_WINDOW_NAME = "Address-book Application";
     private static final long serialVersionUID = 1L;
 
-    final NavigationController navigationController = NavigationControllerImpl.createInstance();
+    private final NavigationController navigationController = NavigationControllerImpl.createInstance();
+    private final AddressbookMainView mainView = new AddressbookMainViewImpl();
 
     @Override
     public void init() {
 
         final Window mainWindow = new Window(ADDRESSBOOK_WINDOW_NAME);
-        final AddressbookMainView mainView = new AddressbookMainViewImpl();
 
         registerAllViewsIntoApplication(mainView);
 
         setMainWindow(mainWindow);
         mainWindow.setContent(mainView);
+
+        createNecessaryInstanceWirings();
     }
 
     private void registerAllViewsIntoApplication(AddressbookMainView mainView) {
@@ -46,5 +49,11 @@ public class AddressbookApplication extends Application {
         navigationController.registerView(ViewType.SEARCH_CONTACT_VIEW, new SearchContactViewImpl(this));
         navigationController.registerView(ViewType.SHARE_CONTACT_VIEW, new ShareContactViewImpl(this));
         navigationController.registerView(ViewType.HELP_VIEW, new HelpViewImpl(this));
+    }
+
+    private void createNecessaryInstanceWirings() {
+        LoginPopupView loginPopupView = new LoginPopupViewImpl(this);
+        AddressbookMainView.UserLoggingViewPresenter loginViewPresenter = new UserLoggingViewPresenterImpl(mainView, loginPopupView);
+
     }
 }

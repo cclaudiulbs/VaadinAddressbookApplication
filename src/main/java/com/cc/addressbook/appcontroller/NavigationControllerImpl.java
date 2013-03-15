@@ -75,7 +75,7 @@ public final class NavigationControllerImpl implements NavigationController {
                 final ShowAllContactsPresenter showContactPresenter = new ShowAllContactsPresenter(mainView, showAllContactsView);
                 new DeleteContactPresenter(showAllContactsView);
 
-                showContactPresenter.showContacts();
+                showContactPresenter.showForDeletionContacts();
                 showContactPresenter.displayDeleteOption();
 
             } else if (pressedMenuAction == HorizontalMenuBarActions.EDIT_CONTACT) {
@@ -97,7 +97,7 @@ public final class NavigationControllerImpl implements NavigationController {
 
             if (pressedMenuAction == VerticalMenuBarActions.SHOW_ALL_PROPERTY) {
                 final ShowAllContactsPresenter presenter = new ShowAllContactsPresenter(mainView, showAllContactsView);
-                presenter.showContacts();
+                presenter.showReadOnlyContacts();
 
             } else if (pressedMenuAction == VerticalMenuBarActions.SEARCH_CONTACT_PROPERTY) {
                 // tie together the SearchContactPresenter to the SearchContactView
@@ -111,6 +111,7 @@ public final class NavigationControllerImpl implements NavigationController {
     } // end of dispatch()
 
     private void initializeRegisteredViews() {
+
         // ----------- Retrieve the Registered Views of the Application -------------//
         mainView = (AddressbookMainView) registeredViews.get(ViewType.MAIN_VIEW);
         addView = (AddContactView) registeredViews.get(ViewType.ADD_CONTACT_VIEW);

@@ -23,7 +23,9 @@ public interface ShowAllContactsView extends DefaultView {
     void removeDeleteOptions();
 
     interface ShowContactsListener {
-        void showContacts();
+        void showReadOnlyContacts();
+
+        void showForDeletionContacts();
 
         void displayDeleteOption();
     }
@@ -31,6 +33,4 @@ public interface ShowAllContactsView extends DefaultView {
     interface DeleteContactOneByOneListener {
         void deleteContact();
     }
-
-    List<PersonEntity> getContactsList();
 }

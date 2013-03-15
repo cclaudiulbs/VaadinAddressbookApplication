@@ -34,13 +34,10 @@ public class SearchContactPresenter implements SearchContactView.SearchContactLi
     @Override
     public void searchContact() {
         final FilterContactsServiceModel<PersonEntity> service = new FilterContactsServiceModel<>();
-        List<PersonEntity> contacts = showAllContactsView.getContactsList();
+        final ContactsCrudServiceModel showContactService = new ContactsCrudServiceModel();
 
-        if(contacts.isEmpty()) {
-            final ContactsCrudServiceModel showContactService = new ContactsCrudServiceModel();
-            contacts.clear();
-            contacts.addAll(showContactService.getCustomers());             // TODO: refactor this service to use the Custom Query and NOT fetching all results from DB
-        }
+        final List<PersonEntity> contacts = showContactService.getCustomers();
+        // TODO: refactor this service to use the Custom Query for searching a contact based on the SearchCriteria from DB
 
         List<PersonEntity> filteredContacts = service.filter(contacts, searchContactView.getSearchCriteria());
 

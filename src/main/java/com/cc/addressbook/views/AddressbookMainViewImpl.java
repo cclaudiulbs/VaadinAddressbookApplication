@@ -14,6 +14,8 @@ import com.vaadin.ui.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -29,7 +31,8 @@ public class AddressbookMainViewImpl
         extends CustomComponent
         implements AddressbookMainView,
         TabSheet.SelectedTabChangeListener,
-        Property.ValueChangeListener {
+        Property.ValueChangeListener,
+        Button.ClickListener {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOG = Logger.getLogger(AddressbookMainViewImpl.class.getName());
@@ -38,6 +41,7 @@ public class AddressbookMainViewImpl
     private final HorizontalSplitPanel mainViewSplitPanel = new HorizontalSplitPanel();
     private final VerticalSplitPanel insideMainViewSplitPanel = new VerticalSplitPanel();
     private final NavigationController mainAppController = NavigationControllerImpl.createInstance();
+    private final List<UserLoggingViewPresenter> loginViewPresenters = new ArrayList<>();
 
     private final Tree mainTreeOptions = new Tree();
     private final TabSheet menuTabSheet = new TabSheet();
@@ -58,6 +62,11 @@ public class AddressbookMainViewImpl
     @Override
     public Component getMainViewMainComponent() {
         return mainViewSplitPanel.getSecondComponent();
+    }
+
+    @Override
+    public void addPresenter(UserLoggingViewPresenter loginViewPresenter) {
+        loginViewPresenters.add(loginViewPresenter);
     }
 
     @Override
@@ -91,21 +100,27 @@ public class AddressbookMainViewImpl
     private void buildMainWindowLayout() {
         setSizeFull();
         mainLayout.setSizeFull();
+        mainLayout.setSpacing(Boolean.TRUE);
+
+        final Button loginButton = new Button(HorizontalMenuBarActions.LOGIN_USER.getButtonValue());
+        loginButton.addListener((Button.ClickListener) this);
 
         // -------------- Define Header Layout of Main WIndow ---------------//
         VerticalLayout headerLayout = new VerticalLayout();
-        Label welcomeHeader = new Label("<b>Welcome To AddressBook Application</b>", Label.CONTENT_XHTML);
-        welcomeHeader.setSizeUndefined();
-        headerLayout.addComponent(welcomeHeader);
-        headerLayout.setComponentAlignment(welcomeHeader, Alignment.BOTTOM_CENTER);
+        Label welcomeHeaderText = new Label("<b>Welcome To AddressBook Application</b>", Label.CONTENT_XHTML);
+        welcomeHeaderText.setSizeUndefined();
+        headerLayout.addComponent(welcomeHeaderText);
+        headerLayout.addComponent(loginButton);
+        headerLayout.setComponentAlignment(welcomeHeaderText, Alignment.MIDDLE_CENTER);
+        headerLayout.setComponentAlignment(loginButton, Alignment.BOTTOM_RIGHT);
 
         // -------------- Define Menu Buttons ----------------//
+        Label leftHandDesignPurposeLabel = new Label();
         Label addContact = new Label();
         Label deleteContact = new Label();
         Label searchContact = new Label();
         Label shareContact = new Label();
         Label help = new Label();
-        Label leftHandDesignPurposeLabel = new Label();
 
         menuTabSheet.addTab(leftHandDesignPurposeLabel);
         menuTabSheet.addTab(addContact);
@@ -178,7 +193,6 @@ public class AddressbookMainViewImpl
         footerLayout.setContent(insideFooter);
         // rather than adding a new component to Panel
 
-
         // -------------- Adding all Components to Main Layout of the Main Window ---------//
         mainLayout.addComponent(headerLayout);
         mainLayout.addComponent(menuTabSheet);
@@ -214,8 +228,15 @@ public class AddressbookMainViewImpl
     public void clearSelectedComponents() {
         menuTabSheet.setSelectedTab(menuTabSheet.getTab(0));
 
-        for(Object eachVisibleMenuTree: mainTreeOptions.getVisibleItemIds()) {
+        for (Object eachVisibleMenuTree : mainTreeOptions.getVisibleItemIds()) {
             mainTreeOptions.unselect(eachVisibleMenuTree);
+        }
+    }
+
+    @Override
+    public void buttonClick(Button.ClickEvent event) {
+        for(UserLoggingViewPresenter eachLoginPresenter: loginViewPresenters) {
+            eachLoginPresenter.delegateToLoginView();
         }
     }
 }

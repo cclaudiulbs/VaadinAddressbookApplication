@@ -33,8 +33,8 @@ public class ShowAllContactsViewImpl
     private List<PersonEntity> contacts;
     private final Table contactsTable;
     private Object selectedItemId;
-    private int checkDeleteColumnAppearance;
-    private DeleteColumnGenerator delColumnGenerator;
+    private DeleteColumnGenerator deleteColumnGenerator;
+    private boolean isDeleteColumnVisible;
 
     public ShowAllContactsViewImpl(Application mainAppInstance) {
         this.mainAppInstance = mainAppInstance;
@@ -43,7 +43,7 @@ public class ShowAllContactsViewImpl
         this.contacts = new ArrayList<>();
         this.contactsContainer = new BeanItemContainer<PersonEntity>(PersonEntity.class);
         this.contactsTable = new Table();
-        this.delColumnGenerator = new DeleteColumnGenerator(this);
+        this.deleteColumnGenerator = new DeleteColumnGenerator(this);
 
         buildShowContactsLayout();
     }
@@ -80,11 +80,6 @@ public class ShowAllContactsViewImpl
         ContactNotificationUtil.showTrayNotification((this.contacts.isEmpty() ? "No" : this.contacts.size()) + " contacts have been retrieved from database!", mainAppInstance);
     }
 
-    @Override
-    public List<PersonEntity> getContactsList() {
-        return contacts;
-    }
-
     /**
      * The delete method works only if there's an already selected Table Item, which is
      * set by listening to Item.ClickEvent; The ShowAllContactsViewImpl is a Item.ClickListener
@@ -103,9 +98,9 @@ public class ShowAllContactsViewImpl
      */
     @Override
     public void displayDeleteOptions() {        // mark this event and do not add twice the same column: eg: when the user clicks the delete button this is generated, when the user clicks show-only remove the generated column
-        if (checkDeleteColumnAppearance == 0) {
-            contactsTable.addGeneratedColumn("Delete Contact", delColumnGenerator);
-            checkDeleteColumnAppearance++;
+        if (!isDeleteColumnVisible) {
+            contactsTable.addGeneratedColumn("Delete Contact", deleteColumnGenerator);
+            isDeleteColumnVisible = true;
         }
     }
 
@@ -115,9 +110,9 @@ public class ShowAllContactsViewImpl
      */
     @Override
     public void removeDeleteOptions() {
-        if(checkDeleteColumnAppearance > 0) {
-            contactsTable.removeGeneratedColumn(delColumnGenerator.getLazyGeneratedColumnId());
-            checkDeleteColumnAppearance--;
+        if(isDeleteColumnVisible) {
+            contactsTable.removeGeneratedColumn(deleteColumnGenerator.getLazyGeneratedColumnId());
+            isDeleteColumnVisible = false;
         }
     }
 
