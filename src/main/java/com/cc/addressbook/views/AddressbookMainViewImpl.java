@@ -5,6 +5,7 @@ import com.cc.addressbook.appcontroller.NavigationControllerImpl;
 import com.cc.addressbook.menu.actions.HorizontalMenuBarActions;
 import com.cc.addressbook.menu.actions.VerticalMenuBarActions;
 import com.cc.addressbook.parser.AddressbookEventsParser;
+import com.cc.addressbook.presenters.UserLoggingViewPresenterImpl;
 import com.vaadin.data.Property;
 import com.vaadin.terminal.ExternalResource;
 import com.vaadin.terminal.Resource;
@@ -46,6 +47,7 @@ public class AddressbookMainViewImpl
     private final Tree mainTreeOptions = new Tree();
     private final TabSheet menuTabSheet = new TabSheet();
 
+    private final Button loginButton = new Button(HorizontalMenuBarActions.LOGIN_USER.getButtonValue());
 
     public AddressbookMainViewImpl() {
         buildMainWindowLayout();
@@ -102,7 +104,7 @@ public class AddressbookMainViewImpl
         mainLayout.setSizeFull();
         mainLayout.setSpacing(Boolean.TRUE);
 
-        final Button loginButton = new Button(HorizontalMenuBarActions.LOGIN_USER.getButtonValue());
+        // ---- Define the Behavior Event when the Login button is clicked -----//
         loginButton.addListener((Button.ClickListener) this);
 
         // -------------- Define Header Layout of Main WIndow ---------------//
@@ -235,8 +237,10 @@ public class AddressbookMainViewImpl
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        for(UserLoggingViewPresenter eachLoginPresenter: loginViewPresenters) {
-            eachLoginPresenter.delegateToLoginView();
+        if (event.getButton() == loginButton) {
+            for (UserLoggingViewPresenter eachLoginViewPresenter : loginViewPresenters) {
+                eachLoginViewPresenter.delegateToLoginView();
+            }
         }
     }
 }

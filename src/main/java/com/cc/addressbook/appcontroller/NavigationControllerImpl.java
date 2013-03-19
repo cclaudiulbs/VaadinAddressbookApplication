@@ -36,6 +36,7 @@ public final class NavigationControllerImpl implements NavigationController {
     private HelpView helpView;
     private SearchContactView searchContactView;
     private ShowAllContactsView showAllContactsView;
+    protected LoginPopupView loginView;
     private final Map<ViewType, DefaultView> registeredViews;
 
     private NavigationControllerImpl() {
@@ -89,7 +90,6 @@ public final class NavigationControllerImpl implements NavigationController {
             } else if (pressedMenuAction == HorizontalMenuBarActions.HELP_BUTTON) {
                 final HelpPresenter presenter = new HelpPresenter(mainView, helpView);
                 presenter.showHelpView();
-
             }
 
             // ------------------- the Left Vertical Menu was pressed ------------------------ //
@@ -118,5 +118,6 @@ public final class NavigationControllerImpl implements NavigationController {
         helpView = (HelpView) registeredViews.get(ViewType.HELP_VIEW);
         searchContactView = (SearchContactView) registeredViews.get(ViewType.SEARCH_CONTACT_VIEW);
         showAllContactsView = (ShowAllContactsView) registeredViews.get(ViewType.SHOW_CONTACT_VIEW);
+        loginView = (LoginPopupView) registeredViews.get(ViewType.LOGIN_CONTACT_VIEW);
     }
 }

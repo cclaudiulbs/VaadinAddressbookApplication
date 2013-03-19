@@ -6,7 +6,7 @@ import com.cc.addressbook.pojo.UserSubject;
  * @author cclaudiu
  */
 
-public interface LoginPopupView {
+public interface LoginPopupView extends DefaultView {
 
     void showView();
 

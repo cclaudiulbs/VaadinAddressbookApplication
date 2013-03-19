@@ -14,10 +14,9 @@ import com.vaadin.ui.Window;
  *         Represents the Entry Point of a UserSession, the init() method is called once the user
  *         access first-time the application
  *         <p/>
- *
+ *         <p/>
  *         Each View Implementation will have access to single Application Instance, from which can fire some
  *         user-notifications
- *
  */
 
 public class AddressbookApplication extends Application {
@@ -37,8 +36,6 @@ public class AddressbookApplication extends Application {
 
         setMainWindow(mainWindow);
         mainWindow.setContent(mainView);
-
-        createNecessaryInstanceWirings();
     }
 
     private void registerAllViewsIntoApplication(AddressbookMainView mainView) {
@@ -49,11 +46,10 @@ public class AddressbookApplication extends Application {
         navigationController.registerView(ViewType.SEARCH_CONTACT_VIEW, new SearchContactViewImpl(this));
         navigationController.registerView(ViewType.SHARE_CONTACT_VIEW, new ShareContactViewImpl(this));
         navigationController.registerView(ViewType.HELP_VIEW, new HelpViewImpl(this));
+        navigationController.registerView(ViewType.LOGIN_CONTACT_VIEW, new LoginPopupViewImpl(this));
     }
 
-    private void createNecessaryInstanceWirings() {
-        LoginPopupView loginPopupView = new LoginPopupViewImpl(this);
-        AddressbookMainView.UserLoggingViewPresenter loginViewPresenter = new UserLoggingViewPresenterImpl(mainView, loginPopupView);
-
+    private void createNecessaryInstanceWirings(AddressbookMainView mainView) {
+//        AddressbookMainView.UserLoggingViewPresenter loginViewPresenter = new UserLoggingViewPresenterImpl(mainView, loginPopupView);
     }
 }
