@@ -1,12 +1,12 @@
 package com.cc.addressbook.gofpatterns;
 
-/** Command Pattern entry point -- must declare a single execute() method */
+/** ICommand Pattern entry point -- must declare a single execute() method */
 interface Command {
 	void execute();
 }
 
-/** Command Concrete Implementation -- creates a "binding" between the Receiver and the action */
-class StartCommand implements Command {
+/** ICommand Concrete Implementation -- creates a "binding" between the Receiver and the action */
+class StartCommand implements ICommand {
 	ReceiverOfCommand receiver;
 	public StartCommand(ReceiverOfCommand receiver) {
 		this.receiver = receiver;
@@ -17,7 +17,7 @@ class StartCommand implements Command {
 	}
 }
 
-class StopCommand implements Command {
+class StopCommand implements ICommand {
 	ReceiverOfCommand receiver;
 	public StopCommand(ReceiverOfCommand receiver) {
 		this.receiver = receiver;
@@ -47,11 +47,11 @@ class FirstReceiver implements ReceiverOfCommand {
 	}
 }
 
-/** Invoker does not know how to perform the action -- It honors the contract of invoking the Command */
+/** Invoker does not know how to perform the action -- It honors the contract of invoking the ICommand */
 class InvokerOfCommand {
-	Command command;
+	ICommand command;
 	
-	public InvokerOfCommand(Command command) {
+	public InvokerOfCommand(ICommand command) {
 		this.command = command;
 	}
 	
@@ -60,13 +60,13 @@ class InvokerOfCommand {
 	}
 }
 
-/** This represents the Client of the COmmand Pattern -- creates an instance of the Command implementation */
+/** This represents the Client of the COmmand Pattern -- creates an instance of the ICommand implementation */
 public class CommandPatternDemo {
 	public static void main(String[] args) {
 			ReceiverOfCommand firstReceiver = new FirstReceiver();
 			
-			Command startCommand = new StartCommand(firstReceiver);
-			Command stopCommand = new StopCommand(firstReceiver);
+			ICommand startCommand = new StartCommand(firstReceiver);
+			ICommand stopCommand = new StopCommand(firstReceiver);
 			
 			InvokerOfCommand startInvoker = new InvokerOfCommand(startCommand);
 			InvokerOfCommand stopInvoker = new InvokerOfCommand(stopCommand);
@@ -76,7 +76,7 @@ public class CommandPatternDemo {
 	}
 }
 
-// Command Pattern helps to decouple the Invoker(which can be any Button Object which triggers the Command) from the Receiver
+// ICommand Pattern helps to decouple the Invoker(which can be any Button Object which triggers the ICommand) from the Receiver
 // Receiver is the actual Object which knows how to perform the command, and react to this action
-// Command Pattern helps to honor the OCP(open closed principle) adding a new Command without changing the existing code
-// Command Object defines the binding between the Receiver and the action
+// ICommand Pattern helps to honor the OCP(open closed principle) adding a new ICommand without changing the existing code
+// ICommand Object defines the binding between the Receiver and the action

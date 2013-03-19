@@ -7,16 +7,16 @@ import java.util.List;
  * @author cclaudiu
  * <br/>
  * <br/>
- * Command Design Pattern in Action with a very simple and concise example
+ * ICommand Design Pattern in Action with a very simple and concise example
  */
 
-// -- define the Command entry point for the Command Design Pattern
-interface Command {
+// -- define the ICommand entry point for the ICommand Design Pattern
+interface ICommand {
     void execute();
 }
 
 // -- define the commands to be used
-class ShutdownCommand implements Command {
+class ShutdownCommand implements ICommand {
     private final Devices device;
 
     // -- the command knows only about the possible receiver which should define how this command gets executed
@@ -29,7 +29,7 @@ class ShutdownCommand implements Command {
     }
 }
 
-class StartupCommand implements Command {
+class StartupCommand implements ICommand {
     private final Devices device;
 
     public StartupCommand(Devices device) {
@@ -41,7 +41,7 @@ class StartupCommand implements Command {
     }
 }
 
-// -- the actual devices/receivers of the Command, for simplicity only two commands are defined
+// -- the actual devices/receivers of the ICommand, for simplicity only two commands are defined
 interface Devices {
     void onStart();
     void onStop();
@@ -79,11 +79,11 @@ final class GetActiveDeviceFactory {
     }
 }
 
-// -- the actual invoker of the command, the invoker "knows" only to "invoke"(has) a Command in its aggregation
+// -- the actual invoker of the command, the invoker "knows" only to "invoke"(has) a ICommand in its aggregation
 class CommandTriggerButton {
-    private final Command command;
+    private final ICommand command;
 
-    public CommandTriggerButton(Command command) {
+    public CommandTriggerButton(ICommand command) {
 
         this.command = command;
     }
@@ -99,8 +99,8 @@ public class CommandDesignPatternClientDemo {
         Devices currentActiveDevice = GetActiveDeviceFactory
                 .getActiveDevice(Arrays.asList(new RadioDevice(), new TVDevice()));
 
-        Command startCommand = new StartupCommand(currentActiveDevice);
-        Command stopCommand = new ShutdownCommand(currentActiveDevice);
+        ICommand startCommand = new StartupCommand(currentActiveDevice);
+        ICommand stopCommand = new ShutdownCommand(currentActiveDevice);
 
         CommandTriggerButton startButton = new CommandTriggerButton(startCommand);
         CommandTriggerButton stopButton = new CommandTriggerButton(stopCommand);
