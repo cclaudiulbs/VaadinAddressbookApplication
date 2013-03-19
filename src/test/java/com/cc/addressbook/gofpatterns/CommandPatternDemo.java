@@ -1,4 +1,4 @@
-package com.cc.addressbook.others;
+package com.cc.addressbook.gofpatterns;
 
 /** Command Pattern entry point -- must declare a single execute() method */
 interface Command {

@@ -1,4 +1,4 @@
-package com.cc.addressbook.others;
+package com.cc.addressbook.gofpatterns;
 
 /**
  * @author cclaudiu
