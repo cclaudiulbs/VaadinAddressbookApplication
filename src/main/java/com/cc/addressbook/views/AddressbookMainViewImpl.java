@@ -5,7 +5,6 @@ import com.cc.addressbook.appcontroller.NavigationControllerImpl;
 import com.cc.addressbook.menu.actions.HorizontalMenuBarActions;
 import com.cc.addressbook.menu.actions.VerticalMenuBarActions;
 import com.cc.addressbook.parser.AddressbookEventsParser;
-import com.cc.addressbook.presenters.UserLoggingViewPresenterImpl;
 import com.vaadin.data.Property;
 import com.vaadin.terminal.ExternalResource;
 import com.vaadin.terminal.Resource;
@@ -47,15 +46,12 @@ public class AddressbookMainViewImpl
     private final Tree mainTreeOptions = new Tree();
     private final TabSheet menuTabSheet = new TabSheet();
 
-    private final Button loginButton = new Button(HorizontalMenuBarActions.LOGIN_USER.getButtonValue());
 
     public AddressbookMainViewImpl() {
         buildMainWindowLayout();
     }
 
-    /**
-     * Application Logic Related
-     */
+    /* Application Logic Related */
     @Override
     public void setMainViewMainComponent(DefaultView component) {
         mainViewSplitPanel.setSecondComponent(component);
@@ -81,6 +77,17 @@ public class AddressbookMainViewImpl
         insideMainViewSplitPanel.setSecondComponent(component);
     }
 
+    @Override
+    public void clearSelectedComponents() {
+        menuTabSheet.setSelectedTab(menuTabSheet.getTab(0));
+
+        for (Object eachVisibleMenuTree : mainTreeOptions.getVisibleItemIds()) {
+            mainTreeOptions.unselect(eachVisibleMenuTree);
+        }
+    }
+
+    /* Vaadin Listeners related */
+
     /**
      * TabSheet.SelectedTabChangeListener - For the TabSheet Like Menu
      */
@@ -97,6 +104,16 @@ public class AddressbookMainViewImpl
         mainAppController.dispatch(AddressbookEventsParser.getEventType(event));
     }
 
+    /**
+     * Button.ClickEvent - Logging in user
+     *
+     * @param event
+     */
+    @Override
+    public void buttonClick(Button.ClickEvent event) {
+        mainAppController.dispatch(AddressbookEventsParser.getEventType(event));
+    }
+
 
     // ----------------- Build the Main Layout of Main App View ---------------------//
     private void buildMainWindowLayout() {
@@ -105,6 +122,7 @@ public class AddressbookMainViewImpl
         mainLayout.setSpacing(Boolean.TRUE);
 
         // ---- Define the Behavior Event when the Login button is clicked -----//
+        final Button loginButton = new Button(HorizontalMenuBarActions.LOGIN_USER.getButtonValue());
         loginButton.addListener((Button.ClickListener) this);
 
         // -------------- Define Header Layout of Main WIndow ---------------//
@@ -224,23 +242,5 @@ public class AddressbookMainViewImpl
         image.setHeight(300, UNITS_PIXELS);
 
         return image;
-    }
-
-    @Override
-    public void clearSelectedComponents() {
-        menuTabSheet.setSelectedTab(menuTabSheet.getTab(0));
-
-        for (Object eachVisibleMenuTree : mainTreeOptions.getVisibleItemIds()) {
-            mainTreeOptions.unselect(eachVisibleMenuTree);
-        }
-    }
-
-    @Override
-    public void buttonClick(Button.ClickEvent event) {
-        if (event.getButton() == loginButton) {
-            for (UserLoggingViewPresenter eachLoginViewPresenter : loginViewPresenters) {
-                eachLoginViewPresenter.delegateToLoginView();
-            }
-        }
     }
 }

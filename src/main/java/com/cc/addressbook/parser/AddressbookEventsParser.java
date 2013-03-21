@@ -4,6 +4,7 @@ import com.cc.addressbook.menu.actions.HorizontalMenuBarActions;
 import com.cc.addressbook.menu.actions.VerticalMenuBarActions;
 import com.cc.addressbook.menu.types.MenuActionType;
 import com.vaadin.data.Property;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.Tab;
 
@@ -27,6 +28,11 @@ public final class AddressbookEventsParser {
 		Tab selectedTab = selectedTabSheet.getTab(selectedTabSheet.getSelectedTab());
 		String tabCaption = selectedTab.getCaption();
 		
-		return HorizontalMenuBarActions.getMenuTabSheetInstance(tabCaption);
+		return HorizontalMenuBarActions.getPressedMenu(tabCaption);
 	}
+
+    public static HorizontalMenuBarActions getEventType(Button.ClickEvent clickEvent) {
+        final String loginButtonName = clickEvent.getButton().getCaption();
+        return HorizontalMenuBarActions.getPressedMenu(loginButtonName);
+    }
 }

@@ -2,7 +2,6 @@ package com.cc.addressbook.application;
 
 import com.cc.addressbook.appcontroller.NavigationController;
 import com.cc.addressbook.appcontroller.NavigationControllerImpl;
-import com.cc.addressbook.presenters.UserLoggingViewPresenterImpl;
 import com.cc.addressbook.views.*;
 import com.cc.addressbook.views.types.ViewType;
 import com.vaadin.Application;
@@ -47,9 +46,5 @@ public class AddressbookApplication extends Application {
         navigationController.registerView(ViewType.SHARE_CONTACT_VIEW, new ShareContactViewImpl(this));
         navigationController.registerView(ViewType.HELP_VIEW, new HelpViewImpl(this));
         navigationController.registerView(ViewType.LOGIN_CONTACT_VIEW, new LoginPopupViewImpl(this));
-    }
-
-    private void createNecessaryInstanceWirings(AddressbookMainView mainView) {
-//        AddressbookMainView.UserLoggingViewPresenter loginViewPresenter = new UserLoggingViewPresenterImpl(mainView, loginPopupView);
     }
 }

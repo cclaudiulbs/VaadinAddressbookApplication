@@ -31,7 +31,7 @@ public enum HorizontalMenuBarActions implements AddressboookHorizontalMenu, Menu
     	return tabSheetName;
     }
     
-    public static HorizontalMenuBarActions getMenuTabSheetInstance(String tabCaption) {
+    public static HorizontalMenuBarActions getPressedMenu(String tabCaption) {
     	List<HorizontalMenuBarActions> enumInstances = Arrays.asList(values());
     	HorizontalMenuBarActions wantedInstance = DEFAULT;
     	

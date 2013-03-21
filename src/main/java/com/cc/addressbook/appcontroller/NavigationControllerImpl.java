@@ -90,6 +90,10 @@ public final class NavigationControllerImpl implements NavigationController {
             } else if (pressedMenuAction == HorizontalMenuBarActions.HELP_BUTTON) {
                 final HelpPresenter presenter = new HelpPresenter(mainView, helpView);
                 presenter.showHelpView();
+
+            } else if(pressedMenuAction == HorizontalMenuBarActions.LOGIN_USER) {
+                final AddressbookMainView.UserLoggingViewPresenter loginViewPresenter = new UserLoggingViewPresenterImpl(mainView, loginView);
+                loginViewPresenter.delegateToLoginView();
             }
 
             // ------------------- the Left Vertical Menu was pressed ------------------------ //
