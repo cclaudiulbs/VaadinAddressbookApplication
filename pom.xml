@@ -34,6 +34,7 @@
         <shiro.version>1.1.0</shiro.version>
         <logger.slf4j.version>1.6.1</logger.slf4j.version>
         <apache.commons.version>2.5</apache.commons.version>
+        <google.guava.event.bus.version>10.0.1</google.guava.event.bus.version>
 	</properties>
 
 	<dependencies>
@@ -102,13 +103,20 @@
             <version>${apache.commons.version}</version>
         </dependency>
 
+        <!--Enable Google's Guava EventBus - used only for playing with the EventBus-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${google.guava.event.bus.version}</version>
+        </dependency>
+
         <!--
-          <dependency>
-              <groupId>org.vaadin.addons</groupId>
-              <artifactId>reindeermods</artifactId>
-              <version>${reindeermods.theme.version}</version>
-          </dependency>
-          -->
+        <dependency>
+            <groupId>org.vaadin.addons</groupId>
+            <artifactId>reindeermods</artifactId>
+            <version>${reindeermods.theme.version}</version>
+        </dependency>
+        -->
 	</dependencies>
 
 	<!-- Enable Google's t7 Apache Tomcat Plugin -->

@@ -1,4 +1,4 @@
-package com.cc.addressbook.gofpatterns;
+package com.cc.addressbook.stuff;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
