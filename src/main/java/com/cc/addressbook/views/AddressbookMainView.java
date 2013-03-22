@@ -44,9 +44,9 @@ public interface AddressbookMainView extends DefaultView, ComponentContainer {
 
 	Component getMainViewMainComponent();
 
-    void addPresenter(UserLoggingViewPresenter loginViewPresenter);
+    void addPresenter(LoginViewPresenter loginViewPresenter);
 
-    interface UserLoggingViewPresenter {
+    interface LoginViewPresenter {
         void delegateToLoginView();
     }
 }

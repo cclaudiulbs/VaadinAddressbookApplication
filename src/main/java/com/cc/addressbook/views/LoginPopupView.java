@@ -10,12 +10,13 @@ public interface LoginPopupView extends DefaultView {
 
     void showView();
 
-    void addPresenter(LoginPresenter presenter);
+    void addPresenter(AuthenticatePresenter presenter);
 
     void closeView();
 
-    interface LoginPresenter {
+    interface AuthenticatePresenter {
         UserSubject login(UserSubject user);
-        void cancelLogin() ;
+
+        void cancelLogin();
     }
 }

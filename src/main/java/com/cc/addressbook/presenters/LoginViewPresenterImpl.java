@@ -5,13 +5,14 @@ import com.cc.addressbook.views.LoginPopupView;
 
 /**
  * @author cclaudiu
+ *
  */
 
-public class UserLoggingViewPresenterImpl implements AddressbookMainView.UserLoggingViewPresenter {
+public class LoginViewPresenterImpl implements AddressbookMainView.LoginViewPresenter {
 
     private final LoginPopupView loginPopupView;
 
-    public UserLoggingViewPresenterImpl(AddressbookMainView mainView, LoginPopupView loginPopupView) {
+    public LoginViewPresenterImpl(AddressbookMainView mainView, LoginPopupView loginPopupView) {
         this.loginPopupView = loginPopupView;
 
         mainView.addPresenter(this);

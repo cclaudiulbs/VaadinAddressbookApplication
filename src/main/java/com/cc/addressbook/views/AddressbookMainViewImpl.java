@@ -41,7 +41,7 @@ public class AddressbookMainViewImpl
     private final HorizontalSplitPanel mainViewSplitPanel = new HorizontalSplitPanel();
     private final VerticalSplitPanel insideMainViewSplitPanel = new VerticalSplitPanel();
     private final NavigationController mainAppController = NavigationControllerImpl.createInstance();
-    private final List<UserLoggingViewPresenter> loginViewPresenters = new ArrayList<>();
+    private final List<LoginViewPresenter> loginViewPresenters = new ArrayList<>();
 
     private final Tree mainTreeOptions = new Tree();
     private final TabSheet menuTabSheet = new TabSheet();
@@ -63,7 +63,7 @@ public class AddressbookMainViewImpl
     }
 
     @Override
-    public void addPresenter(UserLoggingViewPresenter loginViewPresenter) {
+    public void addPresenter(LoginViewPresenter loginViewPresenter) {
         loginViewPresenters.add(loginViewPresenter);
     }
 
