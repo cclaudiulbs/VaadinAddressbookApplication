@@ -129,6 +129,7 @@
 				<version>${google.t7.tomcat.version}</version>
 				<configuration>
 					<tomcatHttpPort>9090</tomcatHttpPort>
+                    <tomcatShutdownPort>8007</tomcatShutdownPort>
 				</configuration>
 			</plugin>
 

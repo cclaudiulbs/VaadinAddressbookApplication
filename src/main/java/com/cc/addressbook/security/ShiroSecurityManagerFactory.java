@@ -17,14 +17,12 @@ public final class ShiroSecurityManagerFactory {
     }
 
 
-    public static SecurityManager createInstance() {
+    public static void initShiro() {
         if (securityManager == null) {
-            IniSecurityManagerFactory factory = new IniSecurityManagerFactory();
+            IniSecurityManagerFactory factory = new IniSecurityManagerFactory(SHIRO_INI_LOCALIZATION);
             securityManager = factory.getInstance();
         }
 
         SecurityUtils.setSecurityManager(securityManager);
-        return securityManager;
     }
-
 }

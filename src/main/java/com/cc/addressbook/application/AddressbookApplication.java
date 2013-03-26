@@ -2,6 +2,7 @@ package com.cc.addressbook.application;
 
 import com.cc.addressbook.appcontroller.NavigationController;
 import com.cc.addressbook.appcontroller.NavigationControllerImpl;
+import com.cc.addressbook.security.ShiroSecurityManagerFactory;
 import com.cc.addressbook.views.*;
 import com.cc.addressbook.views.types.ViewType;
 import com.vaadin.Application;
@@ -35,6 +36,8 @@ public class AddressbookApplication extends Application {
 
         setMainWindow(mainWindow);
         mainWindow.setContent(mainView);
+
+        ShiroSecurityManagerFactory.initShiro();
     }
 
     private void registerAllViewsIntoApplication(AddressbookMainView mainView) {
